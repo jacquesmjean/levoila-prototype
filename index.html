@@ -1,0 +1,1251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Levoila — The Global Heritage Trust</title>
+<meta name="description" content="When the governments forget, the world remembers. A citizen-led trust protecting historic sites in danger of being lost."/>
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Crect width='240' height='240' rx='28' fill='%230B2545'/%3E%3Cpath d='M70 195L70 110A50 50 0 0 1 170 110L170 195L150 195L150 120A30 30 0 0 0 90 120L90 195Z' fill='%23B6862C'/%3E%3C/svg%3E"/>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+<style>
+  :root{
+    --navy:#0B2545; --gold:#B6862C; --stone:#4A4A4A;
+    --limestone:#F4F1EA; --cream:#FAF7F0; --deep:#062744;
+    --soft-gold:#D4A857; --red:#B23A48;
+  }
+  html{scroll-behavior:smooth;}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--stone);background:var(--cream);}
+  .serif{font-family:'EB Garamond','Garamond',Georgia,serif;}
+  .nav-link{position:relative;}
+  .nav-link.active{color:var(--gold);}
+  .nav-link:hover{color:var(--gold);}
+  .page{display:none;}
+  .page.active{display:block;}
+  .gold-rule{height:2px;background:var(--gold);width:80px;}
+  .hero-bg{background:linear-gradient(180deg,rgba(11,37,69,0.92),rgba(6,39,68,0.92)),url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect width="1200" height="600" fill="%230B2545"/></svg>');}
+  .arch-svg path{fill:var(--gold);}
+  .btn-primary{background:var(--gold);color:var(--navy);font-weight:600;letter-spacing:.5px;}
+  .btn-primary:hover{background:var(--soft-gold);}
+  .btn-secondary{border:1.5px solid var(--gold);color:var(--gold);font-weight:600;letter-spacing:.5px;}
+  .btn-secondary:hover{background:var(--gold);color:var(--navy);}
+  .tier-card{border:1px solid #E5E0D5;transition:all .2s;}
+  .tier-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+  .tier-card.featured{border-color:var(--gold);background:var(--limestone);}
+  .person-photo{background:linear-gradient(135deg,#1a3a66,#0B2545);color:var(--gold);font-family:'EB Garamond',serif;display:flex;align-items:center;justify-content:center;}
+  table.ledger th{background:var(--navy);color:var(--limestone);text-align:left;padding:14px 16px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
+  table.ledger td{padding:14px 16px;border-bottom:1px solid #E5E0D5;font-size:14px;}
+  .kpi-card{background:white;border:1px solid #E5E0D5;border-radius:12px;padding:24px;}
+  .lang-pill{padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:1px;cursor:pointer;}
+  .lang-pill.active{background:var(--gold);color:var(--navy);}
+  .lang-pill:not(.active){color:var(--limestone);opacity:.6;}
+  .lang-pill:not(.active):hover{opacity:1;}
+  .progress-bar{background:#E5E0D5;height:6px;border-radius:999px;overflow:hidden;}
+  .progress-bar > div{background:var(--gold);height:100%;border-radius:999px;}
+  details summary{cursor:pointer;list-style:none;}
+  details summary::-webkit-details-marker{display:none;}
+  .input{width:100%;padding:12px 14px;border:1px solid #D5CDB8;border-radius:8px;background:white;font-family:inherit;font-size:14px;}
+  .input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(182,134,44,0.15);}
+  label{display:block;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
+  .quote{font-family:'EB Garamond',serif;font-style:italic;font-size:24px;line-height:1.5;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!--  NAV  -->
+<!-- ============================================ -->
+<nav class="sticky top-0 z-50 bg-[var(--navy)] text-[var(--limestone)] border-b border-[var(--gold)]/30">
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+    <a href="#home" class="flex items-center gap-3 nav-trigger" data-page="home">
+      <svg viewBox="0 0 240 240" class="w-9 h-9">
+        <rect width="240" height="240" rx="28" fill="#0B2545" stroke="#B6862C" stroke-width="3"/>
+        <path d="M70 195L70 110A50 50 0 0 1 170 110L170 195L150 195L150 120A30 30 0 0 0 90 120L90 195Z" fill="#B6862C"/>
+      </svg>
+      <div>
+        <div class="serif text-2xl font-semibold tracking-widest">LEVOILA</div>
+        <div class="text-[10px] tracking-[3px] text-[var(--gold)] font-bold">THE GLOBAL HERITAGE TRUST</div>
+      </div>
+    </a>
+    <div class="hidden lg:flex items-center gap-7 text-sm">
+      <a href="#about" class="nav-link nav-trigger" data-page="about">About</a>
+      <a href="#phase-one" class="nav-link nav-trigger" data-page="phase-one">Phase One</a>
+      <a href="#nominate" class="nav-link nav-trigger" data-page="nominate">Nominate</a>
+      <a href="#vote" class="nav-link nav-trigger" data-page="vote">Vote</a>
+      <a href="#crypto" class="nav-link nav-trigger" data-page="crypto">Donate Crypto</a>
+      <a href="#ledger" class="nav-link nav-trigger" data-page="ledger">Live Ledger</a>
+      <a href="#dashboard" class="nav-link nav-trigger" data-page="dashboard">Dashboard</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="hidden md:flex gap-1 mr-3">
+        <span class="lang-pill active" data-lang="en">EN</span>
+        <span class="lang-pill" data-lang="fr">FR</span>
+        <span class="lang-pill" data-lang="ht">KR</span>
+        <span class="lang-pill" data-lang="es">ES</span>
+        <span class="lang-pill" data-lang="pt">PT</span>
+      </div>
+      <a href="#steward" class="nav-trigger btn-primary text-xs px-4 py-2 rounded-md tracking-wider uppercase" data-page="steward">Become a Steward</a>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-6">
+
+<!-- ============================================ -->
+<!--  HOME  -->
+<!-- ============================================ -->
+<section class="page active" data-page="home">
+
+  <!-- Hero -->
+  <div class="-mx-6 px-6 py-24 mb-12 hero-bg text-[var(--limestone)]">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="text-xs tracking-[4px] text-[var(--gold)] font-bold mb-6">THE GLOBAL HERITAGE TRUST</div>
+      <h1 class="serif text-6xl md:text-7xl font-semibold mb-4" data-i18n="hero-h1">The governments forgot.</h1>
+      <h1 class="serif text-6xl md:text-7xl font-semibold mb-8" data-i18n="hero-h2">The world remembers.</h1>
+      <p class="text-lg max-w-2xl mx-auto leading-relaxed mb-10 text-[var(--limestone)]/80" data-i18n="hero-sub">A citizen-led trust protecting the historic sites that governments have abandoned. Anyone nominates. The world votes. The world funds it. The locals build it.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#steward" class="nav-trigger btn-primary px-8 py-3 rounded-md uppercase text-sm" data-page="steward">Become a Steward — from $150</a>
+        <a href="#nominate" class="nav-trigger btn-secondary px-8 py-3 rounded-md uppercase text-sm" data-page="nominate">Nominate a Site</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Founder block -->
+  <div class="grid lg:grid-cols-5 gap-12 py-16 items-center">
+    <div class="lg:col-span-2 person-photo aspect-[4/5] rounded-lg text-7xl">JMJ</div>
+    <div class="lg:col-span-3">
+      <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">A LETTER FROM THE FOUNDER</div>
+      <p class="quote mb-6">"I was eighteen years old the first time I walked into a library."</p>
+      <p class="text-base leading-relaxed mb-4">I was born in Haiti. I crossed thirty-five countries building technology systems for companies most people have heard of. I watched France protect its cathedrals, Japan rebuild its shrines, Mexico fund museums for its pyramids.</p>
+      <p class="text-base leading-relaxed mb-4">Then I came home and looked at what Haiti's history had become. So I built three libraries in northern Haiti — Pilate, Ferrier, Ouanaminthe — serving more than 500,000 people. But libraries are only the beginning.</p>
+      <p class="text-base leading-relaxed mb-6">I am a father. I cannot stop thinking about Haiti. Levoila is what I am doing about it.</p>
+      <a href="#founder" class="nav-trigger inline-flex items-center text-[var(--navy)] font-semibold border-b-2 border-[var(--gold)] pb-1" data-page="founder">Read the Full Founder's Letter →</a>
+    </div>
+  </div>
+
+  <!-- How It Works -->
+  <div class="py-16 -mx-6 px-6 bg-[var(--limestone)] my-12">
+    <div class="text-center mb-12">
+      <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">HOW IT WORKS</div>
+      <h2 class="serif text-5xl font-semibold text-[var(--navy)]">When governments forget, citizens step in.</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+        <div class="text-[var(--gold)] text-xs font-bold tracking-[3px] mb-3">STEP 1 · NOMINATE</div>
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">Anyone can nominate a site.</h3>
+        <p class="text-sm leading-relaxed">A fortress falling apart. A monument used as shelter. A landmark with no security. You don't have to live in that country. You only have to care.</p>
+      </div>
+      <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+        <div class="text-[var(--gold)] text-xs font-bold tracking-[3px] mb-3">STEP 2 · VOTE</div>
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">The world chooses what to save.</h3>
+        <p class="text-sm leading-relaxed">Every quarter, the global Steward community votes on which sites enter the next restoration cycle. Every Steward has a voice. No committee. No back rooms.</p>
+      </div>
+      <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+        <div class="text-[var(--gold)] text-xs font-bold tracking-[3px] mb-3">STEP 3 · STEWARD</div>
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">$150 buys a seat at the table.</h3>
+        <p class="text-sm leading-relaxed">Choose your tier. Get your Digital Passport. Lifetime entry to every Levoila site. Your name engraved on the Wall of Founders.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase One Sites preview -->
+  <div class="py-16">
+    <div class="text-center mb-12">
+      <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">PHASE ONE</div>
+      <h2 class="serif text-5xl font-semibold text-[var(--navy)]">We begin where the founder was born.</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="rounded-xl overflow-hidden border border-[#E5E0D5]">
+        <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+          <svg viewBox="0 0 240 240" class="w-24 h-24 opacity-50">
+            <path d="M50 200L50 100A70 70 0 0 1 190 100L190 200L165 200L165 115A45 45 0 0 0 75 115L75 200Z" fill="#B6862C"/>
+          </svg>
+        </div>
+        <div class="p-8 bg-white">
+          <h3 class="serif text-3xl font-bold text-[var(--navy)] mb-2">Citadelle Henri Christophe</h3>
+          <p class="text-sm text-[var(--gold)] font-semibold tracking-wider uppercase mb-4">Haiti · UNESCO World Heritage Site</p>
+          <p class="text-sm leading-relaxed mb-4">The largest fortress in the Western Hemisphere. Built by formerly enslaved people who had just defeated Napoleon's army. Following the tragedy of April 11, 2026, Levoila's first act here is a permanent memorial — then full restoration, professional security, and certified tours.</p>
+          <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold">FUNDRAISING WINDOW · 24 MONTHS</div>
+        </div>
+      </div>
+      <div class="rounded-xl overflow-hidden border border-[#E5E0D5]">
+        <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+          <svg viewBox="0 0 240 240" class="w-24 h-24 opacity-50">
+            <path d="M50 200L50 100A70 70 0 0 1 190 100L190 200L165 200L165 115A45 45 0 0 0 75 115L75 200Z" fill="#B6862C"/>
+          </svg>
+        </div>
+        <div class="p-8 bg-white">
+          <h3 class="serif text-3xl font-bold text-[var(--navy)] mb-2">Fort Liberté</h3>
+          <p class="text-sm text-[var(--gold)] font-semibold tracking-wider uppercase mb-4">Haiti · 17th-Century Atlantic Bay Fortress</p>
+          <p class="text-sm leading-relaxed mb-4">Once a French naval stronghold, later a redoubt in the Haitian war of independence. Today the walls are quietly returning to the sea. Levoila will restore the ramparts, install a maritime exhibit, and open an open-air amphitheater for cultural programming.</p>
+          <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold">FUNDRAISING WINDOW · 24 MONTHS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tiers -->
+  <div class="py-16 -mx-6 px-6 bg-[var(--navy)] text-[var(--limestone)] my-12">
+    <div class="text-center mb-12">
+      <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">STEWARDSHIP</div>
+      <h2 class="serif text-5xl font-semibold">Choose your tier. Get your Passport.</h2>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+      <div class="bg-[var(--limestone)] text-[var(--navy)] rounded-xl p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">BRONZE</div>
+        <div class="serif text-3xl font-bold mb-1">$150+</div>
+        <div class="text-sm mb-4">1× vote</div>
+        <ul class="text-sm space-y-1.5 leading-relaxed">
+          <li>· Digital Passport</li>
+          <li>· Lifetime site entry</li>
+          <li>· Quarterly reports</li>
+        </ul>
+      </div>
+      <div class="bg-[var(--limestone)] text-[var(--navy)] rounded-xl p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">SILVER</div>
+        <div class="serif text-3xl font-bold mb-1">$1,000+</div>
+        <div class="text-sm mb-4">10× vote</div>
+        <ul class="text-sm space-y-1.5 leading-relaxed">
+          <li>· All Bronze honors</li>
+          <li>· Name on Wall of Founders</li>
+        </ul>
+      </div>
+      <div class="bg-[var(--limestone)] text-[var(--navy)] rounded-xl p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">GOLD</div>
+        <div class="serif text-3xl font-bold mb-1">$5,000+</div>
+        <div class="text-sm mb-4">100× vote</div>
+        <ul class="text-sm space-y-1.5 leading-relaxed">
+          <li>· All Silver honors</li>
+          <li>· Founder's Key</li>
+          <li>· VIP at Grand Openings</li>
+        </ul>
+      </div>
+      <div class="bg-[var(--gold)] text-[var(--navy)] rounded-xl p-6">
+        <div class="text-xs tracking-[2px] font-bold mb-2">HERITAGE PATRON</div>
+        <div class="serif text-3xl font-bold mb-1">$25,000+</div>
+        <div class="text-sm mb-4">Direct advisory</div>
+        <ul class="text-sm space-y-1.5 leading-relaxed">
+          <li>· All Gold honors</li>
+          <li>· Private architect sessions</li>
+          <li>· Global Council invitation</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-10">
+      <a href="#steward" class="nav-trigger btn-primary inline-block px-8 py-3 rounded-md uppercase text-sm" data-page="steward">Become a Steward</a>
+    </div>
+  </div>
+
+  <!-- Multilingual -->
+  <div class="py-16 text-center">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">THE CALL · IN FIVE LANGUAGES</div>
+    <div class="serif text-7xl text-[var(--gold)] font-semibold mb-8 tracking-wider">LE VOILÀ.</div>
+    <div class="space-y-3 text-[var(--navy)] serif text-2xl font-medium">
+      <div>There it is. <span class="opacity-50 text-base">English</span></div>
+      <div>Men li. <span class="opacity-50 text-base">Kreyòl</span></div>
+      <div>Aquí está. <span class="opacity-50 text-base">Español</span></div>
+      <div>Eis aqui. <span class="opacity-50 text-base">Português</span></div>
+    </div>
+    <p class="serif text-2xl italic text-[var(--stone)] mt-12 max-w-2xl mx-auto">"The governments forgot. The world remembers. Welcome to Levoila."</p>
+  </div>
+
+</section>
+
+<!-- ============================================ -->
+<!--  ABOUT (founder/team/advisory tab page)  -->
+<!-- ============================================ -->
+<section class="page" data-page="about">
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">ABOUT LEVOILA</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">The people behind the movement.</h1>
+    <div class="gold-rule mt-6 mb-8"></div>
+  </div>
+  <div class="flex gap-2 border-b border-[#E5E0D5] mb-12">
+    <a href="#founder" class="nav-trigger px-6 py-3 font-semibold text-sm uppercase tracking-wider border-b-2 border-[var(--gold)] text-[var(--navy)]" data-page="founder">Founder</a>
+    <a href="#team" class="nav-trigger px-6 py-3 font-semibold text-sm uppercase tracking-wider border-b-2 border-transparent text-[var(--stone)] hover:text-[var(--navy)]" data-page="team">Team</a>
+    <a href="#advisory" class="nav-trigger px-6 py-3 font-semibold text-sm uppercase tracking-wider border-b-2 border-transparent text-[var(--stone)] hover:text-[var(--navy)]" data-page="advisory">Advisory Board</a>
+  </div>
+  <div class="text-center py-12">
+    <p class="text-lg">Select a tab above to learn more about the Founder, Team, or Advisory Board.</p>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--  FOUNDER PAGE  -->
+<!-- ============================================ -->
+<section class="page" data-page="founder">
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">FOUNDER</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">Jacques Marie Jean</h1>
+    <p class="text-xl text-[var(--stone)] mb-6">Founder & Chair · Levoila</p>
+    <div class="gold-rule mt-2 mb-12"></div>
+  </div>
+
+  <div class="grid lg:grid-cols-5 gap-12">
+    <div class="lg:col-span-2">
+      <div class="person-photo aspect-[4/5] rounded-lg text-9xl mb-6">JMJ</div>
+      <div class="bg-[var(--limestone)] rounded-lg p-6">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">QUICK FACTS</div>
+        <ul class="text-sm space-y-2.5">
+          <li><span class="font-semibold text-[var(--navy)]">Born:</span> Cap-Haïtien, Haiti</li>
+          <li><span class="font-semibold text-[var(--navy)]">Based:</span> Frisco, Texas</li>
+          <li><span class="font-semibold text-[var(--navy)]">Languages:</span> EN · FR · KR · ES · PT</li>
+          <li><span class="font-semibold text-[var(--navy)]">Career:</span> 25 years · 35 countries</li>
+          <li><span class="font-semibold text-[var(--navy)]">Companies:</span> Honeywell · Invensys · Schneider Electric</li>
+          <li><span class="font-semibold text-[var(--navy)]">Education:</span> MS Public Policy, Carnegie Mellon · BS Economics, U. de Guadalajara</li>
+          <li><span class="font-semibold text-[var(--navy)]">Executive credentials:</span> Harvard Business School · UNC Kenan-Flagler</li>
+          <li><span class="font-semibold text-[var(--navy)]">Certifications:</span> PMP · Six Sigma Black Belt · ITIL</li>
+          <li><span class="font-semibold text-[var(--navy)]">Affiliations:</span> Forbes Technology Council · Goldman Sachs 10K SB</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="quote mb-8">"I was eighteen years old the first time I walked into a library. I knew, even then, that something had been kept from me for eighteen years."</p>
+
+      <h2 class="serif text-3xl font-bold text-[var(--navy)] mb-4">The Why</h2>
+      <p class="leading-relaxed mb-4">Jacques M. Jean was born in northern Haiti and immigrated to the United States in his teens. He spent twenty-five years in enterprise technology leadership at some of the world's largest industrial companies — Honeywell, Invensys, Schneider Electric — working in more than thirty-five countries.</p>
+      <p class="leading-relaxed mb-4">He watched how nations protect what they value. France with its cathedrals. Japan with its shrines. Mexico with its pyramids. Then he came home to Haiti and saw what had been allowed to crumble.</p>
+
+      <h2 class="serif text-3xl font-bold text-[var(--navy)] mt-10 mb-4">The Work</h2>
+      <p class="leading-relaxed mb-4">In 2018, Jacques founded the <span class="font-semibold">Universal Learning Centre</span>, a 501(c)(3) that has since built three public libraries in northern Haiti — in Pilate, Ferrier, and Ouanaminthe — serving more than 500,000 people. A fourth library is in planning for Cap-Haïtien.</p>
+      <p class="leading-relaxed mb-4">He is the CEO of <span class="font-semibold">TechFides</span> (Frisco, TX), a technology firm specializing in local AI deployment for small and mid-size businesses. He serves as Board Chair of <span class="font-semibold">MUSA Asset Management</span> and <span class="font-semibold">OVYNA</span>, and Co-Chair (Founding) of the <span class="font-semibold">American Business Council Gabon</span>.</p>
+
+      <h2 class="serif text-3xl font-bold text-[var(--navy)] mt-10 mb-4">The Levoila Moment</h2>
+      <p class="leading-relaxed mb-4">On April 11, 2026, a crowd crush at an unauthorized event at the Citadelle Henri Christophe killed Haitian children at a UNESCO World Heritage Site with no security, no oversight, no one in charge. The fortress his ancestors built — Black people who freed themselves from Napoleon — had become a place of grief.</p>
+      <p class="leading-relaxed mb-4">Levoila is what he is doing about it. And not only for Haiti. For every nation whose government has forgotten its heritage.</p>
+
+      <div class="mt-10 p-6 border-l-4 border-[var(--gold)] bg-[var(--limestone)]">
+        <p class="quote">"The world is full of monuments standing alone, abandoned by the governments who inherited them. Their governments have forgotten them. The world has not. Levoila is the door."</p>
+        <p class="text-sm mt-4 text-[var(--stone)]">— Jacques M. Jean</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--  TEAM PAGE  -->
+<!-- ============================================ -->
+<section class="page" data-page="team">
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">THE TEAM</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">The people who do the work.</h1>
+    <p class="text-xl text-[var(--stone)] max-w-3xl">A working team that runs the trust day-to-day. We hire from the diaspora and the cities of our sites. Bios will be filled in as the team is named publicly.</p>
+    <div class="gold-rule mt-6 mb-12"></div>
+  </div>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="person-photo aspect-square rounded-lg text-5xl mb-5">JMJ</div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">FOUNDER & CHAIR</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">Jacques M. Jean</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Founder. 25 years across 35 countries. Founded the Universal Learning Centre. CEO of TechFides.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="person-photo aspect-square rounded-lg text-5xl mb-5">JDJ</div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">DIRECTOR OF OPERATIONS</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">Jacques D. Jean</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Operations and field execution. Bridge between the design team and the on-site restoration crews.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="person-photo aspect-square rounded-lg text-5xl mb-5">TBD</div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">CHIEF HERITAGE ARCHITECT</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Lead architect of restoration. UNESCO-credentialed. Oversees structural assessments, restoration plans, and on-site engineering.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="person-photo aspect-square rounded-lg text-5xl mb-5">TBD</div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">HEAD OF STEWARDSHIP</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Owns the Steward community — onboarding, retention, quarterly assemblies, and the experience of Heritage Patrons.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="person-photo aspect-square rounded-lg text-5xl mb-5">TBD</div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">HEAD OF FIELD OPS · HAITI</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Haiti-based. Manages the Citadelle and Fort Liberté programs. Hires local crews and coordinates with the Ministry of Culture.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="person-photo aspect-square rounded-lg text-5xl mb-5">TBD</div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">CHIEF FINANCIAL OFFICER</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Escrow oversight, financial reporting, audit cycles. Owns the public ledger and the Quarterly Operational & Financial Report.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="person-photo aspect-square rounded-lg text-5xl mb-5">TBD</div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">HEAD OF SECURITY & SAFETY</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Enforces the Zero-Tragedy Clause across every site. Trains and certifies on-site security teams. Approves event permits.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="person-photo aspect-square rounded-lg text-5xl mb-5">TBD</div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">HEAD OF COMMUNICATIONS</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Owns the brand voice across press, social, and Steward communications. Multilingual storytelling in English, French, Kreyòl, Spanish, and Portuguese.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="person-photo aspect-square rounded-lg text-5xl mb-5">TBD</div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">HEAD OF TECHNOLOGY</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Platform engineering — voting system, public ledger, Steward Passport, Restoration Cam. The site, end to end.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--  ADVISORY BOARD PAGE  -->
+<!-- ============================================ -->
+<section class="page" data-page="advisory">
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">ADVISORY BOARD</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">The wisdom that keeps us honest.</h1>
+    <p class="text-xl text-[var(--stone)] max-w-3xl">Levoila is advised by a global board of practitioners — heritage architects, historians, diaspora leaders, legal counsel, and financial auditors. Advisory seats include Heritage Patron Global Council members.</p>
+    <div class="gold-rule mt-6 mb-12"></div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-8">
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">HERITAGE ARCHITECTURE ADVISOR</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">A UNESCO-credentialed heritage architect with experience restoring stone fortifications in the Caribbean, the Mediterranean, and West Africa. Advises on restoration methodology and authenticity standards.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">HAITI COUNTRY ADVISOR</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">A senior Haitian cultural or political figure with credibility across Cap-Haïtien, Port-au-Prince, and the diaspora. Advises on government relations, community engagement, and cultural sensitivity.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">FINANCIAL AUDIT ADVISOR</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Independent auditor or financial governance expert — Big Four or institutional grant-management background. Reviews the Quarterly Operational & Financial Report and the public ledger.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">LEGAL COUNSEL ADVISOR</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">International public-private partnerships and cultural property law. Advises on Sovereignty Compact negotiations with host nations and cross-border compliance.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">DIASPORA & CULTURE ADVISOR</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">A leading voice in the African and Haitian diaspora — a writer, scholar, artist, or institutional leader. Advises on storytelling, narrative authenticity, and community recognition.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">TOURISM & HOSPITALITY ADVISOR</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Senior executive from premium heritage tourism — Aman, Rosewood, or comparable. Advises on the operating model that turns restored sites into self-sustaining enterprises.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">SECURITY & SAFETY ADVISOR</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Former senior officer in crowd management, event security, or peacekeeping. Owns the Zero-Tragedy Clause standards and crisis protocols.</p>
+    </div>
+
+    <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">TECHNOLOGY & TRANSPARENCY ADVISOR</div>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3">[To Be Named]</h3>
+      <p class="text-sm leading-relaxed text-[var(--stone)]">Cryptography, public ledger systems, identity verification. Reviews the transparency architecture — escrow, dual-signature releases, and the live financial dashboard.</p>
+    </div>
+
+  </div>
+
+  <div class="text-center py-16">
+    <p class="quote">"An advisory board is not a list of names. It is the people who tell you when you are wrong."</p>
+    <p class="text-sm mt-4 text-[var(--stone)]">— Jacques M. Jean</p>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--  PHASE ONE PAGE  -->
+<!-- ============================================ -->
+<section class="page" data-page="phase-one">
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">PHASE ONE — HAITI</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">Two sites. One country. The proof point.</h1>
+    <p class="text-xl text-[var(--stone)] max-w-3xl">Phase One opens in northern Haiti at two UNESCO-recognized sites quietly returning to the earth. If Levoila can work in Haiti — a country routinely written off by capital and institutions — it can work anywhere.</p>
+    <div class="gold-rule mt-6 mb-16"></div>
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-12">
+
+    <div>
+      <div class="aspect-[4/3] bg-gradient-to-br from-[#0B2545] to-[#062744] rounded-xl mb-8 flex items-center justify-center">
+        <div class="text-[var(--gold)] text-center">
+          <div class="serif text-4xl mb-2">Citadelle Henri Christophe</div>
+          <div class="text-xs tracking-[3px] opacity-70">PHOTOGRAPHY · TO BE COMMISSIONED</div>
+        </div>
+      </div>
+      <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">SITE 1</div>
+      <h2 class="serif text-4xl font-bold text-[var(--navy)] mb-4">Citadelle Henri Christophe</h2>
+      <p class="leading-relaxed mb-4">The largest fortress in the Western Hemisphere. Built between 1805 and 1820 by formerly enslaved people who had just defeated Napoleon's army and declared themselves free. UNESCO World Heritage Site since 1982.</p>
+      <p class="leading-relaxed mb-4">On April 11, 2026, a crowd crush at an unauthorized event killed Haitian children at the site. Levoila's first act on the Citadelle will be a permanent memorial to the lives lost — designed in consultation with the families — followed by structural restoration, professional security, certified tour operations, and a museum in the lower compound.</p>
+      <div class="bg-[var(--limestone)] rounded-lg p-5 my-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">PHASE ONE SCOPE</div>
+        <ul class="text-sm space-y-1.5">
+          <li>· Memorial to the victims of April 11, 2026</li>
+          <li>· Structural stabilization & restoration</li>
+          <li>· 24/7 professional security</li>
+          <li>· Certified tour operations with capacity controls</li>
+          <li>· Lower-compound museum</li>
+          <li>· Maritime view-point pavilion at the summit</li>
+        </ul>
+      </div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">FUNDRAISING PROGRESS</div>
+      <div class="progress-bar mb-1"><div style="width:14%"></div></div>
+      <div class="text-xs text-[var(--stone)]">14% of target · 24-month window</div>
+    </div>
+
+    <div>
+      <div class="aspect-[4/3] bg-gradient-to-br from-[#0B2545] to-[#062744] rounded-xl mb-8 flex items-center justify-center">
+        <div class="text-[var(--gold)] text-center">
+          <div class="serif text-4xl mb-2">Fort Liberté</div>
+          <div class="text-xs tracking-[3px] opacity-70">PHOTOGRAPHY · TO BE COMMISSIONED</div>
+        </div>
+      </div>
+      <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">SITE 2</div>
+      <h2 class="serif text-4xl font-bold text-[var(--navy)] mb-4">Fort Liberté</h2>
+      <p class="leading-relaxed mb-4">A 17th-century Atlantic bay fortress on Haiti's northern coast. Once a French naval stronghold, later a redoubt in the Haitian war of independence. Today the walls are quietly returning to the sea, with no permanent management and no security.</p>
+      <p class="leading-relaxed mb-4">Levoila will restore the ramparts, install an interactive maritime history exhibit, open an open-air amphitheater for cultural performances, and run an artisan marketplace where local craftspeople sell directly to international visitors. Eco-infrastructure (solar power, sanitation, sustainable water) will be installed first.</p>
+      <div class="bg-[var(--limestone)] rounded-lg p-5 my-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">PHASE ONE SCOPE</div>
+        <ul class="text-sm space-y-1.5">
+          <li>· Rampart restoration</li>
+          <li>· Maritime history exhibit</li>
+          <li>· Open-air amphitheater</li>
+          <li>· Artisan marketplace</li>
+          <li>· Solar + water infrastructure</li>
+          <li>· 24/7 professional security</li>
+        </ul>
+      </div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">FUNDRAISING PROGRESS</div>
+      <div class="progress-bar mb-1"><div style="width:6%"></div></div>
+      <div class="text-xs text-[var(--stone)]">6% of target · 24-month window</div>
+    </div>
+
+  </div>
+
+  <div class="text-center py-16">
+    <a href="#steward" class="nav-trigger btn-primary inline-block px-10 py-4 rounded-md uppercase tracking-wider" data-page="steward">Fund Phase One — Become a Steward</a>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--  NOMINATE PAGE  -->
+<!-- ============================================ -->
+<section class="page" data-page="nominate">
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">NOMINATE A SITE</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">If your government has forgotten — tell us.</h1>
+    <p class="text-xl text-[var(--stone)] max-w-3xl">Any citizen of the world may nominate a historic site at risk. You do not need to live in that country. You only need to care. Every nomination is published. Nothing is hidden behind committee doors.</p>
+    <div class="gold-rule mt-6 mb-12"></div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-12">
+    <div class="lg:col-span-2">
+      <form class="space-y-6 bg-white p-8 rounded-xl border border-[#E5E0D5]">
+        <div>
+          <label>Site Name</label>
+          <input class="input" placeholder="e.g., Old Cairo Aqueduct"/>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label>Country</label>
+            <input class="input" placeholder="e.g., Egypt"/>
+          </div>
+          <div>
+            <label>Region or City</label>
+            <input class="input" placeholder="e.g., Cairo"/>
+          </div>
+        </div>
+        <div>
+          <label>Coordinates (Optional)</label>
+          <input class="input" placeholder="30.0444° N, 31.2357° E"/>
+        </div>
+        <div>
+          <label>Historical Significance</label>
+          <textarea class="input" rows="4" placeholder="What makes this site important — to its country, to humanity, to your community?"></textarea>
+        </div>
+        <div>
+          <label>Evidence of Neglect</label>
+          <textarea class="input" rows="4" placeholder="Why is this site at risk? What has the government failed to do? Be specific."></textarea>
+        </div>
+        <div>
+          <label>Photographs or Documentation</label>
+          <div class="border-2 border-dashed border-[#D5CDB8] rounded-lg p-8 text-center cursor-pointer hover:border-[var(--gold)]">
+            <div class="text-sm text-[var(--stone)]">Drag photos or evidence files here</div>
+            <div class="text-xs text-[var(--stone)] mt-1 opacity-60">PNG, JPG, PDF — up to 50MB total</div>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-[#E5E0D5]">
+          <label class="mt-4">Your Name</label>
+          <input class="input" placeholder="Your full name"/>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label>Email</label>
+            <input type="email" class="input" placeholder="you@example.com"/>
+          </div>
+          <div>
+            <label>Country of Residence</label>
+            <input class="input" placeholder="e.g., United States"/>
+          </div>
+        </div>
+        <button type="button" class="btn-primary w-full px-6 py-4 rounded-md uppercase tracking-wider">Submit Nomination</button>
+        <p class="text-xs text-[var(--stone)] text-center">By submitting, you confirm the information is accurate. Nominations are published and reviewed by the Stewardship community.</p>
+      </form>
+    </div>
+    <div class="lg:col-span-1">
+      <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-xl p-8 sticky top-24">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-4">WHAT HAPPENS NEXT</div>
+        <ol class="space-y-4 text-sm leading-relaxed">
+          <li><span class="text-[var(--gold)] font-bold mr-2">1.</span>Your nomination is published within 7 days.</li>
+          <li><span class="text-[var(--gold)] font-bold mr-2">2.</span>Stewards review and discuss in the global forum.</li>
+          <li><span class="text-[var(--gold)] font-bold mr-2">3.</span>At the next quarterly assembly, Stewards vote on which sites to take on.</li>
+          <li><span class="text-[var(--gold)] font-bold mr-2">4.</span>Selected sites enter Sovereignty Compact negotiation.</li>
+          <li><span class="text-[var(--gold)] font-bold mr-2">5.</span>You will be credited as the nominator and invited to the Grand Opening.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--  VOTE PAGE  -->
+<!-- ============================================ -->
+<section class="page" data-page="vote">
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">QUARTERLY ASSEMBLY · Q3 2026</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">The world chooses what to save next.</h1>
+    <p class="text-xl text-[var(--stone)] max-w-3xl">Six sites are up for vote this quarter. Stewards may distribute their voting weight across multiple sites. The top two enter the Sovereignty Compact negotiation cycle.</p>
+    <div class="gold-rule mt-6 mb-8"></div>
+
+    <div class="bg-[var(--limestone)] rounded-lg p-6 mb-12 flex items-center justify-between flex-wrap gap-4">
+      <div>
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">VOTING WINDOW CLOSES</div>
+        <div class="serif text-2xl font-bold text-[var(--navy)]">14 days · 6 hours · 23 minutes</div>
+      </div>
+      <div>
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1">YOUR VOTING WEIGHT</div>
+        <div class="serif text-2xl font-bold text-[var(--navy)]">100 votes (Gold Steward)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-6">
+
+    <div class="bg-white rounded-xl border border-[#E5E0D5] overflow-hidden">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center text-[var(--gold)] serif text-2xl">Old Cairo Aqueduct</div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">EGYPT · NOMINATED BY A. ELDESSOUKY</div>
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">Old Cairo Aqueduct</h3>
+        <p class="text-sm mb-4">A 14th-century Mamluk aqueduct. Sections collapsed in 2025 with no government response. Encroached by informal settlements.</p>
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold">CURRENT VOTES</div>
+          <div class="text-xs text-[var(--stone)]">12,488 from 1,203 Stewards</div>
+        </div>
+        <div class="progress-bar mb-4"><div style="width:78%"></div></div>
+        <button class="btn-primary w-full px-5 py-3 rounded-md uppercase tracking-wider text-sm">Allocate Votes</button>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-[#E5E0D5] overflow-hidden">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center text-[var(--gold)] serif text-2xl">São Jorge da Mina</div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">GHANA · NOMINATED BY K. ASANTE</div>
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">São Jorge da Mina (Elmina Castle)</h3>
+        <p class="text-sm mb-4">A 15th-century Portuguese fortress on the Gulf of Guinea. UNESCO site. A sacred and difficult landmark of the Atlantic slave trade.</p>
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold">CURRENT VOTES</div>
+          <div class="text-xs text-[var(--stone)]">10,221 from 987 Stewards</div>
+        </div>
+        <div class="progress-bar mb-4"><div style="width:62%"></div></div>
+        <button class="btn-primary w-full px-5 py-3 rounded-md uppercase tracking-wider text-sm">Allocate Votes</button>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-[#E5E0D5] overflow-hidden">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center text-[var(--gold)] serif text-2xl">Lalibela Rock Churches</div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">ETHIOPIA · NOMINATED BY S. GIRMA</div>
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">Bet Maryam Roof Stabilization</h3>
+        <p class="text-sm mb-4">One of the eleven monolithic rock-cut churches of Lalibela. Existing UNESCO covers have failed; the roof requires immediate intervention.</p>
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold">CURRENT VOTES</div>
+          <div class="text-xs text-[var(--stone)]">9,114 from 902 Stewards</div>
+        </div>
+        <div class="progress-bar mb-4"><div style="width:55%"></div></div>
+        <button class="btn-primary w-full px-5 py-3 rounded-md uppercase tracking-wider text-sm">Allocate Votes</button>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-[#E5E0D5] overflow-hidden">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center text-[var(--gold)] serif text-2xl">Tlatelolco Ruins</div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">MEXICO · NOMINATED BY R. VARGAS</div>
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">Tlatelolco Outer Platforms</h3>
+        <p class="text-sm mb-4">Aztec twin city to Tenochtitlan. The outer platforms are unguarded and used at night for unauthorized gatherings.</p>
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold">CURRENT VOTES</div>
+          <div class="text-xs text-[var(--stone)]">6,830 from 712 Stewards</div>
+        </div>
+        <div class="progress-bar mb-4"><div style="width:41%"></div></div>
+        <button class="btn-primary w-full px-5 py-3 rounded-md uppercase tracking-wider text-sm">Allocate Votes</button>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-[#E5E0D5] overflow-hidden">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center text-[var(--gold)] serif text-2xl">Bagamoyo Old Town</div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">TANZANIA · NOMINATED BY A. MWANGI</div>
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">Bagamoyo Old Town Caravan Stations</h3>
+        <p class="text-sm mb-4">East African slave-trade and caravan port. Coral-stone structures collapsing into the sea.</p>
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold">CURRENT VOTES</div>
+          <div class="text-xs text-[var(--stone)]">4,902 from 530 Stewards</div>
+        </div>
+        <div class="progress-bar mb-4"><div style="width:30%"></div></div>
+        <button class="btn-primary w-full px-5 py-3 rounded-md uppercase tracking-wider text-sm">Allocate Votes</button>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-[#E5E0D5] overflow-hidden">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center text-[var(--gold)] serif text-2xl">Petra Side Tombs</div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">JORDAN · NOMINATED BY L. SAID</div>
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">Petra Side Tombs Conservation</h3>
+        <p class="text-sm mb-4">The side-canyon tombs at Petra are eroding due to flash flooding and tourist foot traffic without managed paths.</p>
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold">CURRENT VOTES</div>
+          <div class="text-xs text-[var(--stone)]">3,716 from 401 Stewards</div>
+        </div>
+        <div class="progress-bar mb-4"><div style="width:22%"></div></div>
+        <button class="btn-primary w-full px-5 py-3 rounded-md uppercase tracking-wider text-sm">Allocate Votes</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--  STEWARD SIGNUP  -->
+<!-- ============================================ -->
+<section class="page" data-page="steward">
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">BECOME A STEWARD</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">Claim your place.</h1>
+    <p class="text-xl text-[var(--stone)] max-w-3xl">The first 10,000 Stewards will have their names laser-engraved on the Wall of Founders at the entrance of the Citadelle Henri Christophe. When you visit, your name will already be there.</p>
+    <div class="gold-rule mt-6 mb-12"></div>
+  </div>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+
+    <div class="tier-card rounded-xl p-6 bg-white cursor-pointer">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">BRONZE</div>
+      <div class="serif text-4xl font-bold text-[var(--navy)] mb-1">$150</div>
+      <div class="text-xs text-[var(--stone)] mb-5">to $999 · 1× voting weight</div>
+      <ul class="text-sm space-y-2 mb-6">
+        <li>✓ Digital Passport</li>
+        <li>✓ Lifetime entry to every Levoila site</li>
+        <li>✓ Vote in every quarterly assembly</li>
+        <li>✓ Quarterly impact reports</li>
+        <li>✓ Name engraved on Wall of Founders (first 10K)</li>
+      </ul>
+      <button class="btn-secondary w-full px-4 py-2.5 rounded-md uppercase text-xs tracking-wider">Choose Bronze</button>
+    </div>
+
+    <div class="tier-card rounded-xl p-6 bg-white cursor-pointer">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">SILVER</div>
+      <div class="serif text-4xl font-bold text-[var(--navy)] mb-1">$1,000</div>
+      <div class="text-xs text-[var(--stone)] mb-5">to $4,999 · 10× voting weight</div>
+      <ul class="text-sm space-y-2 mb-6">
+        <li>✓ All Bronze honors</li>
+        <li>✓ Featured name on the global Wall of Founders</li>
+        <li>✓ Silver-tier Steward forum access</li>
+        <li>✓ Early access to event tickets</li>
+      </ul>
+      <button class="btn-secondary w-full px-4 py-2.5 rounded-md uppercase text-xs tracking-wider">Choose Silver</button>
+    </div>
+
+    <div class="tier-card featured rounded-xl p-6 cursor-pointer">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">GOLD · MOST POPULAR</div>
+      <div class="serif text-4xl font-bold text-[var(--navy)] mb-1">$5,000</div>
+      <div class="text-xs text-[var(--stone)] mb-5">to $24,999 · 100× voting weight</div>
+      <ul class="text-sm space-y-2 mb-6">
+        <li>✓ All Silver honors</li>
+        <li>✓ Physical Founder's Key</li>
+        <li>✓ VIP seating at every Grand Opening</li>
+        <li>✓ Private restoration tour with the architect</li>
+      </ul>
+      <button class="btn-primary w-full px-4 py-2.5 rounded-md uppercase text-xs tracking-wider">Choose Gold</button>
+    </div>
+
+    <div class="tier-card rounded-xl p-6 bg-white cursor-pointer">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">HERITAGE PATRON</div>
+      <div class="serif text-4xl font-bold text-[var(--navy)] mb-1">$25,000+</div>
+      <div class="text-xs text-[var(--stone)] mb-5">Direct advisory · By Application</div>
+      <ul class="text-sm space-y-2 mb-6">
+        <li>✓ All Gold honors</li>
+        <li>✓ Private architect sessions</li>
+        <li>✓ Invitation to the Global Council</li>
+        <li>✓ Name engraved first on every site</li>
+      </ul>
+      <button class="btn-secondary w-full px-4 py-2.5 rounded-md uppercase text-xs tracking-wider">Apply for Patron</button>
+    </div>
+
+  </div>
+
+  <div class="bg-white rounded-xl p-8 border border-[#E5E0D5] max-w-3xl mx-auto">
+    <h3 class="serif text-3xl font-bold text-[var(--navy)] mb-2">Begin your stewardship</h3>
+    <p class="text-sm text-[var(--stone)] mb-8">Your contribution sits in escrow with dual-signature releases. If a project's target is not met within its 24-month window, your contribution is returned in full.</p>
+    <form class="space-y-5">
+      <div>
+        <label>Tier</label>
+        <select class="input">
+          <option>Bronze — $150</option>
+          <option>Silver — $1,000</option>
+          <option>Gold — $5,000</option>
+          <option>Heritage Patron — $25,000</option>
+        </select>
+      </div>
+      <div>
+        <label>Contribution Amount (USD)</label>
+        <input class="input" placeholder="150"/>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label>First Name</label>
+          <input class="input" placeholder="Jacques"/>
+        </div>
+        <div>
+          <label>Last Name</label>
+          <input class="input" placeholder="Jean"/>
+        </div>
+      </div>
+      <div>
+        <label>Name as you want it engraved (Wall of Founders)</label>
+        <input class="input" placeholder="Jacques Marie Jean"/>
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="email" class="input" placeholder="you@example.com"/>
+      </div>
+      <div>
+        <label>Country of Residence</label>
+        <input class="input" placeholder="United States"/>
+      </div>
+      <div>
+        <label>Payment Method</label>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mt-2">
+          <label class="border border-[#D5CDB8] rounded-lg p-3 text-center text-sm cursor-pointer hover:border-[var(--gold)]">Credit Card</label>
+          <label class="border border-[#D5CDB8] rounded-lg p-3 text-center text-sm cursor-pointer hover:border-[var(--gold)]">ACH / Bank Transfer</label>
+          <label class="border border-[#D5CDB8] rounded-lg p-3 text-center text-sm cursor-pointer hover:border-[var(--gold)]">Wire / International</label>
+          <a href="#crypto" class="nav-trigger border border-[var(--gold)] rounded-lg p-3 text-center text-sm cursor-pointer bg-[var(--limestone)] block" data-page="crypto">Cryptocurrency</a>
+          <a href="#crypto" class="nav-trigger border border-[#D5CDB8] rounded-lg p-3 text-center text-sm cursor-pointer hover:border-[var(--gold)] block" data-page="crypto">Donor-Advised Fund</a>
+        </div>
+      </div>
+      <p class="text-xs text-[var(--stone)] bg-[var(--limestone)] p-3 rounded-md">Contributions to Levoila are tax-deductible to the extent permitted by law in your country. Levoila is a registered 501(c)(3). Your funds are held in escrow until the Sovereignty Compact is signed by the host nation.</p>
+      <button type="button" class="btn-primary w-full px-6 py-4 rounded-md uppercase tracking-wider">Complete Stewardship</button>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--  CRYPTO / DAF DONATIONS  -->
+<!-- ============================================ -->
+<section class="page" data-page="crypto">
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">DIGITAL ASSET STEWARDSHIP</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">Donate in crypto. Steward in stablecoin.</h1>
+    <p class="text-xl text-[var(--stone)] max-w-3xl">Levoila is a registered 501(c)(3). Crypto donations are tax-deductible at fair market value with no capital gains tax for the donor. Auto-converted to USD on receipt for stability. Reported on the same public ledger as every other dollar.</p>
+    <div class="gold-rule mt-6 mb-12"></div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-8">
+
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
+        <h2 class="serif text-3xl font-bold text-[var(--navy)] mb-2">Accepted Digital Assets</h2>
+        <p class="text-sm text-[var(--stone)] mb-8">Seven assets cover 95% of charitable crypto giving. Processed via The Giving Block — IRS-compliant tax receipts within 24 hours.</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div class="border border-[#E5E0D5] rounded-lg p-4 text-center hover:border-[var(--gold)] cursor-pointer">
+            <div class="serif text-2xl font-bold text-[var(--navy)]">BTC</div>
+            <div class="text-xs text-[var(--stone)] mt-1">Bitcoin</div>
+          </div>
+          <div class="border border-[#E5E0D5] rounded-lg p-4 text-center hover:border-[var(--gold)] cursor-pointer">
+            <div class="serif text-2xl font-bold text-[var(--navy)]">ETH</div>
+            <div class="text-xs text-[var(--stone)] mt-1">Ethereum</div>
+          </div>
+          <div class="border border-[var(--gold)] bg-[var(--limestone)] rounded-lg p-4 text-center cursor-pointer">
+            <div class="serif text-2xl font-bold text-[var(--navy)]">USDC</div>
+            <div class="text-xs text-[var(--gold)] font-semibold mt-1">RECOMMENDED</div>
+          </div>
+          <div class="border border-[#E5E0D5] rounded-lg p-4 text-center hover:border-[var(--gold)] cursor-pointer">
+            <div class="serif text-2xl font-bold text-[var(--navy)]">USDT</div>
+            <div class="text-xs text-[var(--stone)] mt-1">Tether</div>
+          </div>
+          <div class="border border-[#E5E0D5] rounded-lg p-4 text-center hover:border-[var(--gold)] cursor-pointer">
+            <div class="serif text-2xl font-bold text-[var(--navy)]">SOL</div>
+            <div class="text-xs text-[var(--stone)] mt-1">Solana</div>
+          </div>
+          <div class="border border-[#E5E0D5] rounded-lg p-4 text-center hover:border-[var(--gold)] cursor-pointer">
+            <div class="serif text-2xl font-bold text-[var(--navy)]">MATIC</div>
+            <div class="text-xs text-[var(--stone)] mt-1">Polygon</div>
+          </div>
+          <div class="border border-[#E5E0D5] rounded-lg p-4 text-center hover:border-[var(--gold)] cursor-pointer">
+            <div class="serif text-2xl font-bold text-[var(--navy)]">DOGE</div>
+            <div class="text-xs text-[var(--stone)] mt-1">Dogecoin</div>
+          </div>
+          <div class="border border-[#E5E0D5] rounded-lg p-4 text-center hover:border-[var(--gold)] cursor-pointer">
+            <div class="serif text-2xl font-bold text-[var(--navy)]">DAF</div>
+            <div class="text-xs text-[var(--stone)] mt-1">Donor-Advised</div>
+          </div>
+        </div>
+
+        <div class="bg-[var(--limestone)] rounded-lg p-6 mb-8">
+          <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-3">DONATION WIDGET</div>
+          <p class="text-sm text-[var(--stone)] mb-4">In production this section embeds The Giving Block donation widget. Donor selects asset, enters amount in crypto or USD, completes wallet transaction, receives tax receipt within hours.</p>
+          <div class="bg-white rounded-md p-8 border-2 border-dashed border-[#D5CDB8] text-center">
+            <div class="text-sm font-semibold text-[var(--navy)] mb-2">[ THE GIVING BLOCK WIDGET ]</div>
+            <div class="text-xs text-[var(--stone)]">Embedded donation flow · brand-styled · accepts the seven assets above</div>
+          </div>
+        </div>
+
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-4">Heritage Patrons — HOLD Option</h3>
+        <p class="text-sm leading-relaxed mb-4">For Patron-tier gifts of $25,000+, you may direct Levoila to HOLD your gift in its original crypto form (rather than auto-converting to USD). HOLD positions are managed under multi-signature controls in a cold vault and reviewed quarterly by the Board.</p>
+        <a href="#" class="text-[var(--gold)] font-semibold text-sm">Request a HOLD Patron consultation →</a>
+      </div>
+    </div>
+
+    <div class="lg:col-span-1">
+      <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-xl p-8 sticky top-24">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-4">HOW IT WORKS</div>
+        <ol class="space-y-4 text-sm leading-relaxed">
+          <li><span class="text-[var(--gold)] font-bold mr-2">1.</span>Choose your asset above (BTC, ETH, USDC, etc.) or use a Donor-Advised Fund.</li>
+          <li><span class="text-[var(--gold)] font-bold mr-2">2.</span>Complete the transaction in your wallet of choice. Network gas fees are your responsibility.</li>
+          <li><span class="text-[var(--gold)] font-bold mr-2">3.</span>Your donation auto-converts to USD at the market rate. The USD amount is what enters the per-site escrow.</li>
+          <li><span class="text-[var(--gold)] font-bold mr-2">4.</span>Within 24 hours, you receive an IRS-compliant tax receipt by email.</li>
+          <li><span class="text-[var(--gold)] font-bold mr-2">5.</span>Your contribution appears on the public ledger and counts toward your Steward tier — same as any other gift.</li>
+        </ol>
+
+        <div class="mt-8 pt-6 border-t border-[var(--gold)]/30">
+          <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">THE TAX ADVANTAGE</div>
+          <p class="text-xs leading-relaxed">Donating appreciated crypto directly avoids capital gains tax on the appreciation. Most US donors deduct the full fair-market value. Consult your tax advisor for your specific jurisdiction.</p>
+        </div>
+
+        <div class="mt-6 pt-6 border-t border-[var(--gold)]/30">
+          <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">DAF GIVING</div>
+          <p class="text-xs leading-relaxed mb-3">Fidelity Charitable, Schwab Charitable, Endaoment, and most other DAF sponsors can grant to Levoila.</p>
+          <p class="text-xs">EIN: <span class="font-mono">XX-XXXXXXX</span><br/>Org: Levoila Inc.<br/>Mailing: Frisco, TX</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-[var(--limestone)] rounded-xl p-8 my-12">
+    <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-3">A NOTE ON LANGUAGE</div>
+    <p class="text-sm leading-relaxed text-[var(--stone)]">Levoila is a 501(c)(3). Crypto contributions are donations — not investments. There is no expectation of financial return, no equity, no yield. The Heritage Royalty paid to host nations is a contractual obligation under the Sovereignty Compact, not a return on donor capital. This is what makes the structure legal, simple, and durable.</p>
+  </div>
+
+</section>
+
+<!-- ============================================ -->
+<!--  DASHBOARD  -->
+<!-- ============================================ -->
+<section class="page" data-page="dashboard">
+  <div class="py-8 flex items-center justify-between flex-wrap gap-4">
+    <div>
+      <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-2">WELCOME BACK</div>
+      <h1 class="serif text-5xl font-semibold text-[var(--navy)]">Jacques Marie Jean</h1>
+      <p class="text-sm text-[var(--stone)] mt-1">Heritage Patron · Steward #00001 · Joined May 2026</p>
+    </div>
+    <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-lg px-6 py-4 flex items-center gap-4">
+      <svg viewBox="0 0 240 240" class="w-12 h-12">
+        <rect width="240" height="240" rx="28" fill="#0B2545" stroke="#B6862C" stroke-width="3"/>
+        <path d="M70 195L70 110A50 50 0 0 1 170 110L170 195L150 195L150 120A30 30 0 0 0 90 120L90 195Z" fill="#B6862C"/>
+      </svg>
+      <div>
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold">DIGITAL PASSPORT</div>
+        <div class="text-sm font-semibold">LV-00001-2026</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-4 gap-5 mb-12">
+    <div class="kpi-card">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">YOUR CONTRIBUTION</div>
+      <div class="serif text-3xl font-bold text-[var(--navy)]">$25,000</div>
+      <div class="text-xs text-[var(--stone)] mt-1">Heritage Patron</div>
+    </div>
+    <div class="kpi-card">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">VOTING WEIGHT</div>
+      <div class="serif text-3xl font-bold text-[var(--navy)]">Advisory</div>
+      <div class="text-xs text-[var(--stone)] mt-1">Direct Council seat</div>
+    </div>
+    <div class="kpi-card">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">SITES SUPPORTED</div>
+      <div class="serif text-3xl font-bold text-[var(--navy)]">2</div>
+      <div class="text-xs text-[var(--stone)] mt-1">Citadelle · Fort Liberté</div>
+    </div>
+    <div class="kpi-card">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">NEXT ASSEMBLY</div>
+      <div class="serif text-3xl font-bold text-[var(--navy)]">14d</div>
+      <div class="text-xs text-[var(--stone)] mt-1">Q3 2026 vote closes</div>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-6">
+
+    <div class="lg:col-span-2 bg-white rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="serif text-2xl font-bold text-[var(--navy)]">Phase One Restoration Progress</h2>
+        <a href="#ledger" class="nav-trigger text-sm text-[var(--gold)] font-semibold" data-page="ledger">View live ledger →</a>
+      </div>
+      <div class="space-y-5">
+        <div>
+          <div class="flex justify-between mb-2"><span class="font-semibold text-[var(--navy)]">Citadelle Henri Christophe</span><span class="text-xs">14% · $350,000 raised of $2.5M</span></div>
+          <div class="progress-bar"><div style="width:14%"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-2"><span class="font-semibold text-[var(--navy)]">Fort Liberté</span><span class="text-xs">6% · $90,000 raised of $1.5M</span></div>
+          <div class="progress-bar"><div style="width:6%"></div></div>
+        </div>
+      </div>
+
+      <h3 class="serif text-xl font-bold text-[var(--navy)] mt-10 mb-3">Upcoming</h3>
+      <ul class="space-y-3 text-sm">
+        <li class="flex justify-between border-b border-[#E5E0D5] pb-3"><span>Q3 2026 Voting Closes</span><span class="font-semibold text-[var(--navy)]">14 days</span></li>
+        <li class="flex justify-between border-b border-[#E5E0D5] pb-3"><span>Quarterly Impact Report</span><span class="font-semibold text-[var(--navy)]">21 days</span></li>
+        <li class="flex justify-between border-b border-[#E5E0D5] pb-3"><span>Citadelle Memorial Dedication</span><span class="font-semibold text-[var(--navy)]">April 11, 2027</span></li>
+        <li class="flex justify-between"><span>Global Council Annual Meeting</span><span class="font-semibold text-[var(--navy)]">Sept 2026</span></li>
+      </ul>
+    </div>
+
+    <div class="bg-[var(--limestone)] rounded-xl p-8 border border-[#E5E0D5]">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4">YOUR DIGITAL PASSPORT</div>
+      <div class="aspect-[3/2] bg-[var(--navy)] text-[var(--limestone)] rounded-lg p-5 flex flex-col justify-between mb-5">
+        <div>
+          <div class="text-[10px] tracking-[3px] text-[var(--gold)] font-bold mb-2">LEVOILA · STEWARD CREDENTIAL</div>
+          <div class="serif text-2xl">Jacques M. Jean</div>
+          <div class="text-xs opacity-70 mt-1">Heritage Patron · Founding</div>
+        </div>
+        <div class="flex justify-between items-end">
+          <div class="text-[10px] tracking-[3px] text-[var(--gold)]">LV-00001-2026</div>
+          <svg viewBox="0 0 240 240" class="w-10 h-10">
+            <path d="M70 195L70 110A50 50 0 0 1 170 110L170 195L150 195L150 120A30 30 0 0 0 90 120L90 195Z" fill="#B6862C"/>
+          </svg>
+        </div>
+      </div>
+      <ul class="text-sm space-y-2">
+        <li>✓ Lifetime entry to every Levoila site</li>
+        <li>✓ Voting in every quarterly assembly</li>
+        <li>✓ Heritage Patron Council seat</li>
+        <li>✓ Name on Wall of Founders</li>
+      </ul>
+      <button class="btn-secondary w-full px-4 py-2.5 rounded-md uppercase text-xs tracking-wider mt-6">Download Passport</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!--  LIVE LEDGER  -->
+<!-- ============================================ -->
+<section class="page" data-page="ledger">
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">LIVE LEDGER · UPDATED MINUTES AGO</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">Every dollar is traceable.</h1>
+    <p class="text-xl text-[var(--stone)] max-w-3xl">Public dashboard. Read-only. Open to anyone. Independent audit every 90 days.</p>
+    <div class="gold-rule mt-6 mb-12"></div>
+  </div>
+
+  <div class="grid md:grid-cols-4 gap-5 mb-12">
+    <div class="kpi-card">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">TOTAL RAISED</div>
+      <div class="serif text-3xl font-bold text-[var(--navy)]">$440,000</div>
+      <div class="text-xs text-[var(--stone)] mt-1">Phase One · across 2 sites</div>
+    </div>
+    <div class="kpi-card">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">STEWARDS</div>
+      <div class="serif text-3xl font-bold text-[var(--navy)]">1,847</div>
+      <div class="text-xs text-[var(--stone)] mt-1">Across 39 countries</div>
+    </div>
+    <div class="kpi-card">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">LOCAL LABOR %</div>
+      <div class="serif text-3xl font-bold text-[var(--navy)]">82%</div>
+      <div class="text-xs text-[var(--stone)] mt-1">Target: 75–85%</div>
+    </div>
+    <div class="kpi-card">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">DAYS TO Q3 CLOSE</div>
+      <div class="serif text-3xl font-bold text-[var(--navy)]">14</div>
+      <div class="text-xs text-[var(--stone)] mt-1">Voting deadline</div>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-6 mb-12">
+    <div class="kpi-card">
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4">USE OF FUNDS — PHASE ONE</div>
+      <div class="space-y-3 text-sm">
+        <div class="flex justify-between"><span>Construction & Restoration</span><span class="font-semibold">62%</span></div>
+        <div class="progress-bar"><div style="width:62%"></div></div>
+        <div class="flex justify-between"><span>Local Salaries</span><span class="font-semibold">18%</span></div>
+        <div class="progress-bar"><div style="width:18%"></div></div>
+        <div class="flex justify-between"><span>Security</span><span class="font-semibold">10%</span></div>
+        <div class="progress-bar"><div style="width:10%"></div></div>
+        <div class="flex justify-between"><span>Operations & Audit</span><span class="font-semibold">7%</span></div>
+        <div class="progress-bar"><div style="width:7%"></div></div>
+        <div class="flex justify-between"><span>Community Reinvestment</span><span class="font-semibold">3%</span></div>
+        <div class="progress-bar"><div style="width:3%"></div></div>
+      </div>
+    </div>
+    <div class="kpi-card lg:col-span-2">
+      <div class="flex items-center justify-between mb-4">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold">RECENT TRANSACTIONS</div>
+        <a href="#" class="text-xs text-[var(--gold)] font-semibold">Download CSV →</a>
+      </div>
+      <table class="w-full ledger text-sm">
+        <thead><tr><th>Date</th><th>Type</th><th>Site</th><th>Amount</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>2026-05-10</td><td>Contribution</td><td>Citadelle</td><td class="text-green-700 font-semibold">+ $5,000</td><td>Escrow</td></tr>
+          <tr><td>2026-05-10</td><td>Local salary release</td><td>Citadelle</td><td class="text-red-700">− $2,400</td><td>Paid (dual-sig)</td></tr>
+          <tr><td>2026-05-09</td><td>Contribution</td><td>Fort Liberté</td><td class="text-green-700 font-semibold">+ $150</td><td>Escrow</td></tr>
+          <tr><td>2026-05-09</td><td>Contribution</td><td>Citadelle</td><td class="text-green-700 font-semibold">+ $25,000</td><td>Escrow</td></tr>
+          <tr><td>2026-05-08</td><td>Heritage architect fee</td><td>Citadelle</td><td class="text-red-700">− $8,500</td><td>Paid (dual-sig)</td></tr>
+          <tr><td>2026-05-08</td><td>Contribution</td><td>Both</td><td class="text-green-700 font-semibold">+ $1,000</td><td>Escrow</td></tr>
+          <tr><td>2026-05-07</td><td>Q1 audit fee</td><td>Operations</td><td class="text-red-700">− $4,200</td><td>Paid (dual-sig)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="bg-[var(--limestone)] rounded-xl p-8 text-center">
+    <p class="quote mb-4">"No funds move from the restoration account without a digital signature from the Project Architect and an independent Third-Party Auditor."</p>
+    <p class="text-xs tracking-[2px] text-[var(--gold)] font-bold">SOVEREIGNTY COMPACT · ARTICLE V — FINANCIAL TRANSPARENCY</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================ -->
+<!--  FOOTER  -->
+<!-- ============================================ -->
+<footer class="bg-[var(--navy)] text-[var(--limestone)] mt-24 py-16">
+  <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-8">
+    <div>
+      <svg viewBox="0 0 800 220" class="w-48 mb-4">
+        <text x="400" y="120" font-family="EB Garamond, Garamond, serif" font-size="120" font-weight="600" fill="#F4F1EA" text-anchor="middle" letter-spacing="16">LEVOILA</text>
+        <line x1="270" y1="150" x2="530" y2="150" stroke="#B6862C" stroke-width="2"/>
+        <text x="400" y="185" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#B6862C" text-anchor="middle" letter-spacing="8">THE GLOBAL HERITAGE TRUST</text>
+      </svg>
+      <p class="text-sm text-[var(--limestone)]/70 mt-4">When the governments forget, the world remembers.</p>
+    </div>
+    <div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4">THE MOVEMENT</div>
+      <ul class="space-y-2 text-sm text-[var(--limestone)]/80">
+        <li><a href="#founder" class="nav-trigger hover:text-[var(--gold)]" data-page="founder">Founder</a></li>
+        <li><a href="#team" class="nav-trigger hover:text-[var(--gold)]" data-page="team">Team</a></li>
+        <li><a href="#advisory" class="nav-trigger hover:text-[var(--gold)]" data-page="advisory">Advisory Board</a></li>
+        <li><a href="#phase-one" class="nav-trigger hover:text-[var(--gold)]" data-page="phase-one">Phase One Sites</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4">PARTICIPATE</div>
+      <ul class="space-y-2 text-sm text-[var(--limestone)]/80">
+        <li><a href="#nominate" class="nav-trigger hover:text-[var(--gold)]" data-page="nominate">Nominate a Site</a></li>
+        <li><a href="#vote" class="nav-trigger hover:text-[var(--gold)]" data-page="vote">Quarterly Vote</a></li>
+        <li><a href="#steward" class="nav-trigger hover:text-[var(--gold)]" data-page="steward">Become a Steward</a></li>
+        <li><a href="#ledger" class="nav-trigger hover:text-[var(--gold)]" data-page="ledger">Live Ledger</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4">CONTACT</div>
+      <ul class="space-y-2 text-sm text-[var(--limestone)]/80">
+        <li>jacques@levoila.com</li>
+        <li>press@levoila.com</li>
+        <li>Frisco, Texas · United States</li>
+        <li class="pt-4">
+          <span class="text-xs tracking-[2px] text-[var(--gold)] font-bold">FOLLOW</span><br/>
+          <span class="text-xs">LinkedIn · Instagram · YouTube</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-[var(--gold)]/30 text-xs text-[var(--limestone)]/60 flex flex-wrap justify-between gap-3">
+    <div>© 2026 Levoila — The Global Heritage Trust. A registered 501(c)(3).</div>
+    <div>levoila.com · Privacy · Terms · Sovereignty Compact</div>
+  </div>
+</footer>
+
+<script>
+  // Hash-based routing
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(s => s.classList.remove('active'));
+    var page = document.querySelector('[data-page="'+name+'"].page');
+    if (page) page.classList.add('active');
+    else document.querySelector('[data-page="home"].page').classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    var nav = document.querySelector('.nav-link[href="#'+name+'"]');
+    if (nav) nav.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  document.querySelectorAll('.nav-trigger').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var p = this.getAttribute('data-page');
+      window.location.hash = '#' + p;
+      showPage(p);
+    });
+  });
+
+  window.addEventListener('hashchange', function() {
+    var p = window.location.hash.replace('#','') || 'home';
+    showPage(p);
+  });
+
+  // Initial
+  var initial = window.location.hash.replace('#','') || 'home';
+  showPage(initial);
+
+  // Language switcher (cosmetic — full i18n happens server-side in production)
+  var translations = {
+    en: { 'hero-h1':'The governments forgot.', 'hero-h2':'The world remembers.', 'hero-sub':'A citizen-led trust protecting the historic sites that governments have abandoned. Anyone nominates. The world votes. The world funds it. The locals build it.' },
+    fr: { 'hero-h1':'Les gouvernements ont oublié.', 'hero-h2':'Le monde se souvient.', 'hero-sub':"Un trust citoyen qui protège les sites historiques abandonnés par leurs gouvernements. Tout le monde peut nominer. Le monde vote. Le monde finance. Les habitants construisent." },
+    ht: { 'hero-h1':'Gouvènman yo bliye.', 'hero-h2':'Mond lan sonje.', 'hero-sub':"Yon trust sitwayen ki pwoteje sit istorik gouvènman yo abandone. Nenpòt moun ka nominate. Mond lan vote. Mond lan finanse. Moun lokal yo konstwi." },
+    es: { 'hero-h1':'Los gobiernos olvidaron.', 'hero-h2':'El mundo recuerda.', 'hero-sub':"Un fideicomiso ciudadano que protege los sitios históricos que los gobiernos han abandonado. Cualquiera puede nominar. El mundo vota. El mundo lo financia. Los locales lo construyen." },
+    pt: { 'hero-h1':'Os governos esqueceram.', 'hero-h2':'O mundo se lembra.', 'hero-sub':"Uma confiança liderada por cidadãos que protege os locais históricos que os governos abandonaram. Qualquer um pode nomear. O mundo vota. O mundo financia. Os locais constroem." },
+  };
+
+  document.querySelectorAll('.lang-pill').forEach(pill => {
+    pill.addEventListener('click', function() {
+      document.querySelectorAll('.lang-pill').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      var lang = this.getAttribute('data-lang');
+      var t = translations[lang];
+      Object.keys(t).forEach(key => {
+        document.querySelectorAll('[data-i18n="'+key+'"]').forEach(el => el.textContent = t[key]);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
