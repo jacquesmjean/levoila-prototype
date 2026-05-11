@@ -43,6 +43,10 @@
   .lang-pill.active{background:var(--gold);color:var(--navy);}
   .lang-pill:not(.active){color:var(--limestone);opacity:.6;}
   .lang-pill:not(.active):hover{opacity:1;}
+  /* Override pill styles when inside the language dropdown menu */
+  #langDD .lang-pill{padding:10px 20px;border-radius:0;font-size:14px;font-weight:400;letter-spacing:0;color:var(--navy);opacity:1;}
+  #langDD .lang-pill.active{background:transparent;color:var(--gold);font-weight:600;}
+  #langDD .lang-pill:hover{background:var(--limestone);opacity:1;}
   .progress-bar{background:#E5E0D5;height:6px;border-radius:999px;overflow:hidden;}
   .progress-bar > div{background:var(--gold);height:100%;border-radius:999px;}
   details summary{cursor:pointer;list-style:none;}
@@ -78,23 +82,44 @@
         <div class="text-[10px] tracking-[3px] text-[var(--gold)] font-bold">THE GLOBAL HERITAGE TRUST</div>
       </div>
     </a>
-    <div class="hidden lg:flex items-center gap-7 text-sm">
+    <div class="hidden lg:flex items-center gap-8 text-sm">
       <a href="#about" class="nav-link nav-trigger" data-page="about">About</a>
       <a href="#phase-one" class="nav-link nav-trigger" data-page="phase-one">Phase One</a>
-      <a href="#nominate" class="nav-link nav-trigger" data-page="nominate">Nominate</a>
-      <a href="#vote" class="nav-link nav-trigger" data-page="vote">Vote</a>
-      <a href="#crypto" class="nav-link nav-trigger" data-page="crypto">Donate Crypto</a>
-      <a href="#ledger" class="nav-link nav-trigger" data-page="ledger">Live Ledger</a>
-      <a href="#dashboard" class="nav-link nav-trigger" data-page="dashboard">Dashboard</a>
-    </div>
-    <div class="flex items-center gap-3">
-      <div class="hidden md:flex gap-1 mr-3">
-        <span class="lang-pill active" data-lang="en">EN</span>
-        <span class="lang-pill" data-lang="fr">FR</span>
-        <span class="lang-pill" data-lang="ht">KR</span>
-        <span class="lang-pill" data-lang="es">ES</span>
-        <span class="lang-pill" data-lang="pt">PT</span>
+      <a href="#dispatches" class="nav-link nav-trigger" data-page="dispatches">Dispatches</a>
+
+      <!-- Participate dropdown -->
+      <div class="relative" id="participateMenu">
+        <button class="nav-link flex items-center gap-1" onclick="document.getElementById('participateDD').classList.toggle('hidden');event.stopPropagation();">
+          Participate
+          <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div id="participateDD" class="hidden absolute top-full right-0 mt-3 bg-white text-[var(--navy)] rounded-md shadow-xl border border-[#E5E0D5] min-w-[200px] overflow-hidden">
+          <a href="#nominate" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="nominate">Nominate a Site</a>
+          <a href="#vote" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="vote">Vote on the Slate</a>
+          <a href="#crypto" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="crypto">Donate Crypto</a>
+          <a href="#steward" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)] border-t border-[#E5E0D5] font-semibold text-[var(--gold)]" data-page="steward">Become a Steward</a>
+        </div>
       </div>
+
+      <a href="#ledger" class="nav-link nav-trigger" data-page="ledger">Live Ledger</a>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <!-- Language dropdown -->
+      <div class="relative hidden md:block">
+        <button class="flex items-center gap-1.5 text-xs tracking-[2px] font-semibold text-[var(--limestone)] hover:text-[var(--gold)] uppercase" onclick="document.getElementById('langDD').classList.toggle('hidden');event.stopPropagation();">
+          <span id="currentLang">EN</span>
+          <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div id="langDD" class="hidden absolute top-full right-0 mt-3 bg-white text-[var(--navy)] rounded-md shadow-xl border border-[#E5E0D5] min-w-[180px] overflow-hidden">
+          <a class="block px-5 py-2.5 text-sm hover:bg-[var(--limestone)] cursor-pointer lang-pill" data-lang="en">English</a>
+          <a class="block px-5 py-2.5 text-sm hover:bg-[var(--limestone)] cursor-pointer lang-pill" data-lang="fr">Français</a>
+          <a class="block px-5 py-2.5 text-sm hover:bg-[var(--limestone)] cursor-pointer lang-pill" data-lang="ht">Kreyòl Ayisyen</a>
+          <a class="block px-5 py-2.5 text-sm hover:bg-[var(--limestone)] cursor-pointer lang-pill" data-lang="es">Español</a>
+          <a class="block px-5 py-2.5 text-sm hover:bg-[var(--limestone)] cursor-pointer lang-pill" data-lang="pt">Português</a>
+        </div>
+      </div>
+
       <a href="#steward" class="nav-trigger btn-primary text-xs px-4 py-2 rounded-md tracking-wider uppercase" data-page="steward">Become a Steward</a>
     </div>
   </div>
@@ -981,6 +1006,242 @@
 </section>
 
 <!-- ============================================ -->
+<!--  DISPATCHES PAGE  -->
+<!-- ============================================ -->
+<section class="page" data-page="dispatches">
+
+  <!-- Hero -->
+  <div class="-mx-6 px-6 py-20 hero-bg text-[var(--limestone)]">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="text-xs tracking-[4px] text-[var(--gold)] font-bold mb-6">DISPATCHES</div>
+      <h1 class="serif text-6xl md:text-7xl font-semibold mb-6">Letters from the field.</h1>
+      <p class="text-xl max-w-2xl mx-auto leading-relaxed text-[var(--limestone)]/85 mb-10">Stories from the sites we are restoring, the people doing the work, the history that shaped them, and the global community of Stewards bringing it back.</p>
+
+      <!-- Subscribe block -->
+      <div class="bg-[var(--limestone)] text-[var(--navy)] rounded-xl p-8 max-w-xl mx-auto">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">SUBSCRIBE — TWICE A MONTH</div>
+        <h3 class="serif text-2xl font-bold mb-4">Get the next dispatch in your inbox.</h3>
+        <form class="space-y-3">
+          <div class="grid md:grid-cols-2 gap-3">
+            <input class="input" placeholder="First name"/>
+            <input type="email" class="input" placeholder="Email address"/>
+          </div>
+          <div>
+            <label class="mb-1">Read me in</label>
+            <select class="input">
+              <option>English</option>
+              <option>Français</option>
+              <option>Kreyòl Ayisyen</option>
+              <option>Español</option>
+              <option>Português</option>
+            </select>
+          </div>
+          <button type="button" class="btn-primary w-full px-6 py-3 rounded-md uppercase tracking-wider">Subscribe</button>
+          <p class="text-xs text-[var(--stone)] text-center">No spam. Unsubscribe in one click. Your data stays with Levoila.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Featured dispatch -->
+  <div class="py-16">
+    <div class="grid lg:grid-cols-5 gap-12 items-center">
+      <div class="lg:col-span-3">
+        <div class="aspect-[16/10] bg-gradient-to-br from-[#0B2545] to-[#062744] rounded-xl flex items-center justify-center p-8">
+          <div class="text-[var(--gold)] text-center">
+            <div class="serif text-4xl mb-2">The Citadelle at Dawn</div>
+            <div class="text-xs tracking-[3px] opacity-70">PHOTOGRAPHY · TO BE COMMISSIONED</div>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">FEATURED  ·  FOUNDER</div>
+        <h2 class="serif text-4xl font-bold text-[var(--navy)] mb-4">From the library at 18 to the Citadelle at 50.</h2>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">The first library I walked into changed me. The last fortress I will walk into will be the one we leave standing. Between those two doors is the life I was given. This is what I did with it.</p>
+        <p class="text-xs text-[var(--stone)] mb-6">By Jacques Medina Jean  ·  May 10, 2026  ·  6 min read</p>
+        <a href="#" class="inline-flex items-center text-[var(--navy)] font-semibold border-b-2 border-[var(--gold)] pb-1">Read the dispatch →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category filter -->
+  <div class="flex gap-2 flex-wrap py-6 border-y border-[#E5E0D5]">
+    <button class="lang-pill active" style="background:var(--gold);color:var(--navy);padding:8px 16px;">ALL</button>
+    <button class="lang-pill" style="color:var(--navy);padding:8px 16px;">FOUNDER</button>
+    <button class="lang-pill" style="color:var(--navy);padding:8px 16px;">HISTORY</button>
+    <button class="lang-pill" style="color:var(--navy);padding:8px 16px;">THE PEOPLE</button>
+    <button class="lang-pill" style="color:var(--navy);padding:8px 16px;">THE SITES</button>
+    <button class="lang-pill" style="color:var(--navy);padding:8px 16px;">STEWARDS</button>
+    <button class="lang-pill" style="color:var(--navy);padding:8px 16px;">THE TRUST</button>
+  </div>
+
+  <!-- Dispatch grid -->
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 py-12">
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <svg viewBox="0 0 240 240" class="w-16 h-16 opacity-50"><path d="M50 200L50 100A70 70 0 0 1 190 100L190 200L165 200L165 115A45 45 0 0 0 75 115L75 200Z" fill="#B6862C"/></svg>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">HISTORY  ·  MAY 9</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">The Day the Citadelle Became a Place of Grief.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">On April 11, 2026, the largest fortress in the Western Hemisphere became the place where Haitian children died. This is what we owe them, and how we honor them now.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  4 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <svg viewBox="0 0 240 240" class="w-16 h-16 opacity-50"><path d="M30 200 L30 130 L60 130 L60 90 L100 90 L100 60 L140 60 L140 90 L180 90 L180 130 L210 130 L210 200 Z" fill="#B6862C"/></svg>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">HISTORY  ·  MAY 5</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">What Henri Christophe Was Building.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">A king. A palace to rival Versailles. A statement, in stone, that a newly free Black nation could build whatever any European court could build. Two centuries later, we are answering him.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  7 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <div class="text-[var(--gold)] serif text-2xl">⌬</div>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">THE PEOPLE  ·  MAY 8</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">Meet the Master Mason of Milot.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">The hands that will rebuild the Citadelle have to know stone the way a violinist knows wood. We're profiling the woman who will lead that crew — and her apprentices from three nearby villages.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  5 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <div class="text-[var(--gold)] text-center text-xs tracking-[2px]">$494K · 1,847 STEWARDS · 39 COUNTRIES</div>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">STEWARDS  ·  MAY 3</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">Phase One by the Numbers.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">Where the money is. Where it goes next. Which countries are joining fastest. Why 82% of every dollar leaves through a Haitian bank account.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  3 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <div class="text-[var(--gold)] serif italic text-3xl">"Le voilà."</div>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">THE TRUST  ·  APR 28</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">What "Le Voilà" Means in Five Languages.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">Why our name is the phrase a parent says when they show a child something for the first time. And what each of our five operating languages adds to it.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  4 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <div class="text-[var(--gold)] text-center"><div class="serif text-xl">Pilate · Ferrier · Ouanaminthe</div></div>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">FOUNDER  ·  APR 22</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">The Three Libraries That Started All This.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">Before Levoila, there was the Universal Learning Centre. Before that, a boy in Ferrier who had never seen a library until he was eighteen. The full story of how 500,000 readers came to be.</p>
+        <p class="text-xs text-[var(--stone)]">By Jacques Medina Jean  ·  8 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <svg viewBox="0 0 240 240" class="w-16 h-16 opacity-50"><rect x="60" y="80" width="120" height="100" stroke="#B6862C" stroke-width="6" fill="none"/><path d="M60 80 L120 50 L180 80" stroke="#B6862C" stroke-width="6" fill="none"/></svg>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">THE TRUST  ·  APR 18</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">The Sovereignty Compact, in 800 Words.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">How a 501(c)(3) charity in Texas writes a long-term lease with a sovereign nation, without owning anything, and pays the nation a royalty for the privilege. The whole legal architecture, explained plainly.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  6 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <div class="text-[var(--gold)] serif text-3xl tracking-widest">10,000 NAMES</div>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">STEWARDS  ·  APR 14</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">Behind the Wall of Founders.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">The first 10,000 Stewards will be engraved into the entrance of the Citadelle. Here is how the engraving works, what stone we'll use, and the local craftsperson who will cut your name with her hands.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  5 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <div class="text-[var(--gold)] text-center"><div class="serif text-2xl">Lopé-Okanda</div><div class="text-xs tracking-[2px] opacity-70 mt-1">GABON</div></div>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">THE SITES  ·  APR 9</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">Why We Look to Gabon.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">Lopé-Okanda holds rock engravings tens of thousands of years old — among the longest continuous records of human presence on Earth. Here's the case for Gabon as Levoila's second country.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  7 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <div class="text-[var(--gold)] serif text-2xl italic">"The wall remembers."</div>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">THE SITES  ·  APR 3</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">Fort Liberté, in Three Walls.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">A French naval stronghold. A redoubt of the war of independence. A bay fortress quietly returning to the sea. What we know about Fort Liberté, and what its three walls remember.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  6 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <div class="text-[var(--gold)] text-center"><div class="serif text-xl">+ Mexico · Ghana · Egypt</div><div class="text-xs tracking-[2px] opacity-70 mt-1">Q3 2026 SLATE</div></div>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">THE TRUST  ·  MAR 29</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">Six Sites Enter the Quarterly Vote.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">São Jorge da Mina in Ghana. Bet Maryam in Lalibela. The Old Cairo Aqueduct. Tlatelolco. Bagamoyo. Petra. Six places. Six communities. The Stewards decide which two enter Sovereignty Compact next.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  5 min read</p>
+      </div>
+    </article>
+
+    <article class="bg-white rounded-xl overflow-hidden border border-[#E5E0D5] hover:shadow-lg transition-shadow cursor-pointer">
+      <div class="aspect-[16/9] bg-gradient-to-br from-[#0B2545] to-[#062744] flex items-center justify-center">
+        <div class="text-[var(--gold)] serif italic text-xl">"Si yo bliye, nou pa bliye."</div>
+      </div>
+      <div class="p-6">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2">THE PEOPLE  ·  MAR 22</div>
+        <h3 class="serif text-xl font-bold text-[var(--navy)] mb-3">The Word in Kreyòl.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4">"Si yo bliye, nou pa bliye." If they forget, we do not. A Haitian saying that became the first sentence Levoila ever wrote in Kreyòl. The story of how the brand voice in each of our five languages was forged.</p>
+        <p class="text-xs text-[var(--stone)]">By the Editors  ·  4 min read</p>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- Load more + final subscribe -->
+  <div class="text-center py-8">
+    <a href="#" class="btn-secondary inline-block px-8 py-3 rounded-md uppercase tracking-wider text-sm">Load more dispatches</a>
+  </div>
+
+  <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-xl p-12 my-12 text-center">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-4">DON'T MISS THE NEXT ONE</div>
+    <h2 class="serif text-4xl font-bold mb-4">Two dispatches a month. Five languages.</h2>
+    <p class="text-base text-[var(--limestone)]/85 max-w-xl mx-auto mb-8">Founder essays, on-site reporting, history pieces, Steward stories. Honest accounting of what we are doing and what is hard. No filler.</p>
+    <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+      <input type="email" class="input flex-1" placeholder="Email address"/>
+      <button type="button" class="btn-primary px-6 py-3 rounded-md uppercase tracking-wider text-sm">Subscribe</button>
+    </form>
+  </div>
+
+</section>
+
+<!-- ============================================ -->
 <!--  NOMINATE PAGE  -->
 <!-- ============================================ -->
 <section class="page" data-page="nominate">
@@ -1675,15 +1936,35 @@
     pt: { 'hero-h1':'Os governos esqueceram.', 'hero-h2':'O mundo se lembra.', 'hero-sub':"Uma confiança liderada por cidadãos que protege os locais históricos que os governos abandonaram. Qualquer um pode nomear. O mundo vota. O mundo financia. Os locais constroem." },
   };
 
+  var langLabels = { en: 'EN', fr: 'FR', ht: 'KR', es: 'ES', pt: 'PT' };
   document.querySelectorAll('.lang-pill').forEach(pill => {
-    pill.addEventListener('click', function() {
+    pill.addEventListener('click', function(e) {
+      e.stopPropagation();
       document.querySelectorAll('.lang-pill').forEach(p => p.classList.remove('active'));
       this.classList.add('active');
       var lang = this.getAttribute('data-lang');
+      var labelEl = document.getElementById('currentLang');
+      if (labelEl) labelEl.textContent = langLabels[lang] || lang.toUpperCase();
       var t = translations[lang];
-      Object.keys(t).forEach(key => {
+      if (t) Object.keys(t).forEach(key => {
         document.querySelectorAll('[data-i18n="'+key+'"]').forEach(el => el.textContent = t[key]);
       });
+      var langDD = document.getElementById('langDD');
+      if (langDD) langDD.classList.add('hidden');
+    });
+  });
+
+  // Close dropdowns when clicking outside or navigating
+  document.addEventListener('click', function() {
+    var langDD = document.getElementById('langDD');
+    var partDD = document.getElementById('participateDD');
+    if (langDD) langDD.classList.add('hidden');
+    if (partDD) partDD.classList.add('hidden');
+  });
+  // Close participate menu when one of its links is clicked
+  document.querySelectorAll('#participateDD a').forEach(a => {
+    a.addEventListener('click', function() {
+      document.getElementById('participateDD').classList.add('hidden');
     });
   });
 </script>
