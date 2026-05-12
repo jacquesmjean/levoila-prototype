@@ -55,6 +55,15 @@
   .input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(182,134,44,0.15);}
   label{display:block;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--navy);margin-bottom:6px;}
   .quote{font-family:'EB Garamond',serif;font-style:italic;font-size:24px;line-height:1.5;color:var(--navy);}
+  /* The Path — roadmap rail */
+  .path-rail{position:relative;}
+  .phase-block{position:relative;padding:0 0 56px 56px;}
+  .phase-block::before{content:"";position:absolute;left:11px;top:8px;bottom:-8px;width:1px;background:var(--gold);opacity:0.35;}
+  .phase-block:last-of-type::before{bottom:50%;}
+  .phase-dot{position:absolute;left:5px;top:10px;width:14px;height:14px;border-radius:999px;background:var(--cream);border:2px solid var(--gold);box-sizing:border-box;}
+  .phase-block.is-opening .phase-dot{background:var(--gold);box-shadow:0 0 0 5px var(--gold),0 0 0 6px var(--cream);}
+  .phase-block em{font-style:italic;}
+  @media (max-width:640px){.phase-block{padding-left:40px;}.phase-block::before{left:7px;}.phase-dot{left:1px;}}
 </style>
 </head>
 <body>
@@ -85,6 +94,7 @@
     <div class="hidden lg:flex items-center gap-8 text-sm">
       <a href="#about" class="nav-link nav-trigger" data-page="about">About</a>
       <a href="#phase-one" class="nav-link nav-trigger" data-page="phase-one">Phase One</a>
+      <a href="#roadmap" class="nav-link nav-trigger" data-page="roadmap">The Path</a>
       <a href="#dispatches" class="nav-link nav-trigger" data-page="dispatches">Dispatches</a>
 
       <!-- Participate dropdown -->
@@ -1006,6 +1016,142 @@
 </section>
 
 <!-- ============================================ -->
+<!--  THE PATH (ROADMAP)  -->
+<!-- ============================================ -->
+<section class="page" data-page="roadmap">
+
+  <!-- Hero -->
+  <div class="py-12">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3">THE PATH</div>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4">From a vote to <em class="text-[var(--gold)]">an open gate</em>.</h1>
+    <p class="text-xl text-[var(--stone)] max-w-3xl leading-relaxed">When the world chooses a site, we promise the country, the community, and the Stewards we will open the doors in twenty-four months. Seven phases. Seven gates. No money leaves escrow until the gate before it closes. This is how we keep that promise.</p>
+    <div class="gold-rule mt-6 mb-16"></div>
+  </div>
+
+  <!-- Path rail -->
+  <div class="max-w-3xl mx-auto pb-12 path-rail">
+
+    <!-- Phase 1 -->
+    <article class="phase-block">
+      <span class="phase-dot" aria-hidden="true"></span>
+      <div class="text-[11px] tracking-[3px] text-[var(--stone)]/60 font-bold uppercase mb-2">Months 1 to 3 · Phase One</div>
+      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-4 leading-tight">We arrive. We listen. We <em class="text-[var(--gold)]">shake hands with the country.</em></h2>
+      <p class="leading-relaxed mb-3">In the first ninety days we sign the agreement with the host nation — the Sovereignty Compact — and open our local office in the city closest to the site. We hire the first three people on the ground: the Country Director, the Liaison Director, and the Government Affairs lead.</p>
+      <p class="leading-relaxed mb-5">Then we walk the site with an architect. We meet the families, the mayor, the teachers, the elders. We do not draw a single line until they have spoken.</p>
+      <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2">By the end of Phase One</div>
+      <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
+        <li>The compact is signed. The royalty terms are set.</li>
+        <li>A full structural survey is in hand.</li>
+        <li>The community has been heard, and where there is grief, the memorial is taking shape.</li>
+      </ul>
+    </article>
+
+    <!-- Phase 2 -->
+    <article class="phase-block">
+      <span class="phase-dot" aria-hidden="true"></span>
+      <div class="text-[11px] tracking-[3px] text-[var(--stone)]/60 font-bold uppercase mb-2">Months 4 to 6 · Phase Two</div>
+      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-4 leading-tight">We draw the plan. We <em class="text-[var(--gold)]">open the window.</em></h2>
+      <p class="leading-relaxed mb-3">The lead Heritage Architect comes on. The restoration plan is drawn to UNESCO standards. We design the things people never notice when they work — solar power, clean water, sanitation, and a security plan that means no child ever dies on our watch.</p>
+      <p class="leading-relaxed mb-5">Then we open the fundraising window to the world. Twenty-four months on the clock. If we do not raise it, every Steward gets their money back. That is the deal.</p>
+      <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2">By the end of Phase Two</div>
+      <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
+        <li>The full design is approved by the Board and the host nation.</li>
+        <li>Three out of four people working on the site will be hired locally.</li>
+        <li>The world can pledge.</li>
+      </ul>
+    </article>
+
+    <!-- Phase 3 -->
+    <article class="phase-block">
+      <span class="phase-dot" aria-hidden="true"></span>
+      <div class="text-[11px] tracking-[3px] text-[var(--stone)]/60 font-bold uppercase mb-2">Months 7 to 12 · Phase Three</div>
+      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-4 leading-tight">We stop the loss. We <em class="text-[var(--gold)]">honor what was lost.</em></h2>
+      <p class="leading-relaxed mb-3">By month seven the bleeding stops. Walls are stabilized. Roofs are made safe. Solar panels go up, water comes in, the perimeter goes around, and a real security team is on the site twenty-four hours a day.</p>
+      <p class="leading-relaxed mb-5">Where the site requires a memorial, we dedicate it before we lift another stone. Memory is built first. Everything else is built around it.</p>
+      <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2">By the end of Phase Three</div>
+      <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
+        <li>Local masons, carpenters, ironworkers, and guards are at work.</li>
+        <li>The site is safe to enter.</li>
+        <li>We announce to the world that half of the money has been raised.</li>
+      </ul>
+    </article>
+
+    <!-- Phase 4 -->
+    <article class="phase-block">
+      <span class="phase-dot" aria-hidden="true"></span>
+      <div class="text-[11px] tracking-[3px] text-[var(--stone)]/60 font-bold uppercase mb-2">Months 13 to 18 · Phase Four</div>
+      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-4 leading-tight">We rebuild. We <em class="text-[var(--gold)]">build the welcome.</em></h2>
+      <p class="leading-relaxed mb-3">This is the loudest half of the project. Stone returns to stone. The museum or interpretation center goes up. Pathways, signage, lighting, capacity controls — everything a visitor will touch is built and tested.</p>
+      <p class="leading-relaxed mb-5">Our tour guides are trained in four or five languages. Our hospitality team starts welcoming the first quiet visitors — Stewards, families, government officials — long before the world is invited.</p>
+      <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2">By the end of Phase Four</div>
+      <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
+        <li>Construction is done.</li>
+        <li>The visitor experience has been rehearsed by people who care about it.</li>
+        <li>The first photographs are taken.</li>
+      </ul>
+    </article>
+
+    <!-- Phase 5 -->
+    <article class="phase-block">
+      <span class="phase-dot" aria-hidden="true"></span>
+      <div class="text-[11px] tracking-[3px] text-[var(--stone)]/60 font-bold uppercase mb-2">Months 19 to 21 · Phase Five</div>
+      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-4 leading-tight">We rehearse. We <em class="text-[var(--gold)]">open the books.</em></h2>
+      <p class="leading-relaxed mb-3">The site is operating. We run the drills. We check the locks. An independent auditor walks every line of the ledger and publishes what they find — clean, or otherwise.</p>
+      <p class="leading-relaxed mb-5">At the entrance, a local craftsperson begins engraving the first ten thousand Steward names into the Wall of Founders. The invitations to the Grand Opening are sent.</p>
+      <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2">By the end of Phase Five</div>
+      <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
+        <li>The first public audit is on the website.</li>
+        <li>Every team is in place and certified.</li>
+        <li>Names are being cut into stone.</li>
+      </ul>
+    </article>
+
+    <!-- Phase 6 — Grand Opening — emotional peak -->
+    <article class="phase-block is-opening">
+      <span class="phase-dot" aria-hidden="true"></span>
+      <div class="text-[11px] tracking-[3px] text-[var(--gold)] font-bold uppercase mb-2">Month 22 · The Grand Opening</div>
+      <h2 class="serif text-4xl md:text-5xl font-semibold text-[var(--navy)] mb-4 leading-tight">We open the doors.</h2>
+      <p class="serif italic text-xl text-[var(--navy)] leading-relaxed mb-3">A ceremony with the host nation. The families. The diaspora. The Stewards who flew in to see their name in the stone. Press in five languages.</p>
+      <p class="leading-relaxed mb-5">If the site asked for a memorial, it is dedicated that day. Then the gate opens, and the public walks in.</p>
+      <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2">On that day</div>
+      <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
+        <li>The site is open to the world.</li>
+        <li>The Heritage Patron Council meets on site for the first time.</li>
+        <li>The story is everywhere.</li>
+      </ul>
+    </article>
+
+    <!-- Phase 7 -->
+    <article class="phase-block">
+      <span class="phase-dot" aria-hidden="true"></span>
+      <div class="text-[11px] tracking-[3px] text-[var(--stone)]/60 font-bold uppercase mb-2">Months 23 to 24 · Phase Seven</div>
+      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-4 leading-tight">It runs. We <em class="text-[var(--gold)]">pay the country.</em></h2>
+      <p class="leading-relaxed mb-3">The first two months after opening are quiet on purpose. Tickets sell. Schools visit. The marketplace works. The amphitheater is used. Every dollar appears on the live ledger, the way it always has.</p>
+      <p class="leading-relaxed mb-5">Then we write the host nation its first Heritage Royalty check. We publish the first Quarterly Report after opening. And we hand the full playbook to whichever country is next.</p>
+      <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2">By month twenty-four</div>
+      <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
+        <li>The site pays for itself.</li>
+        <li>The host nation has been paid.</li>
+        <li>The next country has a head start.</li>
+      </ul>
+    </article>
+
+  </div>
+
+  <!-- Closing -->
+  <div class="text-center py-16 border-t border-[var(--gold)]/30 max-w-3xl mx-auto">
+    <p class="serif italic text-5xl text-[var(--gold)] mb-2">Le voilà.</p>
+    <p class="text-xs tracking-[3px] text-[var(--stone)]/70 font-bold uppercase mb-10">There it is — twenty-four months from a vote to an open gate.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#steward" class="nav-trigger btn-primary px-8 py-3 rounded-md uppercase text-sm" data-page="steward">Become a Steward</a>
+      <a href="#ledger" class="nav-trigger btn-secondary px-8 py-3 rounded-md uppercase text-sm" data-page="ledger">See the Live Ledger</a>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ============================================ -->
 <!--  DISPATCHES PAGE  -->
 <!-- ============================================ -->
 <section class="page" data-page="dispatches">
@@ -1866,6 +2012,7 @@
         <li><a href="#advisory" class="nav-trigger hover:text-[var(--gold)]" data-page="advisory">Advisory Board</a></li>
         <li><a href="#countries" class="nav-trigger hover:text-[var(--gold)]" data-page="countries">Country Heads</a></li>
         <li><a href="#phase-one" class="nav-trigger hover:text-[var(--gold)]" data-page="phase-one">Phase One Sites</a></li>
+        <li><a href="#roadmap" class="nav-trigger hover:text-[var(--gold)]" data-page="roadmap">The Path</a></li>
       </ul>
     </div>
     <div>
