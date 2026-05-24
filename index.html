@@ -96,7 +96,18 @@
       <a href="#phase-one" class="nav-link nav-trigger" data-page="phase-one" data-i18n="nav-phase-one">Phase One</a>
       <a href="#roadmap" class="nav-link nav-trigger" data-page="roadmap" data-i18n="nav-roadmap">The Path</a>
       <a href="#dispatches" class="nav-link nav-trigger" data-page="dispatches" data-i18n="nav-dispatches">Dispatches</a>
-      <a href="#governments" class="nav-link nav-trigger" data-page="governments" data-i18n="nav-governments">For Governments</a>
+
+      <!-- Who It's For dropdown -->
+      <div class="relative" id="audienceMenu">
+        <button class="nav-link flex items-center gap-1" onclick="document.getElementById('audienceDD').classList.toggle('hidden');event.stopPropagation();">
+          <span data-i18n="nav-audience">Who It's For</span>
+          <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div id="audienceDD" class="hidden absolute top-full left-0 mt-3 bg-white text-[var(--navy)] rounded-md shadow-xl border border-[#E5E0D5] min-w-[210px] overflow-hidden">
+          <a href="#governments" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="governments" data-i18n="nav-governments">For Governments</a>
+          <a href="#communities" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="communities" data-i18n="nav-communities">For Communities</a>
+        </div>
+      </div>
 
       <!-- Participate dropdown -->
       <div class="relative" id="participateMenu">
@@ -1291,6 +1302,139 @@
 
 
 <!-- ============================================ -->
+<!--  FOR COMMUNITIES PAGE  -->
+<!-- ============================================ -->
+<section class="page" data-page="communities">
+
+  <!-- Hero -->
+  <div class="-mx-6 px-6 py-20 hero-bg text-[var(--limestone)]">
+    <div class="max-w-4xl">
+      <div class="text-xs tracking-[4px] text-[var(--gold)] font-bold mb-5" data-i18n="comm-eyebrow">FOR THE PEOPLE WHO LIVE HERE</div>
+      <h1 class="serif text-5xl md:text-6xl font-semibold mb-6 leading-tight" data-i18n="comm-h1-html">It's your heritage. <em class="text-[var(--gold)]">You should be the first to gain from it.</em></h1>
+      <p class="text-lg max-w-3xl leading-relaxed text-[var(--limestone)]/85" data-i18n="comm-intro">When Levoila restores a site, the people who live beside it come first — for the work, the income, the respect, and the say in what happens next. Here is what that means, in plain terms.</p>
+    </div>
+  </div>
+
+  <!-- What you gain, in one breath -->
+  <div class="py-16 max-w-4xl mx-auto">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="comm-gain-eyebrow">WHAT YOU GAIN, IN ONE BREATH</div>
+    <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-4" data-i18n="comm-gain-h2">We don't arrive to take. We arrive to build — with you, and for you.</h2>
+    <div class="gold-rule mt-2 mb-8"></div>
+    <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-8 py-6 space-y-3 leading-relaxed text-[var(--navy)]">
+      <li data-i18n="comm-gain-1"><strong>The work is yours — three of every four jobs on the site are hired locally.</strong></li>
+      <li data-i18n="comm-gain-2">The money stays here. Tourism spending circulates through local guides, vendors, and guesthouses.</li>
+      <li data-i18n="comm-gain-3">Your culture leads. The story is told your way, in Kreyòl first, by your own people.</li>
+      <li data-i18n="comm-gain-4">Your heritage is restored, never sold. It stays in your community's care.</li>
+      <li data-i18n="comm-gain-5">A safe site, with real security — so what happened on April 11 never happens again.</li>
+      <li data-i18n="comm-gain-6">Nothing is built until you are heard. You have a seat at the table from day one.</li>
+    </ul>
+  </div>
+
+  <!-- The work is local -->
+  <div class="py-12 border-t border-[var(--gold)]/20">
+    <div class="grid md:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
+      <div>
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="comm-work-eyebrow">THE WORK IS LOCAL</div>
+        <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-5 leading-tight" data-i18n="comm-work-h2">Real jobs. Real skills. A career, not a day's pay.</h2>
+        <p class="leading-relaxed mb-4" data-i18n="comm-work-p1">We hire and train people from the community: masons, carpenters, ironworkers, guides, guards, conservators, and hospitality staff. The skills are taught to a real standard and certified — skills that travel and last.</p>
+        <p class="leading-relaxed" data-i18n="comm-work-p2">A young person who starts as a trainee can grow into a lead role. We build for the long term, and that means building people, not just walls.</p>
+      </div>
+      <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-lg p-8">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-5" data-i18n="comm-work-card-label">WHO WE HIRE AND TRAIN</div>
+        <div class="space-y-4 text-sm leading-relaxed text-[var(--limestone)]/90">
+          <p data-i18n="comm-work-card-1">Builders and craftspeople — masons, carpenters, ironworkers — to do the restoration itself.</p>
+          <p class="border-t border-[var(--gold)]/25 pt-4" data-i18n="comm-work-card-2">Guides and storytellers, trained in several languages, to welcome the world.</p>
+          <p class="border-t border-[var(--gold)]/25 pt-4" data-i18n="comm-work-card-3">Guards and conservators to keep the site safe and standing for generations.</p>
+          <p class="border-t border-[var(--gold)]/25 pt-4" data-i18n="comm-work-card-4">Cooks, vendors, and hospitality teams to run the marketplace and the welcome.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Your culture at the center -->
+  <div class="py-16 border-t border-[var(--gold)]/20 max-w-4xl mx-auto">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="comm-culture-eyebrow">YOUR CULTURE, AT THE CENTER</div>
+    <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-8" data-i18n="comm-culture-h2">The site tells your story — in your words.</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="border border-[#E0D9C8] rounded-lg p-7">
+        <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-3" data-i18n="comm-culture-1-h3">Told your way</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-culture-1-p">Tours are given in Kreyòl first, then French, English, and Spanish. The history visitors hear is the history you live — not a version written somewhere else.</p>
+      </div>
+      <div class="border border-[#E0D9C8] rounded-lg p-7">
+        <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-3" data-i18n="comm-culture-2-h3">Made by your hands</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-culture-2-p">Local artisans, cooks, musicians, and storytellers are part of the experience — and earn from it. Community days and festivals are written into the calendar, not treated as an afterthought.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- The money stays here -->
+  <div class="-mx-6 px-6 py-16 bg-[var(--limestone)]">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3 text-center" data-i18n="comm-money-eyebrow">THE MONEY STAYS AND GROWS</div>
+      <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-12 text-center" data-i18n="comm-money-h2">A working site feeds the town around it.</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <div class="serif text-5xl font-semibold text-[var(--gold)] mb-2">3 of 4</div>
+          <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-money-jobs">jobs on the site are filled by people from the community.</p>
+        </div>
+        <div>
+          <div class="serif text-5xl font-semibold text-[var(--gold)] mb-2" data-i18n="comm-money-spend-num">Local</div>
+          <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-money-spend">visitor spending — tickets, food, crafts, lodging, transport — lands in local hands first.</p>
+        </div>
+        <div>
+          <div class="serif text-5xl font-semibold text-[var(--gold)] mb-2" data-i18n="comm-money-public-num">Public</div>
+          <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-money-public">good: as the site earns, the nation receives a royalty that funds schools, roads, and services.</p>
+        </div>
+      </div>
+      <p class="mt-10 text-center text-[var(--navy)] leading-relaxed max-w-3xl mx-auto" data-i18n="comm-money-note">We build the marketplace and the welcome on purpose, so that when visitors come, the income reaches the families who live closest to the site — not just an account far away.</p>
+    </div>
+  </div>
+
+  <!-- Respect and memory -->
+  <div class="py-16 max-w-4xl mx-auto">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="comm-respect-eyebrow">RESPECT AND MEMORY</div>
+    <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-6" data-i18n="comm-respect-h2">Heritage is dignity. We treat your site, and your dead, with care.</h2>
+    <p class="leading-relaxed mb-4" data-i18n="comm-respect-p1">A site is not just stone. It is where your ancestors stood, and where your children play. We restore it as something sacred, not as a product.</p>
+    <p class="leading-relaxed mb-4" data-i18n="comm-respect-p2">On the Citadelle, our very first act will be a permanent memorial to the children lost on April 11, 2026 — designed together with their families. Memory comes before construction. Always.</p>
+    <p class="leading-relaxed" data-i18n="comm-respect-p3">The community remains the custodian of its own heritage. We are stewards for a time. You are home forever.</p>
+  </div>
+
+  <!-- What we ask / what we commit -->
+  <div class="pb-16 max-w-5xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-lg p-8">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-5" data-i18n="comm-ask-label">WHAT WE ASK OF YOU</div>
+        <ul class="space-y-3 text-sm leading-relaxed text-[var(--limestone)]/90">
+          <li data-i18n="comm-ask-1">Your voice in the plan — come to the meetings, tell us what matters.</li>
+          <li data-i18n="comm-ask-2">Your hands in the work — apply, train, and build with us.</li>
+          <li data-i18n="comm-ask-3">Your stories and your culture, shared on your own terms.</li>
+        </ul>
+      </div>
+      <div class="border-2 border-[var(--gold)] rounded-lg p-8">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-5" data-i18n="comm-commit-label">WHAT WE COMMIT TO YOU</div>
+        <ul class="space-y-3 text-sm leading-relaxed text-[var(--navy)]">
+          <li data-i18n="comm-commit-1">Local hiring at three of four jobs, with real training behind it.</li>
+          <li data-i18n="comm-commit-2">Your culture and language at the center of the experience.</li>
+          <li data-i18n="comm-commit-3">A safe site, a public ledger, and your heritage kept in your community's care.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing CTA -->
+  <div class="-mx-6 px-6 py-20 hero-bg text-[var(--limestone)] text-center">
+    <h2 class="serif text-4xl md:text-5xl font-semibold mb-4" data-i18n="comm-cta-h2">Be part of bringing it back.</h2>
+    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-[var(--limestone)]/80 mb-10" data-i18n="comm-cta-p">If you live near a site that deserves to live again, there is a place for you in the work — and a seat at the table.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#nominate" class="nav-trigger btn-primary px-8 py-3 rounded-md uppercase text-sm" data-page="nominate" data-i18n="comm-cta-nominate">Nominate a site near you</a>
+      <a href="mailto:heritage@levoila.org?subject=Community%20Inquiry" class="btn-secondary px-8 py-3 rounded-md uppercase text-sm" data-i18n="comm-cta-contact">Talk to our team</a>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ============================================ -->
 <!--  DISPATCHES PAGE  -->
 <!-- ============================================ -->
 <section class="page" data-page="dispatches">
@@ -2153,6 +2297,7 @@
         <li><a href="#phase-one" class="nav-trigger hover:text-[var(--gold)]" data-page="phase-one" data-i18n="footer-link-phase-one">Phase One Sites</a></li>
         <li><a href="#roadmap" class="nav-trigger hover:text-[var(--gold)]" data-page="roadmap" data-i18n="footer-link-roadmap">The Path</a></li>
         <li><a href="#governments" class="nav-trigger hover:text-[var(--gold)]" data-page="governments" data-i18n="footer-link-governments">For Governments</a></li>
+        <li><a href="#communities" class="nav-trigger hover:text-[var(--gold)]" data-page="communities" data-i18n="footer-link-communities">For Communities</a></li>
       </ul>
     </div>
     <div>
@@ -2167,8 +2312,9 @@
     <div>
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4" data-i18n="footer-contact">CONTACT</div>
       <ul class="space-y-2 text-sm text-[var(--limestone)]/80">
-        <li>jacques@levoila.org</li>
-        <li>press@levoila.org</li>
+        <li><a href="mailto:heritage@levoila.org" class="hover:text-[var(--gold)]">heritage@levoila.org</a></li>
+        <li><a href="mailto:governments@levoila.org" class="hover:text-[var(--gold)]">governments@levoila.org</a></li>
+        <li><a href="mailto:press@levoila.org" class="hover:text-[var(--gold)]">press@levoila.org</a></li>
         <li data-i18n="footer-contact-location">Frisco, Texas · United States</li>
         <li class="pt-4">
           <span class="text-xs tracking-[2px] text-[var(--gold)] font-bold" data-i18n="footer-follow">FOLLOW</span><br/>
@@ -2271,13 +2417,21 @@
   document.addEventListener('click', function() {
     var langDD = document.getElementById('langDD');
     var partDD = document.getElementById('participateDD');
+    var audDD = document.getElementById('audienceDD');
     if (langDD) langDD.classList.add('hidden');
     if (partDD) partDD.classList.add('hidden');
+    if (audDD) audDD.classList.add('hidden');
   });
   // Close participate menu when one of its links is clicked
   document.querySelectorAll('#participateDD a').forEach(a => {
     a.addEventListener('click', function() {
       document.getElementById('participateDD').classList.add('hidden');
+    });
+  });
+  // Close audience menu when one of its links is clicked
+  document.querySelectorAll('#audienceDD a').forEach(a => {
+    a.addEventListener('click', function() {
+      document.getElementById('audienceDD').classList.add('hidden');
     });
   });
 </script>
