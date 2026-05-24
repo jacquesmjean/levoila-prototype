@@ -116,6 +116,7 @@
           <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
         <div id="participateDD" class="hidden absolute top-full right-0 mt-3 bg-white text-[var(--navy)] rounded-md shadow-xl border border-[#E5E0D5] min-w-[200px] overflow-hidden">
+          <a href="#involved" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="involved" data-i18n="participate-involved">Get Involved</a>
           <a href="#nominate" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="nominate" data-i18n="participate-nominate">Nominate a Site</a>
           <a href="#vote" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="vote" data-i18n="participate-vote">Vote on the Slate</a>
           <a href="#crypto" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="crypto" data-i18n="participate-crypto">Donate Crypto</a>
@@ -1429,6 +1430,131 @@
 
 
 <!-- ============================================ -->
+<!--  GET INVOLVED PAGE  -->
+<!-- ============================================ -->
+<section class="page" data-page="involved">
+
+  <!-- Hero -->
+  <div class="-mx-6 px-6 py-20 hero-bg text-[var(--limestone)]">
+    <div class="max-w-4xl">
+      <div class="text-xs tracking-[4px] text-[var(--gold)] font-bold mb-5" data-i18n="involve-eyebrow">GET INVOLVED</div>
+      <h1 class="serif text-5xl md:text-6xl font-semibold mb-6 leading-tight" data-i18n="involve-h1-html">There's more than one way <em class="text-[var(--gold)]">to build this.</em></h1>
+      <p class="text-lg max-w-3xl leading-relaxed text-[var(--limestone)]/85" data-i18n="involve-intro">Sponsor a project, give your time, lend your expertise, or come work on a site. Wherever you are in the world, and whatever you bring, there is a place for you in this work.</p>
+    </div>
+  </div>
+
+  <!-- Become a Partner -->
+  <div class="py-16 max-w-5xl mx-auto">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="involve-partner-eyebrow">BECOME A PARTNER</div>
+    <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-4" data-i18n="involve-partner-h2">Sponsor a site. Put your name behind a rescue.</h2>
+    <div class="gold-rule mt-2 mb-8"></div>
+    <div class="grid md:grid-cols-2 gap-10 items-start">
+      <div>
+        <p class="leading-relaxed mb-4" data-i18n="involve-partner-p1">Stewards build this movement one seat at a time. Partners move it in leaps. If you are a major donor, a family office, a foundation, or a company that wants to sponsor a project, you can fund an entire phase — or an entire site — and carry it to its grand opening.</p>
+        <p class="leading-relaxed" data-i18n="involve-partner-p2">Partnership is direct and personal. You get a clear line to the work, named recognition at the site and in the record, and honest reporting against the same public ledger everyone else sees.</p>
+      </div>
+      <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-lg p-8">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-5" data-i18n="involve-partner-card-label">WHAT A PARTNER GETS</div>
+        <ul class="space-y-3 text-sm leading-relaxed text-[var(--limestone)]/90">
+          <li data-i18n="involve-partner-1">A project or site to call your own, from first stone to open gate.</li>
+          <li class="border-t border-[var(--gold)]/25 pt-3" data-i18n="involve-partner-2">Named recognition at the site and on the Wall of Founders.</li>
+          <li class="border-t border-[var(--gold)]/25 pt-3" data-i18n="involve-partner-3">Direct reporting against the public, audited ledger.</li>
+          <li class="border-t border-[var(--gold)]/25 pt-3" data-i18n="involve-partner-4">A seat in the room as the work is planned and delivered.</li>
+        </ul>
+        <a href="mailto:heritage@levoila.org?subject=Partnership%20Inquiry" class="btn-primary inline-block mt-6 px-7 py-3 rounded-md uppercase text-sm" data-i18n="involve-partner-cta">Start a partnership conversation</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Volunteer + Expertise -->
+  <div class="-mx-6 px-6 py-16 bg-[var(--limestone)]">
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
+      <div class="bg-white border border-[#E0D9C8] rounded-lg p-8">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="involve-volunteer-eyebrow">VOLUNTEER WITH US</div>
+        <h3 class="serif text-3xl font-semibold text-[var(--navy)] mb-4" data-i18n="involve-volunteer-h3">Give your time to something that lasts.</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-6" data-i18n="involve-volunteer-p">We welcome volunteers — on the ground in Haiti and remotely from anywhere. Help with events, research, translation, outreach, the diaspora network, and more. Tell us how you'd like to help and how much time you have.</p>
+        <a href="mailto:heritage@levoila.org?subject=Volunteering%20with%20Levoila" class="text-[var(--navy)] font-semibold border-b-2 border-[var(--gold)] pb-1 text-sm" data-i18n="involve-volunteer-cta">Volunteer with us →</a>
+      </div>
+      <div class="bg-white border border-[#E0D9C8] rounded-lg p-8">
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="involve-expert-eyebrow">LEND YOUR EXPERTISE</div>
+        <h3 class="serif text-3xl font-semibold text-[var(--navy)] mb-4" data-i18n="involve-expert-h3">Have a skill that can move the mission?</h3>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-6" data-i18n="involve-expert-p">Architects, conservators, engineers, lawyers, fundraisers, technologists, educators — if you have expertise that can advance our work, we want to know you. Connect with us and send your resume, and tell us where you think you can help.</p>
+        <a href="mailto:heritage@levoila.org?subject=Expertise%20Offer%20%E2%80%94%20%5BYour%20Name%5D" class="text-[var(--navy)] font-semibold border-b-2 border-[var(--gold)] pb-1 text-sm" data-i18n="involve-expert-cta">Send us your resume →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Local jobs -->
+  <div class="py-16 max-w-5xl mx-auto">
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="involve-jobs-eyebrow">LOOKING FOR A LOCAL JOB</div>
+    <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-4" data-i18n="involve-jobs-h2">The roles we'll be hiring for first.</h2>
+    <p class="leading-relaxed max-w-3xl mb-2" data-i18n="involve-jobs-p">Three of every four jobs on a site are hired locally. These are the priority roles we expect to open as Phase One gets underway in northern Haiti. Don't see your exact role? Send your resume anyway — we are building whole teams.</p>
+    <div class="gold-rule mt-4 mb-10"></div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <div class="border border-[#E0D9C8] rounded-lg p-7">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4" data-i18n="involve-jobs-grp1">LEADERSHIP &amp; IN-COUNTRY</div>
+        <ul class="space-y-3 text-sm leading-relaxed text-[var(--navy)]">
+          <li data-i18n="involve-job-1"><strong>Country Director — Haiti.</strong> Leads all of Levoila's work in country, and the senior relationship with government and partners.</li>
+          <li data-i18n="involve-job-2"><strong>Site Director — Citadelle Henri Christophe (Milot).</strong> Runs the flagship site end to end: memorial, restoration, security, visitors.</li>
+          <li data-i18n="involve-job-3"><strong>Site Director — Palais Sans-Souci (Milot).</strong> Leads Sans-Souci, operated with the Citadelle as one Milot experience.</li>
+          <li data-i18n="involve-job-4"><strong>Site Director — Fort-Liberté (Nord-Est).</strong> Leads the coastal fortress restoration and its opening to the public.</li>
+          <li data-i18n="involve-job-5"><strong>Government Affairs &amp; Compact Lead.</strong> Manages the Sovereignty Compact, permits, and authorities.</li>
+          <li data-i18n="involve-job-6"><strong>Community Liaison Director.</strong> The bridge to families and local leaders, including the April 11 memorial.</li>
+        </ul>
+      </div>
+
+      <div class="border border-[#E0D9C8] rounded-lg p-7">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4" data-i18n="involve-jobs-grp2">RESTORATION &amp; CONSERVATION</div>
+        <ul class="space-y-3 text-sm leading-relaxed text-[var(--navy)]">
+          <li data-i18n="involve-job-7"><strong>Lead Heritage Architect.</strong> Designs and directs the restoration to UNESCO standards.</li>
+          <li data-i18n="involve-job-8"><strong>Conservation Manager.</strong> Protects original stone, masonry, and finishes through every phase.</li>
+          <li data-i18n="involve-job-9"><strong>Site Engineer — Structural Stabilization.</strong> Makes walls and roofs safe first; the bleeding stops here.</li>
+          <li data-i18n="involve-job-10"><strong>Master Mason &amp; Trades Foreman.</strong> Leads the local masons, carpenters, and ironworkers doing the hands-on work.</li>
+        </ul>
+      </div>
+
+      <div class="border border-[#E0D9C8] rounded-lg p-7">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4" data-i18n="involve-jobs-grp3">OPERATIONS, SAFETY &amp; VISITORS</div>
+        <ul class="space-y-3 text-sm leading-relaxed text-[var(--navy)]">
+          <li data-i18n="involve-job-11"><strong>Head of Site Security &amp; Safety.</strong> 24/7 security and crowd-and-capacity control — so April 11 never repeats.</li>
+          <li data-i18n="involve-job-12"><strong>Visitor Experience &amp; Tours Manager.</strong> Builds certified, multilingual tour operations and the welcome.</li>
+          <li data-i18n="involve-job-13"><strong>Hospitality &amp; Marketplace Manager.</strong> Runs the marketplace, food, and lodging that keep money local.</li>
+        </ul>
+      </div>
+
+      <div class="border border-[#E0D9C8] rounded-lg p-7">
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4" data-i18n="involve-jobs-grp4">FINANCE, PEOPLE &amp; STORY</div>
+        <ul class="space-y-3 text-sm leading-relaxed text-[var(--navy)]">
+          <li data-i18n="involve-job-14"><strong>Finance &amp; Live Ledger Manager.</strong> Keeps every dollar on the public, audited ledger.</li>
+          <li data-i18n="involve-job-15"><strong>Local Hiring &amp; Training Lead.</strong> Builds the local workforce — three of every four jobs hired nearby.</li>
+          <li data-i18n="involve-job-16"><strong>Communications &amp; Dispatches Lead.</strong> Tells the story in five languages, on site and to the world.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="mailto:heritage@levoila.org?subject=Job%20Interest%20%E2%80%94%20%5BRole%5D" class="btn-primary inline-block px-8 py-3 rounded-md uppercase text-sm" data-i18n="involve-jobs-cta">Register interest &amp; send your resume</a>
+      <p class="text-xs text-[var(--stone)]/60 mt-3" data-i18n="involve-jobs-note">These roles are not yet open. Send your resume now and we'll reach out as Phase One hiring begins.</p>
+    </div>
+  </div>
+
+  <!-- Closing CTA -->
+  <div class="-mx-6 px-6 py-20 hero-bg text-[var(--limestone)] text-center">
+    <h2 class="serif text-4xl md:text-5xl font-semibold mb-4" data-i18n="involve-cta-h2">Find your way in.</h2>
+    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-[var(--limestone)]/80 mb-10" data-i18n="involve-cta-p">Give, build, or join. However you show up, you become part of the story of these places.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="mailto:heritage@levoila.org?subject=Partnership%20Inquiry" class="btn-primary px-8 py-3 rounded-md uppercase text-sm" data-i18n="involve-cta-partner">Become a partner</a>
+      <a href="#steward" class="nav-trigger btn-secondary px-8 py-3 rounded-md uppercase text-sm" data-page="steward" data-i18n="involve-cta-steward">Become a steward</a>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ============================================ -->
 <!--  DISPATCHES PAGE  -->
 <!-- ============================================ -->
 <section class="page" data-page="dispatches">
@@ -2297,6 +2423,7 @@
     <div>
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4" data-i18n="footer-participate">PARTICIPATE</div>
       <ul class="space-y-2 text-sm text-[var(--limestone)]/80">
+        <li><a href="#involved" class="nav-trigger hover:text-[var(--gold)]" data-page="involved" data-i18n="footer-link-involved">Get Involved · Partner · Jobs</a></li>
         <li><a href="#nominate" class="nav-trigger hover:text-[var(--gold)]" data-page="nominate" data-i18n="footer-link-nominate">Nominate a Site</a></li>
         <li><a href="#vote" class="nav-trigger hover:text-[var(--gold)]" data-page="vote" data-i18n="footer-link-vote">Quarterly Vote</a></li>
         <li><a href="#steward" class="nav-trigger hover:text-[var(--gold)]" data-page="steward" data-i18n="footer-link-steward">Become a Steward</a></li>
