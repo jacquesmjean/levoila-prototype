@@ -14,13 +14,13 @@ body { font-family: Inter, system-ui, sans-serif; color: var(--stone); backgroun
 
 .nav-link:hover { color: var(--gold); }
 
-.nav-link:hover::after.nav-link.active::after { transform: scaleX(1); }
+.nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
 
 .nav-link.active { color: var(--gold); }
 
 .mobile-nav-link { display: block; padding: 14px 4px; font-size: 16px; font-weight: 500; color: var(--limestone); border-bottom: 1px solid rgba(244, 241, 234, 0.08); transition: color 0.2s ease-in-out, background 0.2s ease-in-out; }
 
-.mobile-nav-link:hover.mobile-nav-link.active { color: var(--gold); }
+.mobile-nav-link:hover, .mobile-nav-link.active { color: var(--gold); }
 
 .mobile-nav-section { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 14px 4px; font-size: 16px; font-weight: 500; color: var(--limestone); border-bottom: 1px solid rgba(244, 241, 234, 0.08); background: transparent; cursor: pointer; transition: color 0.2s ease-in-out; text-align: left; }
 
@@ -1106,17 +1106,17 @@ img, video { max-width: 100%; height: auto; }
       <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="home-phase-eyebrow">PHASE ONE</div>
       <h2 class="serif text-5xl font-semibold text-[var(--navy)]" data-i18n="home-phase-h2">We begin where the founder was born.</h2>
     </div>
-    <div style="position:relative;border-radius:18px;overflow:hidden;border:2px solid var(--gold);box-shadow:0 24px 50px rgba(11,37,69.28);margin-bottom:52px">
+    <div style="position:relative;border-radius:18px;overflow:hidden;border:2px solid var(--gold);box-shadow:0 24px 50px rgba(11,37,69,.28);margin-bottom:52px">
       <img src="images/fl-fort-hero.jpg" alt="Fort Saint-Joseph on its islet in the bay of Fort-Liberté" style="display:block;width:100%;height:min(60vh,560px);object-fit:cover">
-      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,37,69.93) 0%,rgba(11,37,69.66) 44%,rgba(11,37,69.06) 82%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,37,69,.93) 0%,rgba(11,37,69,.66) 44%,rgba(11,37,69,.06) 82%)"></div>
       <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 clamp(28px,5vw,72px);max-width:780px">
         <div style="font-size:11px;letter-spacing:3px;color:var(--gold);font-weight:700;text-transform:uppercase;margin-bottom:14px" data-i18n="home-fl-eyebrow">Pilot Project · Phase One begins here</div>
         <h3 class="serif" style="font-size:clamp(40px,6vw,68px);font-weight:700;color:#fff;margin-bottom:12px;line-height:.95">Fort-Liberté</h3>
         <p style="font-size:clamp(13px,1.4vw,16px);color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px" data-i18n="home-site-fortliberte-region">Nord-Est · 17th-Century Bay Fortress</p>
-        <p style="font-size:clamp(14px,1.4vw,16px);color:rgba(255,255,255.92);line-height:1.65;margin-bottom:28px;max-width:560px" data-i18n="home-site-fortliberte-body">Once a French naval stronghold, later a redoubt in the Haitian war of independence. Today the walls are quietly returning to the sea. Levoila will restore the ramparts, install a maritime exhibit, and open an open-air amphitheater for cultural programming.</p>
+        <p style="font-size:clamp(14px,1.4vw,16px);color:rgba(255,255,255,.92);line-height:1.65;margin-bottom:28px;max-width:560px" data-i18n="home-site-fortliberte-body">Once a French naval stronghold, later a redoubt in the Haitian war of independence. Today the walls are quietly returning to the sea. Levoila will restore the ramparts, install a maritime exhibit, and open an open-air amphitheater for cultural programming.</p>
         <div><a href="https://www.levoila.org/#phase-one" class="nav-trigger serif" data-page="phase-one" style="display:inline-block;background:var(--gold);color:#fff;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 32px;border-radius:999px;text-decoration:none" data-i18n="home-fl-cta">Explore the pilot</a></div>
       </div>
-      <div style="position:absolute;bottom:12px;right:16px;font-size:10px;color:rgba(255,255,255.6)">Photo: Nick Hobgood · CC BY-SA 3.0</div>
+      <div style="position:absolute;bottom:12px;right:16px;font-size:10px;color:rgba(255,255,255,.6)">Photo: Nick Hobgood · CC BY-SA 3.0</div>
     </div>
 
     <div style="text-align:center;margin-bottom:26px">
@@ -1163,7 +1163,7 @@ img, video { max-width: 100%; height: auto; }
         <div style="position:relative;border-radius:12px;overflow:hidden;border:1px solid #E5E0D5;background:#fff;opacity:.82;pointer-events:none;user-select:none">
         <div style="position:relative;aspect-ratio:16/9;overflow:hidden">
           <img src="images/citadelle.jpg" alt="The Citadelle Henri Christophe above the mountains of northern Haiti" style="width:100%;height:100%;object-fit:cover;filter:grayscale(45%)">
-          <div style="position:absolute;top:12px;left:12px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
+          <div style="position:absolute;top:12px;left:12px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69,.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
         </div>
         <div style="padding:22px">
           <h4 class="serif" style="font-size:20px;font-weight:700;color:#0B2545;margin-bottom:4px">Citadelle Henri Christophe</h4>
@@ -1174,7 +1174,7 @@ img, video { max-width: 100%; height: auto; }
         <div style="position:relative;border-radius:12px;overflow:hidden;border:1px solid #E5E0D5;background:#fff;opacity:.82;pointer-events:none;user-select:none">
         <div style="position:relative;aspect-ratio:16/9;overflow:hidden">
           <img src="images/sans-souci.jpg" alt="The ruined facade and grand staircase of the Palais Sans-Souci" style="width:100%;height:100%;object-fit:cover;filter:grayscale(45%)">
-          <div style="position:absolute;top:12px;left:12px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
+          <div style="position:absolute;top:12px;left:12px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69,.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
         </div>
         <div style="padding:22px">
           <h4 class="serif" style="font-size:20px;font-weight:700;color:#0B2545;margin-bottom:4px">Palais Sans-Souci</h4>
@@ -2008,7 +2008,7 @@ img, video { max-width: 100%; height: auto; }
 
     <div>
       <figure class="mb-6">
-        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative;box-shadow:0 12px 30px rgba(11,37,69.25);border:2px solid var(--gold)"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--gold);color:#fff" data-i18n="home-badge-pilot">Pilot Project · Now</div>
+        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative;box-shadow:0 12px 30px rgba(11,37,69,.25);border:2px solid var(--gold)"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--gold);color:#fff" data-i18n="home-badge-pilot">Pilot Project · Now</div>
           <img src="https://www.levoila.org/images/fl-fort-hero.jpg" alt="The bay fortress at Fort-Liberté on Haiti's northern Atlantic coast" class="w-full h-full object-cover" loading="lazy">
         </div>
         <figcaption class="text-[11px] text-[var(--stone)]/60 mt-2" data-i18n="phaseone-site3-credit">Fort-Liberté · Photo: Wikimedia Commons (CC BY-SA)</figcaption>
@@ -2035,7 +2035,7 @@ img, video { max-width: 100%; height: auto; }
 
     <div style="opacity:.62;pointer-events:none;user-select:none">
       <figure class="mb-6">
-        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
+        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69,.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
           <img src="https://www.levoila.org/images/citadelle.jpg" alt="The Citadelle Henri Christophe rising above the mountains of northern Haiti" class="w-full h-full object-cover" style="filter:grayscale(55%)" loading="lazy">
         </div>
         <figcaption class="text-[11px] text-[var(--stone)]/60 mt-2" data-i18n="phaseone-site1-credit">Citadelle Henri Christophe · Photo: Wikimedia Commons (CC BY-SA)</figcaption>
@@ -2062,7 +2062,7 @@ img, video { max-width: 100%; height: auto; }
 
     <div style="opacity:.62;pointer-events:none;user-select:none">
       <figure class="mb-6">
-        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
+        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69,.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
           <img src="https://www.levoila.org/images/sans-souci.jpg" alt="The ruined grand staircase and facade of the Palais Sans-Souci" class="w-full h-full object-cover" style="filter:grayscale(55%)" loading="lazy">
         </div>
         <figcaption class="text-[11px] text-[var(--stone)]/60 mt-2" data-i18n="phaseone-site2-credit">Palais Sans-Souci · Photo: Wikimedia Commons (CC BY-SA)</figcaption>
@@ -3862,7 +3862,7 @@ img, video { max-width: 100%; height: auto; }
           </div>
           <div>
             <label data-i18n="careers-f-resume">Resume / CV</label>
-            <input type="file" id="careerResume" class="hidden" accept=".pdf.doc.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+            <input type="file" id="careerResume" class="hidden" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
             <div id="careerDrop" class="border-2 border-dashed border-[#D5CDB8] rounded-lg p-8 text-center cursor-pointer hover:border-[var(--gold)]">
               <div class="text-sm text-[var(--stone)]" data-i18n="careers-f-resume-drag">Drag your resume here, or click to choose a file</div>
               <div class="text-xs text-[var(--stone)] mt-1 opacity-60" data-i18n="careers-f-resume-types">PDF or Word, up to 10MB</div>
@@ -5089,9 +5089,9 @@ img, video { max-width: 100%; height: auto; }
     var body=(d.body||'').split(/\n\n+/).map(function(p){return '<p style="margin:0 0 1.1em;line-height:1.75;color:#3a3a3a;font-size:17px">'+esc(p)+'</p>';}).join('');
     var ov=document.createElement('div');
     ov.id='__dispReader';
-    ov.style.cssText='position:fixed;inset:0;z-index:9995;background:rgba(6,39,68.55);backdrop-filter:blur(3px);overflow-y:auto;padding:40px 16px;';
+    ov.style.cssText='position:fixed;inset:0;z-index:9995;background:rgba(6,39,68,.55);backdrop-filter:blur(3px);overflow-y:auto;padding:40px 16px;';
     ov.onclick=function(e){if(e.target===ov)ov.remove();};
-    ov.innerHTML='<div style="max-width:720px;margin:0 auto;background:#FAF7F0;border-radius:6px;border:1px solid rgba(182,134,44.35);box-shadow:0 40px 90px rgba(2,16,30.5);overflow:hidden">'
+    ov.innerHTML='<div style="max-width:720px;margin:0 auto;background:#FAF7F0;border-radius:6px;border:1px solid rgba(182,134,44,.35);box-shadow:0 40px 90px rgba(2,16,30,.5);overflow:hidden">'
       + '<div style="height:3px;background:linear-gradient(90deg,'+GOLD+',rgba(182,134,44,0) 70%)"></div>'
       + '<div style="padding:34px 40px 42px">'
       + '<button onclick="document.getElementById(\'__dispReader\').remove()" style="float:right;background:none;border:none;font-size:24px;color:#9a938a;cursor:pointer;line-height:1">×</button>'
