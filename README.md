@@ -33,3 +33,6 @@ python3 -m http.server 4000
 Pushed to Vercel via this repo. Production: [levoila.com](https://levoila.com).
 
 Configuration in `vercel.json` — static-only, security headers, clean URLs.
+
+
+Production (levoila.org and levoila.com) auto-deploys from `main` via the connected Vercel Git integration.
