@@ -4667,6 +4667,26 @@ img, video { max-width: 100%; height: auto; }
     if (target) target.classList.toggle('hidden');
   }
 
+  // Wire up the nav dropdown + mobile-menu buttons. The original inline onclick
+  // handlers were stripped during an earlier page capture, so we re-bind them
+  // here. stopPropagation (inside toggleNavMenu/toggleMobileMenu) prevents the
+  // document-level click handler from immediately re-closing the menu.
+  (function bindNavControls(){
+    [['audienceMenu','audienceDD'],['participateMenu','participateDD'],['transparencyMenu','transparencyDD']].forEach(function(pair){
+      var wrap = document.getElementById(pair[0]);
+      if (!wrap) return;
+      var btn = wrap.querySelector('button');
+      if (btn) btn.addEventListener('click', function(e){ toggleNavMenu(pair[1], e); });
+    });
+    var langDD = document.getElementById('langDD');
+    if (langDD && langDD.parentElement) {
+      var lbtn = langDD.parentElement.querySelector('button');
+      if (lbtn) lbtn.addEventListener('click', function(e){ toggleNavMenu('langDD', e); });
+    }
+    var mb = document.getElementById('mobileMenuBtn');
+    if (mb) mb.addEventListener('click', function(e){ toggleMobileMenu(e); });
+  })();
+
   // Country portals live at clean paths (e.g. /haiti). Add a slug here AND a
   // rewrite in vercel.json when a new country goes live.
   var PATH_PAGES = { 'haiti': 1, 'podcast': 1 };
