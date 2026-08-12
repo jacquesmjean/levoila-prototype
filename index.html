@@ -14,13 +14,13 @@ body { font-family: Inter, system-ui, sans-serif; color: var(--stone); backgroun
 
 .nav-link:hover { color: var(--gold); }
 
-.nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+.nav-link:hover::after.nav-link.active::after { transform: scaleX(1); }
 
 .nav-link.active { color: var(--gold); }
 
 .mobile-nav-link { display: block; padding: 14px 4px; font-size: 16px; font-weight: 500; color: var(--limestone); border-bottom: 1px solid rgba(244, 241, 234, 0.08); transition: color 0.2s ease-in-out, background 0.2s ease-in-out; }
 
-.mobile-nav-link:hover, .mobile-nav-link.active { color: var(--gold); }
+.mobile-nav-link:hover.mobile-nav-link.active { color: var(--gold); }
 
 .mobile-nav-section { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 14px 4px; font-size: 16px; font-weight: 500; color: var(--limestone); border-bottom: 1px solid rgba(244, 241, 234, 0.08); background: transparent; cursor: pointer; transition: color 0.2s ease-in-out; text-align: left; }
 
@@ -876,7 +876,7 @@ img, video { max-width: 100%; height: auto; }
 #lvc-x:hover { color: rgb(212, 168, 87); }</style>
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Levoila — The Global Heritage Trust</title>
+<title>Levoila, The Global Heritage Trust</title>
 <meta name="description" content="When the governments forget, the world remembers. A citizen-led trust protecting historic sites in danger of being lost.">
 <meta name="google-site-verification" content="QnX9CIm0IKb2Jmj5ApISgJNxoeuGuTzlbhb11Gfwk1s">
 
@@ -946,7 +946,7 @@ img, video { max-width: 100%; height: auto; }
         </button>
         <div id="transparencyDD" class="hidden absolute top-full right-0 mt-3 bg-white text-[var(--navy)] rounded-md shadow-xl border border-[#E5E0D5] min-w-[200px] overflow-hidden">
           <a href="https://www.levoila.org/#dispatches" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="dispatches" data-i18n="nav-dispatches">Dispatches</a>
-          <a href="https://www.levoila.org/podcast" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="podcast" data-route="path" data-i18n="nav-podcast">Podcast — Le Voilà</a>
+          <a href="https://www.levoila.org/podcast" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="podcast" data-route="path" data-i18n="nav-podcast">Podcast, Le Voilà</a>
           <a href="https://www.levoila.org/#ledger" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="ledger" data-i18n="nav-ledger">Live Ledger</a>
         </div>
       </div>
@@ -1018,7 +1018,7 @@ img, video { max-width: 100%; height: auto; }
     </button>
     <div id="transparencyMobile" class="hidden">
       <a href="https://www.levoila.org/#dispatches" class="mobile-subnav-link nav-trigger" data-page="dispatches" data-i18n="nav-dispatches">Dispatches</a>
-      <a href="https://www.levoila.org/podcast" class="mobile-subnav-link nav-trigger" data-page="podcast" data-route="path" data-i18n="nav-podcast">Podcast — Le Voilà</a>
+      <a href="https://www.levoila.org/podcast" class="mobile-subnav-link nav-trigger" data-page="podcast" data-route="path" data-i18n="nav-podcast">Podcast, Le Voilà</a>
       <a href="https://www.levoila.org/#ledger" class="mobile-subnav-link nav-trigger" data-page="ledger" data-i18n="nav-ledger">Live Ledger</a>
     </div>
 
@@ -1054,7 +1054,7 @@ img, video { max-width: 100%; height: auto; }
       <h1 class="serif text-6xl md:text-7xl font-semibold mb-8" data-i18n="hero-h2">The world remembers.</h1>
       <p class="text-lg max-w-2xl mx-auto leading-relaxed mb-10 text-[var(--limestone)]/80" data-i18n="hero-sub">A citizen-led trust protecting the historic sites that governments have abandoned. Anyone nominates. The world votes. The world funds it. The locals build it.</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="https://www.levoila.org/#steward" class="nav-trigger btn-primary px-8 py-3 rounded-md uppercase text-sm" data-page="steward" data-i18n="hero-cta-steward">Become a Steward — from $150</a>
+        <a href="https://www.levoila.org/#steward" class="nav-trigger btn-primary px-8 py-3 rounded-md uppercase text-sm" data-page="steward" data-i18n="hero-cta-steward">Become a Steward, from $150</a>
         <a href="https://www.levoila.org/#nominate" class="nav-trigger btn-secondary px-8 py-3 rounded-md uppercase text-sm" data-page="nominate" data-i18n="hero-cta-nominate">Nominate a Site</a>
       </div>
     </div>
@@ -1069,7 +1069,7 @@ img, video { max-width: 100%; height: auto; }
       <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="home-founder-eyebrow">A LETTER FROM THE FOUNDER</div>
       <p class="quote mb-6" data-i18n="home-founder-quote">"I was eighteen years old the first time I walked into a library."</p>
       <p class="text-base leading-relaxed mb-4" data-i18n="home-founder-p1">I was born in Haiti. I crossed thirty-five countries building technology systems for companies most people have heard of. I watched France protect its cathedrals, Japan rebuild its shrines, Mexico fund museums for its pyramids.</p>
-      <p class="text-base leading-relaxed mb-4" data-i18n="home-founder-p2">Then I came home and looked at what Haiti's history had become. So I built three libraries in northern Haiti — Pilate, Ferrier, Ouanaminthe — serving more than 500,000 people. But libraries are only the beginning.</p>
+      <p class="text-base leading-relaxed mb-4" data-i18n="home-founder-p2">Then I came home and looked at what Haiti's history had become. So I built three libraries in northern Haiti: Pilate, Ferrier, and Ouanaminthe. Together they serve more than 500,000 people. But libraries are only the beginning.</p>
       <p class="text-base leading-relaxed mb-6" data-i18n="home-founder-p3">I am a father. I cannot stop thinking about Haiti. Levoila is what I am doing about it.</p>
       <a href="https://www.levoila.org/#founder" class="nav-trigger inline-flex items-center text-[var(--navy)] font-semibold border-b-2 border-[var(--gold)] pb-1" data-page="founder" data-i18n="home-founder-cta">Read the Full Founder's Letter →</a>
     </div>
@@ -1106,17 +1106,17 @@ img, video { max-width: 100%; height: auto; }
       <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="home-phase-eyebrow">PHASE ONE</div>
       <h2 class="serif text-5xl font-semibold text-[var(--navy)]" data-i18n="home-phase-h2">We begin where the founder was born.</h2>
     </div>
-    <div style="position:relative;border-radius:18px;overflow:hidden;border:2px solid var(--gold);box-shadow:0 24px 50px rgba(11,37,69,.28);margin-bottom:52px">
+    <div style="position:relative;border-radius:18px;overflow:hidden;border:2px solid var(--gold);box-shadow:0 24px 50px rgba(11,37,69.28);margin-bottom:52px">
       <img src="images/fl-fort-hero.jpg" alt="Fort Saint-Joseph on its islet in the bay of Fort-Liberté" style="display:block;width:100%;height:min(60vh,560px);object-fit:cover">
-      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,37,69,.93) 0%,rgba(11,37,69,.66) 44%,rgba(11,37,69,.06) 82%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,37,69.93) 0%,rgba(11,37,69.66) 44%,rgba(11,37,69.06) 82%)"></div>
       <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 clamp(28px,5vw,72px);max-width:780px">
         <div style="font-size:11px;letter-spacing:3px;color:var(--gold);font-weight:700;text-transform:uppercase;margin-bottom:14px" data-i18n="home-fl-eyebrow">Pilot Project · Phase One begins here</div>
         <h3 class="serif" style="font-size:clamp(40px,6vw,68px);font-weight:700;color:#fff;margin-bottom:12px;line-height:.95">Fort-Liberté</h3>
         <p style="font-size:clamp(13px,1.4vw,16px);color:var(--gold);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px" data-i18n="home-site-fortliberte-region">Nord-Est · 17th-Century Bay Fortress</p>
-        <p style="font-size:clamp(14px,1.4vw,16px);color:rgba(255,255,255,.92);line-height:1.65;margin-bottom:28px;max-width:560px" data-i18n="home-site-fortliberte-body">Once a French naval stronghold, later a redoubt in the Haitian war of independence. Today the walls are quietly returning to the sea. Levoila will restore the ramparts, install a maritime exhibit, and open an open-air amphitheater for cultural programming.</p>
+        <p style="font-size:clamp(14px,1.4vw,16px);color:rgba(255,255,255.92);line-height:1.65;margin-bottom:28px;max-width:560px" data-i18n="home-site-fortliberte-body">Once a French naval stronghold, later a redoubt in the Haitian war of independence. Today the walls are quietly returning to the sea. Levoila will restore the ramparts, install a maritime exhibit, and open an open-air amphitheater for cultural programming.</p>
         <div><a href="https://www.levoila.org/#phase-one" class="nav-trigger serif" data-page="phase-one" style="display:inline-block;background:var(--gold);color:#fff;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:14px 32px;border-radius:999px;text-decoration:none" data-i18n="home-fl-cta">Explore the pilot</a></div>
       </div>
-      <div style="position:absolute;bottom:12px;right:16px;font-size:10px;color:rgba(255,255,255,.6)">Photo: Nick Hobgood · CC BY-SA 3.0</div>
+      <div style="position:absolute;bottom:12px;right:16px;font-size:10px;color:rgba(255,255,255.6)">Photo: Nick Hobgood · CC BY-SA 3.0</div>
     </div>
 
     <div style="text-align:center;margin-bottom:26px">
@@ -1163,18 +1163,18 @@ img, video { max-width: 100%; height: auto; }
         <div style="position:relative;border-radius:12px;overflow:hidden;border:1px solid #E5E0D5;background:#fff;opacity:.82;pointer-events:none;user-select:none">
         <div style="position:relative;aspect-ratio:16/9;overflow:hidden">
           <img src="images/citadelle.jpg" alt="The Citadelle Henri Christophe above the mountains of northern Haiti" style="width:100%;height:100%;object-fit:cover;filter:grayscale(45%)">
-          <div style="position:absolute;top:12px;left:12px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69,.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
+          <div style="position:absolute;top:12px;left:12px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
         </div>
         <div style="padding:22px">
           <h4 class="serif" style="font-size:20px;font-weight:700;color:#0B2545;margin-bottom:4px">Citadelle Henri Christophe</h4>
           <p style="font-size:11px;color:var(--gold);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px" data-i18n="home-site-citadelle-region">Milot · UNESCO World Heritage</p>
-          <p style="font-size:12px;line-height:1.6;color:#5b5346" data-i18n="home-site-citadelle-body">The largest fortress in the Western Hemisphere. Built by formerly enslaved people who had just defeated Napoleon's army. Following the tragedy of April 11, 2026, Levoila's first act here is a permanent memorial — then full restoration, professional security, and certified tours.</p>
+          <p style="font-size:12px;line-height:1.6;color:#5b5346" data-i18n="home-site-citadelle-body">The largest fortress in the Western Hemisphere. Built by formerly enslaved people who had just defeated Napoleon's army. Following the tragedy of April 11, 2026, Levoila's first act here is a permanent memorial, then full restoration, professional security, and certified tours.</p>
         </div>
       </div>
         <div style="position:relative;border-radius:12px;overflow:hidden;border:1px solid #E5E0D5;background:#fff;opacity:.82;pointer-events:none;user-select:none">
         <div style="position:relative;aspect-ratio:16/9;overflow:hidden">
           <img src="images/sans-souci.jpg" alt="The ruined facade and grand staircase of the Palais Sans-Souci" style="width:100%;height:100%;object-fit:cover;filter:grayscale(45%)">
-          <div style="position:absolute;top:12px;left:12px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69,.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
+          <div style="position:absolute;top:12px;left:12px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
         </div>
         <div style="padding:22px">
           <h4 class="serif" style="font-size:20px;font-weight:700;color:#0B2545;margin-bottom:4px">Palais Sans-Souci</h4>
@@ -1308,20 +1308,20 @@ img, video { max-width: 100%; height: auto; }
       <p class="quote mb-8" data-i18n="founder-quote-main">"I was eighteen years old the first time I walked into a library. I knew, even then, that something had been kept from me for eighteen years."</p>
 
       <h2 class="serif text-3xl font-bold text-[var(--navy)] mb-4" data-i18n="founder-why-h2">The Why</h2>
-      <p class="leading-relaxed mb-4" data-i18n="founder-why-p1">Jacques M. Jean was born in Ferrier, in the northeast of Haiti, and immigrated to the United States in his teens. He spent twenty-five years in enterprise technology leadership at some of the world's largest industrial companies — Honeywell, Invensys, Schneider Electric — working in more than thirty-five countries.</p>
+      <p class="leading-relaxed mb-4" data-i18n="founder-why-p1">Jacques M. Jean was born in Ferrier, in the northeast of Haiti, and immigrated to the United States in his teens. He spent twenty-five years in enterprise technology leadership at some of the world's largest industrial companies, Honeywell, Invensys, Schneider Electric, working in more than thirty-five countries.</p>
       <p class="leading-relaxed mb-4" data-i18n="founder-why-p2">He watched how nations protect what they value. France with its cathedrals. Japan with its shrines. Mexico with its pyramids. Then he came home to Haiti and saw what had been allowed to crumble.</p>
 
       <h2 class="serif text-3xl font-bold text-[var(--navy)] mt-10 mb-4" data-i18n="founder-work-h2">The Work</h2>
-      <p class="leading-relaxed mb-4" data-i18n="founder-work-p1-html">In 2018, Jacques founded the <span class="font-semibold">Universal Learning Centre</span>, a 501(c)(3) that has since built three public libraries in northern Haiti — in Pilate, Ferrier, and Ouanaminthe — serving more than 500,000 people. A fourth library is in planning for Cap-Haïtien.</p>
+      <p class="leading-relaxed mb-4" data-i18n="founder-work-p1-html">In 2018, Jacques founded the <span class="font-semibold">Universal Learning Centre</span>, a 501(c)(3) that has since built three public libraries in northern Haiti, in Pilate, Ferrier, and Ouanaminthe, serving more than 500,000 people. A fourth library is in planning for Cap-Haïtien.</p>
       <p class="leading-relaxed mb-4" data-i18n="founder-work-p2-html">He is the CEO of <span class="font-semibold">TechFides</span> (Frisco, TX), a technology firm specializing in local AI deployment for small and mid-size businesses. He serves as Board Chair of <span class="font-semibold">MUSA Asset Management</span> and <span class="font-semibold">OVYNA</span>, and Co-Chair (Founding) of the <span class="font-semibold">American Business Council Gabon</span>.</p>
 
       <h2 class="serif text-3xl font-bold text-[var(--navy)] mt-10 mb-4" data-i18n="founder-moment-h2">The Levoila Moment</h2>
-      <p class="leading-relaxed mb-4" data-i18n="founder-moment-p1">On April 11, 2026, a crowd crush at an unauthorized event at the Citadelle Henri Christophe killed Haitian children at a UNESCO World Heritage Site with no security, no oversight, no one in charge. The fortress his ancestors built — Black people who freed themselves from Napoleon — had become a place of grief.</p>
+      <p class="leading-relaxed mb-4" data-i18n="founder-moment-p1">On April 11, 2026, a crowd crush at an unauthorized event at the Citadelle Henri Christophe killed Haitian children at a UNESCO World Heritage Site with no security, no oversight, no one in charge. The fortress his ancestors built, Black people who freed themselves from Napoleon, had become a place of grief.</p>
       <p class="leading-relaxed mb-4" data-i18n="founder-moment-p2">Levoila is what he is doing about it. And not only for Haiti. For every nation whose government has forgotten its heritage.</p>
 
       <div class="mt-10 p-6 border-l-4 border-[var(--gold)] bg-[var(--limestone)]">
         <p class="quote" data-i18n="founder-quote-closing">"The world is full of monuments standing alone, abandoned by the governments who inherited them. Their governments have forgotten them. The world has not. Levoila is the door."</p>
-        <p class="text-sm mt-4 text-[var(--stone)]" data-i18n="founder-quote-attrib">— Jacques M. Jean</p>
+        <p class="text-sm mt-4 text-[var(--stone)]" data-i18n="founder-quote-attrib">, Jacques M. Jean</p>
       </div>
     </div>
   </div>
@@ -1355,7 +1355,7 @@ img, video { max-width: 100%; height: auto; }
       </div>
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="team-role-cos">CHIEF OF STAFF</div>
       <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">Molina Jean-Louis</h3>
-      <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="team-cos-bio">Runs the Founder's office and keeps the trust moving across every team — heritage, field ops, stewardship, finance, communications. The desk where partners, press, and Stewards reach Levoila when something needs to happen.</p>
+      <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="team-cos-bio">Runs the Founder's office and keeps the trust moving across every team, heritage, field ops, stewardship, finance, communications. The desk where partners, press, and Stewards reach Levoila when something needs to happen.</p>
     </div>
 
     <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
@@ -1376,7 +1376,7 @@ img, video { max-width: 100%; height: auto; }
       <div class="person-photo aspect-square rounded-lg text-5xl mb-5">TBD</div>
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="team-role-stewardship">HEAD OF STEWARDSHIP</div>
       <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2" data-i18n="tbn">[To Be Named]</h3>
-      <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="team-stewardship-bio">Owns the Steward community — onboarding, retention, quarterly assemblies, and the experience of Heritage Patrons.</p>
+      <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="team-stewardship-bio">Owns the Steward community, onboarding, retention, quarterly assemblies, and the experience of Heritage Patrons.</p>
     </div>
 
     <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
@@ -1429,7 +1429,7 @@ img, video { max-width: 100%; height: auto; }
         </div>
       </div>
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="team-role-cio-fractional">CHIEF INFORMATION OFFICER · FRACTIONAL</div>
-      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2" data-i18n="team-techfides-name">TechFides — Strategic Partner</h3>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2" data-i18n="team-techfides-name">TechFides, Strategic Partner</h3>
       <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="team-cio-fractional-bio">IT strategy, technology architecture, platform governance, and engineering leadership. Provided under a Strategic Services Agreement with TechFides, approved at arm's length by the Levoila Board.</p>
     </div>
 
@@ -1441,7 +1441,7 @@ img, video { max-width: 100%; height: auto; }
         </div>
       </div>
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="team-role-ciso-fractional">CHIEF INFORMATION SECURITY OFFICER · FRACTIONAL</div>
-      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2" data-i18n="team-techfides-name">TechFides — Strategic Partner</h3>
+      <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2" data-i18n="team-techfides-name">TechFides, Strategic Partner</h3>
       <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="team-ciso-fractional-bio">Cybersecurity, threat monitoring, identity and key management, incident response, and SOC 2 readiness. Provided under the same Strategic Services Agreement, governed at arm's length.</p>
     </div>
 
@@ -1453,13 +1453,13 @@ img, video { max-width: 100%; height: auto; }
   <div class="mt-24 pt-16 border-t border-[#E5E0D5]">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="newgen-eyebrow">YOUTH VOLUNTEERS · THE NEW GENERATION</div>
     <h2 class="serif text-5xl font-semibold text-[var(--navy)] mb-4" data-i18n="newgen-h2">The new generation steps up.</h2>
-    <p class="text-xl text-[var(--stone)] max-w-3xl" data-i18n="newgen-intro">Heritage belongs to whoever carries it next. These are the volunteer tracks where young people — in the diaspora and on the ground in Haiti — give their time, build real skills, and put their name behind a rescue.</p>
+    <p class="text-xl text-[var(--stone)] max-w-3xl" data-i18n="newgen-intro">Heritage belongs to whoever carries it next. These are the volunteer tracks where young people, in the diaspora and on the ground in Haiti, give their time, build real skills, and put their name behind a rescue.</p>
     <div class="gold-rule mt-6 mb-12"></div>
 
     <!-- ===== NEW GENERATION · UNITED STATES ===== -->
     <div class="mb-16">
       <div class="flex items-baseline gap-4 mb-2 flex-wrap">
-        <h3 class="serif text-4xl font-bold text-[var(--navy)]" data-i18n="newgen-us-h3">New Generation — United States</h3>
+        <h3 class="serif text-4xl font-bold text-[var(--navy)]" data-i18n="newgen-us-h3">New Generation, United States</h3>
         <span class="text-xs tracking-[3px] text-[var(--gold)] font-bold" data-i18n="newgen-us-label">DIASPORA · 9 KEY AREAS</span>
       </div>
       <p class="text-sm text-[var(--stone)] max-w-3xl mb-8" data-i18n="newgen-us-intro">For students and young professionals across the U.S. diaspora who want to move the mission from wherever they are.</p>
@@ -1516,7 +1516,7 @@ img, video { max-width: 100%; height: auto; }
     <!-- ===== NEW GENERATION · HAITI ===== -->
     <div class="mb-4">
       <div class="flex items-baseline gap-4 mb-2 flex-wrap">
-        <h3 class="serif text-4xl font-bold text-[var(--navy)]" data-i18n="newgen-ht-h3">New Generation — Haiti</h3>
+        <h3 class="serif text-4xl font-bold text-[var(--navy)]" data-i18n="newgen-ht-h3">New Generation, Haiti</h3>
         <span class="text-xs tracking-[3px] text-[var(--gold)] font-bold" data-i18n="newgen-ht-label">ON THE GROUND · 9 KEY AREAS</span>
       </div>
       <p class="text-sm text-[var(--stone)] max-w-3xl mb-8" data-i18n="newgen-ht-intro">For young people in the towns around our sites who want to learn, lead, and build a future on their own heritage.</p>
@@ -1575,18 +1575,18 @@ img, video { max-width: 100%; height: auto; }
   <!--  LOCAL TEAMS  -->
   <!-- ============================================ -->
   <div class="mt-24 pt-16 border-t border-[#E5E0D5]">
-    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="localteams-eyebrow">LOCAL TEAMS · 75–85% LOCAL HIRING</div>
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="localteams-eyebrow">LOCAL TEAMS · 75 to 85% LOCAL HIRING</div>
     <h2 class="serif text-5xl font-semibold text-[var(--navy)] mb-4" data-i18n="localteams-h2">The people on the ground.</h2>
-    <p class="text-xl text-[var(--stone)] max-w-3xl" data-i18n="localteams-intro">Every restored site is run by the community surrounding it. Between 75 and 85 percent of each workforce is hired locally — leadership, architects, masons, carpenters, security officers, guides, craftspeople, maintenance crews. International experts come in only to train and supplement.</p>
+    <p class="text-xl text-[var(--stone)] max-w-3xl" data-i18n="localteams-intro">Every restored site is run by the community surrounding it. Between 75 and 85 percent of each workforce is hired locally, leadership, architects, masons, carpenters, security officers, guides, craftspeople, maintenance crews. International experts come in only to train and supplement.</p>
     <div class="gold-rule mt-6 mb-12"></div>
 
     <!-- ===== CITADELLE LOCAL TEAM ===== -->
     <div class="mb-20">
       <div class="flex items-baseline gap-4 mb-2 flex-wrap">
-        <h3 class="serif text-4xl font-bold text-[var(--navy)]" data-i18n="milot-h3">Milot Complex — Citadelle &amp; Sans-Souci</h3>
+        <h3 class="serif text-4xl font-bold text-[var(--navy)]" data-i18n="milot-h3">Milot Complex, Citadelle &amp; Sans-Souci</h3>
         <span class="text-xs tracking-[3px] text-[var(--gold)] font-bold" data-i18n="milot-region-label">MILOT · NORD · HAITI</span>
       </div>
-      <p class="text-sm text-[var(--stone)] max-w-3xl mb-8" data-i18n="milot-intro">One local team operates the Citadelle Henri Christophe and the Palais Sans-Souci together — they sit three miles apart in the same UNESCO World Heritage park. Local workforce target: 75–100 hires across leadership and eight operating crews. Final headcount sized to the active phase of restoration.</p>
+      <p class="text-sm text-[var(--stone)] max-w-3xl mb-8" data-i18n="milot-intro">One local team operates the Citadelle Henri Christophe and the Palais Sans-Souci together. They sit three miles apart in the same UNESCO World Heritage park. Local workforce target: 75 to 100 hires across leadership and eight operating crews. Final headcount sized to the active phase of restoration.</p>
 
       <!-- Leadership row -->
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-3" data-i18n="leadership-label">LEADERSHIP</div>
@@ -1615,7 +1615,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-construction">Construction &amp; Restoration</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew1-hires">15–22 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew1-hires">15 to 22 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="milot-crew1-lead">Led by Master Mason · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="milot-crew1-body">Stonemasons, carpenters, ironworkers, scaffolders, general laborers. Apprenticeships drawn from Milot and surrounding villages.</p>
@@ -1624,7 +1624,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-security">Security &amp; Safety</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew2-hires">10–14 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew2-hires">10 to 14 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="milot-crew2-lead">Led by Head of Site Security · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="milot-crew2-body">24/7 perimeter, crowd-control officers, event security, capacity enforcement. Owns the Zero-Tragedy Clause on the ground.</p>
@@ -1633,7 +1633,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-maintenance">Maintenance &amp; Grounds</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew3-hires">8–12 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew3-hires">8 to 12 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="milot-crew3-lead">Led by Maintenance Foreman · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="milot-crew3-body">Daily upkeep, groundskeeping, sanitation, eco-infrastructure (solar, water, waste), pathways, signage.</p>
@@ -1642,7 +1642,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-hospitality">Hospitality &amp; Tours</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew4-hires">10–14 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew4-hires">10 to 14 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="milot-crew4-lead">Led by Head of Hospitality · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="milot-crew4-body">Certified multilingual tour guides (FR/EN/HT/ES), ticketing, visitor services, capacity-controlled scheduling.</p>
@@ -1651,7 +1651,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-museum">Museum &amp; Memorial</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew5-hires">5–7 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew5-hires">5 to 7 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="milot-crew5-lead">Led by Curator · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="milot-crew5-body">Lower-compound museum operations, the April 11, 2026 permanent memorial, historical archives, exhibits.</p>
@@ -1660,7 +1660,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-education">Education &amp; Outreach</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew6-hires">4–6 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew6-hires">4 to 6 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="milot-crew6-lead">Led by Outreach Director · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="milot-crew6-body">School visits, scholarship programs, community lectures, partnerships with the Universal Learning Centre libraries.</p>
@@ -1669,7 +1669,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-logistics">Logistics &amp; Procurement</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew7-hires">3–5 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="milot-crew7-hires">3 to 5 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="milot-crew7-lead">Led by Operations Manager · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="milot-crew7-body">Materials sourcing, vendor management, supply chain across northern Haiti, customs and transit handling.</p>
@@ -1684,7 +1684,7 @@ img, video { max-width: 100%; height: auto; }
         <h3 class="serif text-4xl font-bold text-[var(--navy)]" data-i18n="fortliberte-h3">Fort Liberté</h3>
         <span class="text-xs tracking-[3px] text-[var(--gold)] font-bold" data-i18n="fortliberte-region-label">FORT-LIBERTÉ · NORD-EST · HAITI</span>
       </div>
-      <p class="text-sm text-[var(--stone)] max-w-3xl mb-8" data-i18n="fortliberte-intro">Local workforce target: 50–65 hires across leadership and six operating crews. The artisan marketplace adds the seventh crew at full operation.</p>
+      <p class="text-sm text-[var(--stone)] max-w-3xl mb-8" data-i18n="fortliberte-intro">Local workforce target: 50 to 65 hires across leadership and six operating crews. The artisan marketplace adds the seventh crew at full operation.</p>
 
       <!-- Leadership row -->
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-3" data-i18n="leadership-label">LEADERSHIP</div>
@@ -1713,7 +1713,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-construction">Construction &amp; Restoration</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew1-hires">12–18 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew1-hires">12 to 18 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="fortliberte-crew1-lead">Led by Master Mason · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="fortliberte-crew1-body">Coral-stone masons, carpenters, ironworkers, scaffolders. Apprentices drawn from Fort-Liberté and Ouanaminthe.</p>
@@ -1722,7 +1722,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-security">Security &amp; Safety</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew2-hires">8–10 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew2-hires">8 to 10 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="fortliberte-crew2-lead">Led by Head of Site Security · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="fortliberte-crew2-body">Site perimeter, event permitting, coordination with regional police and the coastguard.</p>
@@ -1731,7 +1731,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-maintenance">Maintenance &amp; Grounds</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew3-hires">6–9 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew3-hires">6 to 9 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="fortliberte-crew3-lead">Led by Maintenance Foreman · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="fortliberte-crew3-body">Daily upkeep, groundskeeping, solar and sanitation infrastructure, sea-wall and breakwater monitoring.</p>
@@ -1740,7 +1740,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-hospitality">Hospitality &amp; Tours</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew4-hires">8–12 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew4-hires">8 to 12 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="fortliberte-crew4-lead">Led by Head of Hospitality · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="fortliberte-crew4-body">Multilingual tour guides, ticketing, the maritime exhibit, amphitheater event staff.</p>
@@ -1749,7 +1749,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-marketplace">Marketplace &amp; Artisans</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew5-hires">6–10 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew5-hires">6 to 10 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="fortliberte-crew5-lead">Led by Marketplace Curator · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="fortliberte-crew5-body">Curated local craftspeople, fair pricing, sales floor, partner artisan workshops outside the fort.</p>
@@ -1758,7 +1758,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--limestone)] rounded-xl p-6 border border-[#E5E0D5]">
           <div class="flex justify-between items-start mb-2">
             <h4 class="serif text-xl font-bold text-[var(--navy)]" data-i18n="crew-logistics">Logistics &amp; Procurement</h4>
-            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew6-hires">3–4 hires</span>
+            <span class="text-xs font-bold text-[var(--gold)] whitespace-nowrap" data-i18n="fortliberte-crew6-hires">3 to 4 hires</span>
           </div>
           <p class="text-xs text-[var(--stone)] mb-3 italic" data-i18n="fortliberte-crew6-lead">Led by Operations Manager · TBD</p>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="fortliberte-crew6-body">Materials, vendor management, customs and cross-border logistics with the Dominican Republic.</p>
@@ -1769,8 +1769,8 @@ img, video { max-width: 100%; height: auto; }
 
     <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-xl p-8 mt-16">
       <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="join-team-eyebrow">JOIN A LOCAL TEAM</div>
-      <p class="text-base leading-relaxed mb-3" data-i18n="join-team-p1">Levoila hires locally first. If you are based in the Nord or Nord-Est departments of Haiti and have experience in stonework, carpentry, security, hospitality, maintenance, or restoration — we want to meet you.</p>
-      <p class="text-base leading-relaxed mb-4" data-i18n="join-team-p2">We also hire for leadership roles directly from the diaspora — Haitian-Americans, Haitian-Canadians, and members of the Haitian communities in France and Brazil with credentials in heritage architecture, museum operations, or hospitality management.</p>
+      <p class="text-base leading-relaxed mb-3" data-i18n="join-team-p1">Levoila hires locally first. If you are based in the Nord or Nord-Est departments of Haiti and have experience in stonework, carpentry, security, hospitality, maintenance, or restoration, we want to meet you.</p>
+      <p class="text-base leading-relaxed mb-4" data-i18n="join-team-p2">We also hire for leadership roles directly from the diaspora, Haitian-Americans, Haitian-Canadians, and members of the Haitian communities in France and Brazil with credentials in heritage architecture, museum operations, or hospitality management.</p>
       <a href="mailto:jobs@levoila.org" class="inline-block bg-[var(--gold)] text-[var(--navy)] font-bold text-sm tracking-wider uppercase px-6 py-3 rounded-md hover:opacity-90" data-i18n="join-team-cta">Send your application to jobs@levoila.org →</a>
     </div>
 
@@ -1784,7 +1784,7 @@ img, video { max-width: 100%; height: auto; }
   <div class="py-12">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="advisory-eyebrow">ADVISORY BOARD</div>
     <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4" data-i18n="advisory-h1">The wisdom that keeps us honest.</h1>
-    <p class="text-xl text-[var(--stone)] max-w-3xl" data-i18n="advisory-intro">Levoila is advised by a global board of practitioners — heritage architects, historians, diaspora leaders, legal counsel, and financial auditors. Advisory seats include Heritage Patron Global Council members.</p>
+    <p class="text-xl text-[var(--stone)] max-w-3xl" data-i18n="advisory-intro">Levoila is advised by a global board of practitioners, heritage architects, historians, diaspora leaders, legal counsel, and financial auditors. Advisory seats include Heritage Patron Global Council members.</p>
     <div class="gold-rule mt-6 mb-12"></div>
   </div>
 
@@ -1805,7 +1805,7 @@ img, video { max-width: 100%; height: auto; }
     <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2" data-i18n="advisory-3-role">FINANCIAL AUDIT ADVISOR</div>
       <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3" data-i18n="tbn">[To Be Named]</h3>
-      <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="advisory-3-bio">Independent auditor or financial governance expert — Big Four or institutional grant-management background. Reviews the Quarterly Operational &amp; Financial Report and the public ledger.</p>
+      <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="advisory-3-bio">Independent auditor or financial governance expert, Big Four or institutional grant-management background. Reviews the Quarterly Operational &amp; Financial Report and the public ledger.</p>
     </div>
 
     <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
@@ -1826,7 +1826,7 @@ img, video { max-width: 100%; height: auto; }
     <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2" data-i18n="advisory-6-role">TOURISM &amp; HOSPITALITY ADVISOR</div>
       <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3" data-i18n="tbn">[To Be Named]</h3>
-      <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="advisory-6-bio">Senior executive from premium heritage tourism — Aman, Rosewood, or comparable. Advises on the operating model that turns restored sites into self-sustaining enterprises.</p>
+      <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="advisory-6-bio">Senior executive from premium heritage tourism, Aman, Rosewood, or comparable. Advises on the operating model that turns restored sites into self-sustaining enterprises.</p>
     </div>
 
     <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
@@ -1838,14 +1838,14 @@ img, video { max-width: 100%; height: auto; }
     <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2" data-i18n="advisory-8-role">TECHNOLOGY &amp; TRANSPARENCY ADVISOR</div>
       <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-3" data-i18n="tbn">[To Be Named]</h3>
-      <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="advisory-8-bio">Cryptography, public ledger systems, identity verification. Reviews the transparency architecture — escrow, dual-signature releases, and the live financial dashboard.</p>
+      <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="advisory-8-bio">Cryptography, public ledger systems, identity verification. Reviews the transparency architecture, escrow, dual-signature releases, and the live financial dashboard.</p>
     </div>
 
   </div>
 
   <div class="text-center py-16">
     <p class="quote" data-i18n="advisory-quote">"An advisory board is not a list of names. It is the people who tell you when you are wrong."</p>
-    <p class="text-sm mt-4 text-[var(--stone)]" data-i18n="advisory-quote-attrib">— Jacques M. Jean</p>
+    <p class="text-sm mt-4 text-[var(--stone)]" data-i18n="advisory-quote-attrib">, Jacques M. Jean</p>
   </div>
 </section>
 
@@ -1886,12 +1886,12 @@ img, video { max-width: 100%; height: auto; }
         </div>
         <div>
           <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2" data-i18n="countries-haiti-gov-label">GOVERNMENT PARTNER</div>
-          <p class="text-sm leading-relaxed" data-i18n="countries-haiti-gov-val-html">Ministère de la Culture et de la Communication<br>ISPAN — Institut de Sauvegarde du Patrimoine National</p>
+          <p class="text-sm leading-relaxed" data-i18n="countries-haiti-gov-val-html">Ministère de la Culture et de la Communication<br>ISPAN, Institut de Sauvegarde du Patrimoine National</p>
         </div>
       </div>
     </div>
 
-    <a href="https://www.levoila.org/haiti" data-page="haiti" data-route="path" class="nav-trigger inline-block mb-8 text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="countries-haiti-portal-link">See Haiti's live portal — progress, ledger &amp; dispatches →</a>
+    <a href="https://www.levoila.org/haiti" data-page="haiti" data-route="path" class="nav-trigger inline-block mb-8 text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="countries-haiti-portal-link">See Haiti's live portal, progress, ledger &amp; dispatches →</a>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -1984,7 +1984,7 @@ img, video { max-width: 100%; height: auto; }
 
   <div class="text-center py-16">
     <p class="quote" data-i18n="countries-quote">"A country is not a market. It is a people. We arrive only when we are invited, and we build only with the citizens who will inherit what we make."</p>
-    <p class="text-sm mt-4 text-[var(--stone)]" data-i18n="countries-quote-attrib">— Jacques M. Jean</p>
+    <p class="text-sm mt-4 text-[var(--stone)]" data-i18n="countries-quote-attrib">, Jacques M. Jean</p>
   </div>
 </section>
 
@@ -1993,22 +1993,22 @@ img, video { max-width: 100%; height: auto; }
 <!-- ============================================ -->
 <section class="page" data-page="phase-one">
   <div class="py-12">
-    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="phaseone-eyebrow">PHASE ONE — HAITI</div>
+    <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="phaseone-eyebrow">PHASE ONE, HAITI</div>
     <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4" data-i18n="phaseone-h1">Three sites. One country. The proof point.</h1>
-    <p class="text-xl text-[var(--stone)] max-w-3xl" data-i18n="phaseone-intro">Phase One opens in northern Haiti at three UNESCO-recognized sites. Two of them — the Citadelle Henri Christophe and the Palais Sans-Souci — sit three miles apart in the Milot complex, both built by King Henri Christophe in the first years of free Haiti. The third, Fort Liberté, guards the Atlantic coast. If Levoila can work in Haiti — a country routinely written off by capital and institutions — it can work anywhere.</p>
+    <p class="text-xl text-[var(--stone)] max-w-3xl" data-i18n="phaseone-intro">Phase One opens in northern Haiti at three UNESCO-recognized sites. Two of them, the Citadelle Henri Christophe and the Palais Sans-Souci, sit three miles apart in the Milot complex, both built by King Henri Christophe in the first years of free Haiti. The third, Fort Liberté, guards the Atlantic coast. If Levoila can work in Haiti, a country routinely written off by capital and institutions, it can work anywhere.</p>
     <div class="gold-rule mt-6 mb-16"></div>
   </div>
 
   <div class="bg-[var(--limestone)] rounded-xl p-6 mb-12">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-2" data-i18n="phaseone-milot-eyebrow">THE MILOT COMPLEX</div>
-    <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="phaseone-milot-body">The Citadelle Henri Christophe and the Palais Sans-Souci together form the National History Park — Citadel, Sans-Souci, Ramiers — Haiti's first UNESCO World Heritage Site (1982). They sit three miles apart in the town of Milot, sharing a single local team and a single visitor experience. Sites 1 and 2 are operated as one Milot program.</p>
+    <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="phaseone-milot-body">The Citadelle Henri Christophe and the Palais Sans-Souci together form the National History Park, Citadel, Sans-Souci, Ramiers, Haiti's first UNESCO World Heritage Site (1982). They sit three miles apart in the town of Milot, sharing a single local team and a single visitor experience. Sites 1 and 2 are operated as one Milot program.</p>
   </div>
 
   <div class="grid lg:grid-cols-3 gap-10">
 
     <div>
       <figure class="mb-6">
-        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative;box-shadow:0 12px 30px rgba(11,37,69,.25);border:2px solid var(--gold)"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--gold);color:#fff" data-i18n="home-badge-pilot">Pilot Project · Now</div>
+        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative;box-shadow:0 12px 30px rgba(11,37,69.25);border:2px solid var(--gold)"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--gold);color:#fff" data-i18n="home-badge-pilot">Pilot Project · Now</div>
           <img src="https://www.levoila.org/images/fl-fort-hero.jpg" alt="The bay fortress at Fort-Liberté on Haiti's northern Atlantic coast" class="w-full h-full object-cover" loading="lazy">
         </div>
         <figcaption class="text-[11px] text-[var(--stone)]/60 mt-2" data-i18n="phaseone-site3-credit">Fort-Liberté · Photo: Wikimedia Commons (CC BY-SA)</figcaption>
@@ -2035,7 +2035,7 @@ img, video { max-width: 100%; height: auto; }
 
     <div style="opacity:.62;pointer-events:none;user-select:none">
       <figure class="mb-6">
-        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69,.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
+        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
           <img src="https://www.levoila.org/images/citadelle.jpg" alt="The Citadelle Henri Christophe rising above the mountains of northern Haiti" class="w-full h-full object-cover" style="filter:grayscale(55%)" loading="lazy">
         </div>
         <figcaption class="text-[11px] text-[var(--stone)]/60 mt-2" data-i18n="phaseone-site1-credit">Citadelle Henri Christophe · Photo: Wikimedia Commons (CC BY-SA)</figcaption>
@@ -2043,7 +2043,7 @@ img, video { max-width: 100%; height: auto; }
       <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="phaseone-site1-label">SITE 1  ·  MILOT, NORD</div>
       <h2 class="serif text-3xl font-bold text-[var(--navy)] mb-4">Citadelle Henri Christophe</h2>
       <p class="leading-relaxed mb-4" data-i18n="phaseone-site1-p1">The largest fortress in the Western Hemisphere. Built between 1805 and 1820 by formerly enslaved people who had just defeated Napoleon's army and declared themselves free. UNESCO World Heritage Site since 1982.</p>
-      <p class="leading-relaxed mb-4" data-i18n="phaseone-site1-p2">On April 11, 2026, a crowd crush at an unauthorized event killed Haitian children at the site. Levoila's first act on the Citadelle will be a permanent memorial to the lives lost — designed in consultation with the families — followed by structural restoration, professional security, certified tour operations, and a museum in the lower compound.</p>
+      <p class="leading-relaxed mb-4" data-i18n="phaseone-site1-p2">On April 11, 2026, a crowd crush at an unauthorized event killed Haitian children at the site. Levoila's first act on the Citadelle will be a permanent memorial to the lives lost, designed in consultation with the families, followed by structural restoration, professional security, certified tour operations, and a museum in the lower compound.</p>
       <div class="bg-[var(--limestone)] rounded-lg p-5 my-6">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2" data-i18n="phaseone-scope-label">PHASE ONE SCOPE</div>
         <ul class="text-sm space-y-1.5">
@@ -2062,7 +2062,7 @@ img, video { max-width: 100%; height: auto; }
 
     <div style="opacity:.62;pointer-events:none;user-select:none">
       <figure class="mb-6">
-        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69,.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
+        <div class="aspect-[4/3] rounded-xl overflow-hidden" style="position:relative"><div style="position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;font-weight:700;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(11,37,69.9);color:#fff" data-i18n="home-badge-future">Future phase · Not yet open</div>
           <img src="https://www.levoila.org/images/sans-souci.jpg" alt="The ruined grand staircase and facade of the Palais Sans-Souci" class="w-full h-full object-cover" style="filter:grayscale(55%)" loading="lazy">
         </div>
         <figcaption class="text-[11px] text-[var(--stone)]/60 mt-2" data-i18n="phaseone-site2-credit">Palais Sans-Souci · Photo: Wikimedia Commons (CC BY-SA)</figcaption>
@@ -2070,7 +2070,7 @@ img, video { max-width: 100%; height: auto; }
       <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="phaseone-site2-label">SITE 2  ·  MILOT, NORD</div>
       <h2 class="serif text-3xl font-bold text-[var(--navy)] mb-4">Palais Sans-Souci</h2>
       <p class="leading-relaxed mb-4" data-i18n="phaseone-site2-p1">The royal palace of King Henri Christophe, built between 1810 and 1813 to rival Versailles. The architectural statement of a newly free Black nation: a king's house worthy of any in Europe, set against the mountains of northern Haiti.</p>
-      <p class="leading-relaxed mb-4" data-i18n="phaseone-site2-p2">Destroyed by the earthquake of May 7, 1842, it stands today as one of the most poetic ruins in the hemisphere — colonnades open to the sky, gardens reclaimed by the land. UNESCO World Heritage Site since 1982. Operated together with the Citadelle as one Milot heritage experience.</p>
+      <p class="leading-relaxed mb-4" data-i18n="phaseone-site2-p2">Destroyed by the earthquake of May 7, 1842, it stands today as one of the most poetic ruins in the hemisphere, colonnades open to the sky, gardens reclaimed by the land. UNESCO World Heritage Site since 1982. Operated together with the Citadelle as one Milot heritage experience.</p>
       <div class="bg-[var(--limestone)] rounded-lg p-5 my-6">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2" data-i18n="phaseone-scope-label">PHASE ONE SCOPE</div>
         <ul class="text-sm space-y-1.5">
@@ -2089,7 +2089,7 @@ img, video { max-width: 100%; height: auto; }
   </div>
 
   <div class="text-center py-16">
-    <a href="https://www.levoila.org/#steward" class="nav-trigger btn-primary inline-block px-10 py-4 rounded-md uppercase tracking-wider" data-page="steward" data-i18n="phaseone-cta">Fund Phase One — Become a Steward</a>
+    <a href="https://www.levoila.org/#steward" class="nav-trigger btn-primary inline-block px-10 py-4 rounded-md uppercase tracking-wider" data-page="steward" data-i18n="phaseone-cta">Fund Phase One, Become a Steward</a>
   </div>
 </section>
 
@@ -2114,7 +2114,7 @@ img, video { max-width: 100%; height: auto; }
       <span class="phase-dot" aria-hidden="true"></span>
       <div class="text-[11px] tracking-[3px] text-[var(--stone)]/60 font-bold uppercase mb-2" data-i18n="roadmap-phase1-label">Months 1 to 3 · Phase One</div>
       <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-4 leading-tight" data-i18n="roadmap-phase1-h2-html">We arrive. We listen. We <em class="text-[var(--gold)]">shake hands with the country.</em></h2>
-      <p class="leading-relaxed mb-3" data-i18n="roadmap-phase1-p1">In the first ninety days we sign the agreement with the host nation — the Sovereignty Compact — and open our local office in the city closest to the site. We hire the first three people on the ground: the Country Director, the Liaison Director, and the Government Affairs lead.</p>
+      <p class="leading-relaxed mb-3" data-i18n="roadmap-phase1-p1">In the first ninety days we sign the agreement with the host nation, the Sovereignty Compact, and open our local office in the city closest to the site. We hire the first three people on the ground: the Country Director, the Liaison Director, and the Government Affairs lead.</p>
       <p class="leading-relaxed mb-5" data-i18n="roadmap-phase1-p2">Then we walk the site with an architect. We meet the families, the mayor, the teachers, the elders. We do not draw a single line until they have spoken.</p>
       <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2" data-i18n="roadmap-phase1-bullets-label">By the end of Phase One</div>
       <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
@@ -2129,7 +2129,7 @@ img, video { max-width: 100%; height: auto; }
       <span class="phase-dot" aria-hidden="true"></span>
       <div class="text-[11px] tracking-[3px] text-[var(--stone)]/60 font-bold uppercase mb-2" data-i18n="roadmap-phase2-label">Months 4 to 6 · Phase Two</div>
       <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-4 leading-tight" data-i18n="roadmap-phase2-h2-html">We draw the plan. We <em class="text-[var(--gold)]">open the window.</em></h2>
-      <p class="leading-relaxed mb-3" data-i18n="roadmap-phase2-p1">The lead Heritage Architect comes on. The restoration plan is drawn to UNESCO standards. We design the things people never notice when they work — solar power, clean water, sanitation, and a security plan that means no child ever dies on our watch.</p>
+      <p class="leading-relaxed mb-3" data-i18n="roadmap-phase2-p1">The lead Heritage Architect comes on. The restoration plan is drawn to UNESCO standards. We design the things people never notice when they work, solar power, clean water, sanitation, and a security plan that means no child ever dies on our watch.</p>
       <p class="leading-relaxed mb-5" data-i18n="roadmap-phase2-p2">Then we open the fundraising window to the world. Twenty-four months on the clock. If we do not raise it, every Steward gets their money back. That is the deal.</p>
       <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2" data-i18n="roadmap-phase2-bullets-label">By the end of Phase Two</div>
       <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
@@ -2159,8 +2159,8 @@ img, video { max-width: 100%; height: auto; }
       <span class="phase-dot" aria-hidden="true"></span>
       <div class="text-[11px] tracking-[3px] text-[var(--stone)]/60 font-bold uppercase mb-2" data-i18n="roadmap-phase4-label">Months 13 to 18 · Phase Four</div>
       <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-4 leading-tight" data-i18n="roadmap-phase4-h2-html">We rebuild. We <em class="text-[var(--gold)]">build the welcome.</em></h2>
-      <p class="leading-relaxed mb-3" data-i18n="roadmap-phase4-p1">This is the loudest half of the project. Stone returns to stone. The museum or interpretation center goes up. Pathways, signage, lighting, capacity controls — everything a visitor will touch is built and tested.</p>
-      <p class="leading-relaxed mb-5" data-i18n="roadmap-phase4-p2">Our tour guides are trained in four or five languages. Our hospitality team starts welcoming the first quiet visitors — Stewards, families, government officials — long before the world is invited.</p>
+      <p class="leading-relaxed mb-3" data-i18n="roadmap-phase4-p1">This is the loudest half of the project. Stone returns to stone. The museum or interpretation center goes up. Pathways, signage, lighting, capacity controls, everything a visitor will touch is built and tested.</p>
+      <p class="leading-relaxed mb-5" data-i18n="roadmap-phase4-p2">Our tour guides are trained in four or five languages. Our hospitality team starts welcoming the first quiet visitors, Stewards, families, government officials, long before the world is invited.</p>
       <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2" data-i18n="roadmap-phase4-bullets-label">By the end of Phase Four</div>
       <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
         <li data-i18n="roadmap-phase4-bullet1">Construction is done.</li>
@@ -2174,7 +2174,7 @@ img, video { max-width: 100%; height: auto; }
       <span class="phase-dot" aria-hidden="true"></span>
       <div class="text-[11px] tracking-[3px] text-[var(--stone)]/60 font-bold uppercase mb-2" data-i18n="roadmap-phase5-label">Months 19 to 21 · Phase Five</div>
       <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-4 leading-tight" data-i18n="roadmap-phase5-h2-html">We rehearse. We <em class="text-[var(--gold)]">open the books.</em></h2>
-      <p class="leading-relaxed mb-3" data-i18n="roadmap-phase5-p1">The site is operating. We run the drills. We check the locks. An independent auditor walks every line of the ledger and publishes what they find — clean, or otherwise.</p>
+      <p class="leading-relaxed mb-3" data-i18n="roadmap-phase5-p1">The site is operating. We run the drills. We check the locks. An independent auditor walks every line of the ledger and publishes what they find, clean, or otherwise.</p>
       <p class="leading-relaxed mb-5" data-i18n="roadmap-phase5-p2">At the entrance, a local craftsperson begins engraving the first ten thousand Steward names into the Wall of Founders. The invitations to the Grand Opening are sent.</p>
       <div class="text-[11px] tracking-[2px] text-[var(--gold)] font-bold uppercase mb-2" data-i18n="roadmap-phase5-bullets-label">By the end of Phase Five</div>
       <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-4 text-sm space-y-2 leading-relaxed">
@@ -2184,7 +2184,7 @@ img, video { max-width: 100%; height: auto; }
       </ul>
     </article>
 
-    <!-- Phase 6 — Grand Opening — emotional peak -->
+    <!-- Phase 6, Grand Opening, emotional peak -->
     <article class="phase-block is-opening">
       <span class="phase-dot" aria-hidden="true"></span>
       <div class="text-[11px] tracking-[3px] text-[var(--gold)] font-bold uppercase mb-2" data-i18n="roadmap-phase6-label">Month 22 · The Grand Opening</div>
@@ -2219,7 +2219,7 @@ img, video { max-width: 100%; height: auto; }
   <!-- Closing -->
   <div class="text-center py-16 border-t border-[var(--gold)]/30 max-w-3xl mx-auto">
     <p class="serif italic text-5xl text-[var(--gold)] mb-2">Le voilà.</p>
-    <p class="text-xs tracking-[3px] text-[var(--stone)]/70 font-bold uppercase mb-10" data-i18n="roadmap-closing-tagline">There it is — twenty-four months from a vote to an open gate.</p>
+    <p class="text-xs tracking-[3px] text-[var(--stone)]/70 font-bold uppercase mb-10" data-i18n="roadmap-closing-tagline">There it is, twenty-four months from a vote to an open gate.</p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
       <a href="https://www.levoila.org/#steward" class="nav-trigger btn-primary px-8 py-3 rounded-md uppercase text-sm" data-page="steward" data-i18n="roadmap-cta-steward">Become a Steward</a>
       <a href="https://www.levoila.org/#ledger" class="nav-trigger btn-secondary px-8 py-3 rounded-md uppercase text-sm" data-page="ledger" data-i18n="roadmap-cta-ledger">See the Live Ledger</a>
@@ -2239,7 +2239,7 @@ img, video { max-width: 100%; height: auto; }
     <div class="max-w-4xl">
       <div class="text-xs tracking-[4px] text-[var(--gold)] font-bold mb-5" data-i18n="gov-eyebrow">FOR GOVERNMENTS &amp; SITE OWNERS</div>
       <h1 class="serif text-5xl md:text-6xl font-semibold mb-6 leading-tight" data-i18n="gov-h1-html">Your heritage, <em class="text-[var(--gold)]">restored, run, and returned.</em></h1>
-      <p class="text-lg max-w-3xl leading-relaxed text-[var(--limestone)]/85" data-i18n="gov-intro">If your nation wants Levoila to restore and operate one of its heritage sites, here are our terms — in full, in plain language, before a single conversation begins. We publish them because trust is the whole point.</p>
+      <p class="text-lg max-w-3xl leading-relaxed text-[var(--limestone)]/85" data-i18n="gov-intro">If your nation wants Levoila to restore and operate one of its heritage sites, here are our terms, in full, in plain language, before a single conversation begins. We publish them because trust is the whole point.</p>
     </div>
   </div>
 
@@ -2249,11 +2249,11 @@ img, video { max-width: 100%; height: auto; }
     <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-4" data-i18n="gov-deal-h2">We do not buy your heritage. We carry it for a while, then give it back better.</h2>
     <div class="gold-rule mt-2 mb-8"></div>
     <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-8 py-6 space-y-3 leading-relaxed text-[var(--navy)]">
-      <li data-i18n="gov-deal-1">You sign one agreement — the Sovereignty Compact — for 25, 50, or 100 years.</li>
+      <li data-i18n="gov-deal-1">You sign one agreement, the Sovereignty Compact, for 25, 50, or 100 years.</li>
       <li data-i18n="gov-deal-2">Levoila takes full management and operation of the site for that term.</li>
       <li data-i18n="gov-deal-3">We pay every tax your law requires, like any operator on your soil.</li>
       <li data-i18n="gov-deal-4">A share of the revenue is paid to your nation, by contract, every year of the term.</li>
-      <li data-i18n="gov-deal-5">At the end of the term, the site returns to you — as a working, earning asset, not a ruin.</li>
+      <li data-i18n="gov-deal-5">At the end of the term, the site returns to you, as a working, earning asset, not a ruin.</li>
       <li data-i18n="gov-deal-6">The term renews only by mutual agreement. Your nation always holds the reversion. Sovereignty never leaves home.</li>
     </ul>
   </div>
@@ -2265,22 +2265,22 @@ img, video { max-width: 100%; height: auto; }
         <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="gov-why-eyebrow">WHY THE TERM IS LONG</div>
         <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-5 leading-tight" data-i18n="gov-why-h2">Restoring a fortress is not painting a fence.</h2>
         <p class="leading-relaxed mb-4" data-i18n="gov-why-p1">A site like the Citadelle takes years of work and tens of millions of dollars to bring back. That money has to be raised, the work has to be done to UNESCO standards, and the cost has to be earned back through careful operation.</p>
-        <p class="leading-relaxed" data-i18n="gov-why-p2">A short deal funds nothing. No serious donor commits to a rescue that ends before the doors open. So the term is long enough to do the work right and make the site pay for itself — then hand it back to you.</p>
+        <p class="leading-relaxed" data-i18n="gov-why-p2">A short deal funds nothing. No serious donor commits to a rescue that ends before the doors open. So the term is long enough to do the work right and make the site pay for itself, then hand it back to you.</p>
       </div>
       <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-lg p-8">
         <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-5" data-i18n="gov-ladder-label">THE TERM MATCHES THE SCALE</div>
         <div class="space-y-5">
           <div class="flex gap-4 items-baseline">
             <div class="serif text-3xl font-semibold text-[var(--gold)] w-24 shrink-0" data-i18n="gov-ladder-25-yrs">25 yrs</div>
-            <p class="text-sm leading-relaxed text-[var(--limestone)]/85" data-i18n="gov-ladder-25">Smaller sites — a historic church, a fort, a town quarter. Lower restoration cost, faster to recover.</p>
+            <p class="text-sm leading-relaxed text-[var(--limestone)]/85" data-i18n="gov-ladder-25">Smaller sites, a historic church, a fort, a town quarter. Lower restoration cost, faster to recover.</p>
           </div>
           <div class="flex gap-4 items-baseline border-t border-[var(--gold)]/25 pt-5">
             <div class="serif text-3xl font-semibold text-[var(--gold)] w-24 shrink-0" data-i18n="gov-ladder-50-yrs">50 yrs</div>
-            <p class="text-sm leading-relaxed text-[var(--limestone)]/85" data-i18n="gov-ladder-50">Major sites needing deep structural work and new public infrastructure — water, power, security, access.</p>
+            <p class="text-sm leading-relaxed text-[var(--limestone)]/85" data-i18n="gov-ladder-50">Major sites needing deep structural work and new public infrastructure, water, power, security, access.</p>
           </div>
           <div class="flex gap-4 items-baseline border-t border-[var(--gold)]/25 pt-5">
             <div class="serif text-3xl font-semibold text-[var(--gold)] w-24 shrink-0" data-i18n="gov-ladder-100-yrs">100 yrs</div>
-            <p class="text-sm leading-relaxed text-[var(--limestone)]/85" data-i18n="gov-ladder-100">Fortress-scale restorations like the Citadelle — the largest, costliest, and slowest to earn back.</p>
+            <p class="text-sm leading-relaxed text-[var(--limestone)]/85" data-i18n="gov-ladder-100">Fortress-scale restorations like the Citadelle, the largest, costliest, and slowest to earn back.</p>
           </div>
         </div>
         <p class="text-xs text-[var(--limestone)]/60 mt-6 leading-relaxed" data-i18n="gov-ladder-note">The bigger the rescue, the longer we need to make it work. The term is set when we sign, by the scale of the restoration.</p>
@@ -2311,7 +2311,7 @@ img, video { max-width: 100%; height: auto; }
       <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-12 text-center" data-i18n="gov-keep-h2">A long-term deal that leaves you ahead.</h2>
       <div class="grid md:grid-cols-3 gap-8">
         <div>
-          <div class="serif text-5xl font-semibold text-[var(--gold)] mb-2">8–15%</div>
+          <div class="serif text-5xl font-semibold text-[var(--gold)] mb-2">8 to 15%</div>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="gov-keep-royalty">of operating revenue paid to your nation by contract, every year of the term.</p>
         </div>
         <div>
@@ -2320,14 +2320,14 @@ img, video { max-width: 100%; height: auto; }
         </div>
         <div>
           <div class="serif text-5xl font-semibold text-[var(--gold)] mb-2" data-i18n="stat-3-of-4">3 of 4</div>
-          <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="gov-keep-jobs">jobs on the site are hired locally — masons, guides, guards, conservators.</p>
+          <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="gov-keep-jobs">jobs on the site are hired locally, masons, guides, guards, conservators.</p>
         </div>
       </div>
       <ul class="mt-10 grid md:grid-cols-2 gap-x-10 gap-y-3 text-sm leading-relaxed text-[var(--navy)] max-w-4xl mx-auto">
         <li class="flex gap-3"><span class="text-[var(--gold)] font-bold">·</span><span data-i18n="gov-keep-list-1">Ownership of your heritage is never sold. Sovereignty stays home, start to finish.</span></li>
         <li class="flex gap-3"><span class="text-[var(--gold)] font-bold">·</span><span data-i18n="gov-keep-list-2">Every dollar of revenue and cost appears on a public, independently audited ledger.</span></li>
         <li class="flex gap-3"><span class="text-[var(--gold)] font-bold">·</span><span data-i18n="gov-keep-list-3">All taxes your law requires are paid in full, on your soil.</span></li>
-        <li class="flex gap-3"><span class="text-[var(--gold)] font-bold">·</span><span data-i18n="gov-keep-list-4">At the end of the term, you receive a working, revenue-generating site — not a cost.</span></li>
+        <li class="flex gap-3"><span class="text-[var(--gold)] font-bold">·</span><span data-i18n="gov-keep-list-4">At the end of the term, you receive a working, revenue-generating site, not a cost.</span></li>
       </ul>
     </div>
   </div>
@@ -2357,7 +2357,7 @@ img, video { max-width: 100%; height: auto; }
   <!-- Closing CTA -->
   <div class="-mx-6 px-6 py-20 hero-bg text-[var(--limestone)] text-center">
     <h2 class="serif text-4xl md:text-5xl font-semibold mb-4" data-i18n="gov-cta-h2">Start the conversation.</h2>
-    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-[var(--limestone)]/80 mb-10" data-i18n="gov-cta-p">If your nation has a site worth saving, we will walk you through the full Compact — line by line — before anyone signs anything.</p>
+    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-[var(--limestone)]/80 mb-10" data-i18n="gov-cta-p">If your nation has a site worth saving, we will walk you through the full Compact, line by line, before anyone signs anything.</p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
       <a href="mailto:governments@levoila.org?subject=Sovereignty%20Compact%20Inquiry" class="btn-primary px-8 py-3 rounded-md uppercase text-sm" data-i18n="gov-cta-contact">Request the Compact terms</a>
       <a href="https://www.levoila.org/#roadmap" class="nav-trigger btn-secondary px-8 py-3 rounded-md uppercase text-sm" data-page="roadmap" data-i18n="gov-cta-path">See the full lifecycle</a>
@@ -2377,21 +2377,21 @@ img, video { max-width: 100%; height: auto; }
     <div class="max-w-4xl">
       <div class="text-xs tracking-[4px] text-[var(--gold)] font-bold mb-5" data-i18n="comm-eyebrow">FOR THE PEOPLE WHO LIVE HERE</div>
       <h1 class="serif text-5xl md:text-6xl font-semibold mb-6 leading-tight" data-i18n="comm-h1-html">It's your heritage. <em class="text-[var(--gold)]">You should be the first to gain from it.</em></h1>
-      <p class="text-lg max-w-3xl leading-relaxed text-[var(--limestone)]/85" data-i18n="comm-intro">When Levoila restores a site, the people who live beside it come first — for the work, the income, the respect, and the say in what happens next. Here is what that means, in plain terms.</p>
+      <p class="text-lg max-w-3xl leading-relaxed text-[var(--limestone)]/85" data-i18n="comm-intro">When Levoila restores a site, the people who live beside it come first, for the work, the income, the respect, and the say in what happens next. Here is what that means, in plain terms.</p>
     </div>
   </div>
 
   <!-- What you gain, in one breath -->
   <div class="py-16 max-w-4xl mx-auto">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="comm-gain-eyebrow">WHAT YOU GAIN, IN ONE BREATH</div>
-    <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-4" data-i18n="comm-gain-h2">We don't arrive to take. We arrive to build — with you, and for you.</h2>
+    <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-4" data-i18n="comm-gain-h2">We don't arrive to take. We arrive to build, with you, and for you.</h2>
     <div class="gold-rule mt-2 mb-8"></div>
     <ul class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-8 py-6 space-y-3 leading-relaxed text-[var(--navy)]">
-      <li data-i18n="comm-gain-1">The work is yours — three of every four jobs on the site are hired locally.</li>
+      <li data-i18n="comm-gain-1">The work is yours, three of every four jobs on the site are hired locally.</li>
       <li data-i18n="comm-gain-2">The money stays here. Tourism spending circulates through local guides, vendors, and guesthouses.</li>
       <li data-i18n="comm-gain-3">Your culture leads. The story is told your way, in Kreyòl first, by your own people.</li>
       <li data-i18n="comm-gain-4">Your heritage is restored, never sold. It stays in your community's care.</li>
-      <li data-i18n="comm-gain-5">A safe site, with real security — so what happened on April 11 never happens again.</li>
+      <li data-i18n="comm-gain-5">A safe site, with real security, so what happened on April 11 never happens again.</li>
       <li data-i18n="comm-gain-6">Nothing is built until you are heard. You have a seat at the table from day one.</li>
     </ul>
   </div>
@@ -2402,13 +2402,13 @@ img, video { max-width: 100%; height: auto; }
       <div>
         <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="comm-work-eyebrow">THE WORK IS LOCAL</div>
         <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-5 leading-tight" data-i18n="comm-work-h2">Real jobs. Real skills. A career, not a day's pay.</h2>
-        <p class="leading-relaxed mb-4" data-i18n="comm-work-p1">We hire and train people from the community: masons, carpenters, ironworkers, guides, guards, conservators, and hospitality staff. The skills are taught to a real standard and certified — skills that travel and last.</p>
+        <p class="leading-relaxed mb-4" data-i18n="comm-work-p1">We hire and train people from the community: masons, carpenters, ironworkers, guides, guards, conservators, and hospitality staff. The skills are taught to a real standard and certified, skills that travel and last.</p>
         <p class="leading-relaxed" data-i18n="comm-work-p2">A young person who starts as a trainee can grow into a lead role. We build for the long term, and that means building people, not just walls.</p>
       </div>
       <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-lg p-8">
         <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-5" data-i18n="comm-work-card-label">WHO WE HIRE AND TRAIN</div>
         <div class="space-y-4 text-sm leading-relaxed text-[var(--limestone)]/90">
-          <p data-i18n="comm-work-card-1">Builders and craftspeople — masons, carpenters, ironworkers — to do the restoration itself.</p>
+          <p data-i18n="comm-work-card-1">Builders and craftspeople, masons, carpenters, ironworkers, to do the restoration itself.</p>
           <p class="border-t border-[var(--gold)]/25 pt-4" data-i18n="comm-work-card-2">Guides and storytellers, trained in several languages, to welcome the world.</p>
           <p class="border-t border-[var(--gold)]/25 pt-4" data-i18n="comm-work-card-3">Guards and conservators to keep the site safe and standing for generations.</p>
           <p class="border-t border-[var(--gold)]/25 pt-4" data-i18n="comm-work-card-4">Cooks, vendors, and hospitality teams to run the marketplace and the welcome.</p>
@@ -2420,15 +2420,15 @@ img, video { max-width: 100%; height: auto; }
   <!-- Your culture at the center -->
   <div class="py-16 border-t border-[var(--gold)]/20 max-w-4xl mx-auto">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="comm-culture-eyebrow">YOUR CULTURE, AT THE CENTER</div>
-    <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-8" data-i18n="comm-culture-h2">The site tells your story — in your words.</h2>
+    <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-8" data-i18n="comm-culture-h2">The site tells your story, in your words.</h2>
     <div class="grid md:grid-cols-2 gap-6">
       <div class="border border-[#E0D9C8] rounded-lg p-7">
         <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-3" data-i18n="comm-culture-1-h3">Told your way</h3>
-        <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-culture-1-p">Tours are given in Kreyòl first, then French, English, and Spanish. The history visitors hear is the history you live — not a version written somewhere else.</p>
+        <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-culture-1-p">Tours are given in Kreyòl first, then French, English, and Spanish. The history visitors hear is the history you live, not a version written somewhere else.</p>
       </div>
       <div class="border border-[#E0D9C8] rounded-lg p-7">
         <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-3" data-i18n="comm-culture-2-h3">Made by your hands</h3>
-        <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-culture-2-p">Local artisans, cooks, musicians, and storytellers are part of the experience — and earn from it. Community days and festivals are written into the calendar, not treated as an afterthought.</p>
+        <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-culture-2-p">Local artisans, cooks, musicians, and storytellers are part of the experience, and earn from it. Community days and festivals are written into the calendar, not treated as an afterthought.</p>
       </div>
     </div>
   </div>
@@ -2445,14 +2445,14 @@ img, video { max-width: 100%; height: auto; }
         </div>
         <div>
           <div class="serif text-5xl font-semibold text-[var(--gold)] mb-2" data-i18n="comm-money-spend-num">Local</div>
-          <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-money-spend">visitor spending — tickets, food, crafts, lodging, transport — lands in local hands first.</p>
+          <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-money-spend">visitor spending, tickets, food, crafts, lodging, transport, lands in local hands first.</p>
         </div>
         <div>
           <div class="serif text-5xl font-semibold text-[var(--gold)] mb-2" data-i18n="comm-money-public-num">Public</div>
           <p class="text-sm leading-relaxed text-[var(--stone)]" data-i18n="comm-money-public">good: as the site earns, the nation receives a royalty that funds schools, roads, and services.</p>
         </div>
       </div>
-      <p class="mt-10 text-center text-[var(--navy)] leading-relaxed max-w-3xl mx-auto" data-i18n="comm-money-note">We build the marketplace and the welcome on purpose, so that when visitors come, the income reaches the families who live closest to the site — not just an account far away.</p>
+      <p class="mt-10 text-center text-[var(--navy)] leading-relaxed max-w-3xl mx-auto" data-i18n="comm-money-note">We build the marketplace and the welcome on purpose, so that when visitors come, the income reaches the families who live closest to the site, not just an account far away.</p>
     </div>
   </div>
 
@@ -2461,7 +2461,7 @@ img, video { max-width: 100%; height: auto; }
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="comm-respect-eyebrow">RESPECT AND MEMORY</div>
     <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-6" data-i18n="comm-respect-h2">Heritage is dignity. We treat your site, and your dead, with care.</h2>
     <p class="leading-relaxed mb-4" data-i18n="comm-respect-p1">A site is not just stone. It is where your ancestors stood, and where your children play. We restore it as something sacred, not as a product.</p>
-    <p class="leading-relaxed mb-4" data-i18n="comm-respect-p2">On the Citadelle, our very first act will be a permanent memorial to the children lost on April 11, 2026 — designed together with their families. Memory comes before construction. Always.</p>
+    <p class="leading-relaxed mb-4" data-i18n="comm-respect-p2">On the Citadelle, our very first act will be a permanent memorial to the children lost on April 11, 2026, designed together with their families. Memory comes before construction. Always.</p>
     <p class="leading-relaxed" data-i18n="comm-respect-p3">The community remains the custodian of its own heritage. We are stewards for a time. You are home forever.</p>
   </div>
 
@@ -2471,8 +2471,8 @@ img, video { max-width: 100%; height: auto; }
       <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-lg p-8">
         <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-5" data-i18n="comm-ask-label">WHAT WE ASK OF YOU</div>
         <ul class="space-y-3 text-sm leading-relaxed text-[var(--limestone)]/90">
-          <li data-i18n="comm-ask-1">Your voice in the plan — come to the meetings, tell us what matters.</li>
-          <li data-i18n="comm-ask-2">Your hands in the work — apply, train, and build with us.</li>
+          <li data-i18n="comm-ask-1">Your voice in the plan, come to the meetings, tell us what matters.</li>
+          <li data-i18n="comm-ask-2">Your hands in the work, apply, train, and build with us.</li>
           <li data-i18n="comm-ask-3">Your stories and your culture, shared on your own terms.</li>
         </ul>
       </div>
@@ -2490,7 +2490,7 @@ img, video { max-width: 100%; height: auto; }
   <!-- Closing CTA -->
   <div class="-mx-6 px-6 py-20 hero-bg text-[var(--limestone)] text-center">
     <h2 class="serif text-4xl md:text-5xl font-semibold mb-4" data-i18n="comm-cta-h2">Be part of bringing it back.</h2>
-    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-[var(--limestone)]/80 mb-10" data-i18n="comm-cta-p">If you live near a site that deserves to live again, there is a place for you in the work — and a seat at the table.</p>
+    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-[var(--limestone)]/80 mb-10" data-i18n="comm-cta-p">If you live near a site that deserves to live again, there is a place for you in the work, and a seat at the table.</p>
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
       <a href="https://www.levoila.org/#nominate" class="nav-trigger btn-primary px-8 py-3 rounded-md uppercase text-sm" data-page="nominate" data-i18n="comm-cta-nominate">Nominate a site near you</a>
       <a href="mailto:heritage@levoila.org?subject=Community%20Inquiry" class="btn-secondary px-8 py-3 rounded-md uppercase text-sm" data-i18n="comm-cta-contact">Talk to our team</a>
@@ -2521,7 +2521,7 @@ img, video { max-width: 100%; height: auto; }
     <div class="gold-rule mt-2 mb-8"></div>
     <div class="grid md:grid-cols-2 gap-10 items-start">
       <div>
-        <p class="leading-relaxed mb-4" data-i18n="involve-partner-p1">Stewards build this movement one seat at a time. Partners move it in leaps. If you are a major donor, a family office, a foundation, or a company that wants to sponsor a project, you can fund an entire phase — or an entire site — and carry it to its grand opening.</p>
+        <p class="leading-relaxed mb-4" data-i18n="involve-partner-p1">Stewards build this movement one seat at a time. Partners move it in leaps. If you are a major donor, a family office, a foundation, or a company that wants to sponsor a project, you can fund an entire phase, or an entire site, and carry it to its grand opening.</p>
         <p class="leading-relaxed" data-i18n="involve-partner-p2">Partnership is direct and personal. You get a clear line to the work, named recognition at the site and in the record, and honest reporting against the same public ledger everyone else sees.</p>
       </div>
       <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-lg p-8">
@@ -2543,13 +2543,13 @@ img, video { max-width: 100%; height: auto; }
       <div class="bg-white border border-[#E0D9C8] rounded-lg p-8">
         <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="involve-volunteer-eyebrow">VOLUNTEER WITH US</div>
         <h3 class="serif text-3xl font-semibold text-[var(--navy)] mb-4" data-i18n="involve-volunteer-h3">Give your time to something that lasts.</h3>
-        <p class="text-sm leading-relaxed text-[var(--stone)] mb-6" data-i18n="involve-volunteer-p">We welcome volunteers — on the ground in Haiti and remotely from anywhere. Help with events, research, translation, outreach, the diaspora network, and more. Tell us how you'd like to help and how much time you have.</p>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-6" data-i18n="involve-volunteer-p">We welcome volunteers, on the ground in Haiti and remotely from anywhere. Help with events, research, translation, outreach, the diaspora network, and more. Tell us how you'd like to help and how much time you have.</p>
         <a href="mailto:heritage@levoila.org?subject=Volunteering%20with%20Levoila" class="text-[var(--navy)] font-semibold border-b-2 border-[var(--gold)] pb-1 text-sm" data-i18n="involve-volunteer-cta">Volunteer with us →</a>
       </div>
       <div class="bg-white border border-[#E0D9C8] rounded-lg p-8">
         <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="involve-expert-eyebrow">LEND YOUR EXPERTISE</div>
         <h3 class="serif text-3xl font-semibold text-[var(--navy)] mb-4" data-i18n="involve-expert-h3">Have a skill that can move the mission?</h3>
-        <p class="text-sm leading-relaxed text-[var(--stone)] mb-6" data-i18n="involve-expert-p">Architects, conservators, engineers, lawyers, fundraisers, technologists, educators — if you have expertise that can advance our work, we want to know you. Connect with us and send your resume, and tell us where you think you can help.</p>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-6" data-i18n="involve-expert-p">Architects, conservators, engineers, lawyers, fundraisers, technologists, educators, if you have expertise that can advance our work, we want to know you. Connect with us and send your resume, and tell us where you think you can help.</p>
         <a href="mailto:heritage@levoila.org?subject=Expertise%20Offer%20%E2%80%94%20%5BYour%20Name%5D" class="text-[var(--navy)] font-semibold border-b-2 border-[var(--gold)] pb-1 text-sm" data-i18n="involve-expert-cta">Send us your resume →</a>
       </div>
     </div>
@@ -2558,8 +2558,8 @@ img, video { max-width: 100%; height: auto; }
   <!-- Heritage professionals callout -->
   <div class="py-12 max-w-4xl mx-auto">
     <div class="border-2 border-[var(--gold)] rounded-xl p-8 md:p-10 text-center">
-      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3 leading-tight" data-i18n="involve-heritage-h">Certified — and experienced on heritage sites?</h2>
-      <p class="leading-relaxed text-[var(--stone)] max-w-2xl mx-auto mb-6" data-i18n="involve-heritage-p">Architects, conservators, master masons, and site managers — this is the work. Come build it with us.</p>
+      <h2 class="serif text-3xl md:text-4xl font-semibold text-[var(--navy)] mb-3 leading-tight" data-i18n="involve-heritage-h">Certified, and experienced on heritage sites?</h2>
+      <p class="leading-relaxed text-[var(--stone)] max-w-2xl mx-auto mb-6" data-i18n="involve-heritage-p">Architects, conservators, master masons, and site managers, this is the work. Come build it with us.</p>
       <a href="mailto:heritage@levoila.org?subject=Heritage%20Professional%20%E2%80%94%20%5BYour%20Name%5D" class="btn-primary inline-block px-7 py-3 rounded-md uppercase text-sm" data-i18n="involve-heritage-cta">Send your resume</a>
     </div>
   </div>
@@ -2568,7 +2568,7 @@ img, video { max-width: 100%; height: auto; }
   <div class="py-16 max-w-5xl mx-auto">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="involve-jobs-eyebrow">LOOKING FOR A LOCAL JOB</div>
     <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-4" data-i18n="involve-jobs-h2">The roles we'll be hiring for first.</h2>
-    <p class="leading-relaxed max-w-3xl mb-2" data-i18n="involve-jobs-p">Three of every four jobs on a site are hired locally. These are the priority roles we expect to open as Phase One gets underway in northern Haiti. Don't see your exact role? Send your resume anyway — we are building whole teams.</p>
+    <p class="leading-relaxed max-w-3xl mb-2" data-i18n="involve-jobs-p">Three of every four jobs on a site are hired locally. These are the priority roles we expect to open as Phase One gets underway in northern Haiti. Don't see your exact role? Send your resume anyway. We are building whole teams.</p>
     <div class="gold-rule mt-4 mb-10"></div>
 
     <div class="grid md:grid-cols-2 gap-6">
@@ -2576,10 +2576,10 @@ img, video { max-width: 100%; height: auto; }
       <div class="border border-[#E0D9C8] rounded-lg p-7">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4" data-i18n="involve-jobs-grp1">LEADERSHIP &amp; IN-COUNTRY</div>
         <ul class="space-y-3 text-sm leading-relaxed text-[var(--navy)]">
-          <li data-i18n="involve-job-1">Country Director — Haiti. Leads all of Levoila's work in country, and the senior relationship with government and partners.</li>
-          <li data-i18n="involve-job-2">Site Director — Citadelle Henri Christophe (Milot). Runs the flagship site end to end: memorial, restoration, security, visitors.</li>
-          <li data-i18n="involve-job-3">Site Director — Palais Sans-Souci (Milot). Leads Sans-Souci, operated with the Citadelle as one Milot experience.</li>
-          <li data-i18n="involve-job-4">Site Director — Fort-Liberté (Nord-Est). Leads the coastal fortress restoration and its opening to the public.</li>
+          <li data-i18n="involve-job-1">Country Director, Haiti. Leads all of Levoila's work in country, and the senior relationship with government and partners.</li>
+          <li data-i18n="involve-job-2">Site Director, Citadelle Henri Christophe (Milot). Runs the flagship site end to end: memorial, restoration, security, visitors.</li>
+          <li data-i18n="involve-job-3">Site Director, Palais Sans-Souci (Milot). Leads Sans-Souci, operated with the Citadelle as one Milot experience.</li>
+          <li data-i18n="involve-job-4">Site Director, Fort-Liberté (Nord-Est). Leads the coastal fortress restoration and its opening to the public.</li>
           <li data-i18n="involve-job-5">Government Affairs &amp; Compact Lead. Manages the Sovereignty Compact, permits, and authorities.</li>
           <li data-i18n="involve-job-6">Community Liaison Director. The bridge to families and local leaders, including the April 11 memorial.</li>
         </ul>
@@ -2590,7 +2590,7 @@ img, video { max-width: 100%; height: auto; }
         <ul class="space-y-3 text-sm leading-relaxed text-[var(--navy)]">
           <li data-i18n="involve-job-7">Lead Heritage Architect. Designs and directs the restoration to UNESCO standards.</li>
           <li data-i18n="involve-job-8">Conservation Manager. Protects original stone, masonry, and finishes through every phase.</li>
-          <li data-i18n="involve-job-9">Site Engineer — Structural Stabilization. Makes walls and roofs safe first; the bleeding stops here.</li>
+          <li data-i18n="involve-job-9">Site Engineer, Structural Stabilization. Makes walls and roofs safe first; the bleeding stops here.</li>
           <li data-i18n="involve-job-10">Master Mason &amp; Trades Foreman. Leads the local masons, carpenters, and ironworkers doing the hands-on work.</li>
         </ul>
       </div>
@@ -2598,7 +2598,7 @@ img, video { max-width: 100%; height: auto; }
       <div class="border border-[#E0D9C8] rounded-lg p-7">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4" data-i18n="involve-jobs-grp3">OPERATIONS, SAFETY &amp; VISITORS</div>
         <ul class="space-y-3 text-sm leading-relaxed text-[var(--navy)]">
-          <li data-i18n="involve-job-11">Head of Site Security &amp; Safety. 24/7 security and crowd-and-capacity control — so April 11 never repeats.</li>
+          <li data-i18n="involve-job-11">Head of Site Security &amp; Safety. 24/7 security and crowd-and-capacity control, so April 11 never repeats.</li>
           <li data-i18n="involve-job-12">Visitor Experience &amp; Tours Manager. Builds certified, multilingual tour operations and the welcome.</li>
           <li data-i18n="involve-job-13">Hospitality &amp; Marketplace Manager. Runs the marketplace, food, and lodging that keep money local.</li>
         </ul>
@@ -2608,7 +2608,7 @@ img, video { max-width: 100%; height: auto; }
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4" data-i18n="involve-jobs-grp4">FINANCE, PEOPLE &amp; STORY</div>
         <ul class="space-y-3 text-sm leading-relaxed text-[var(--navy)]">
           <li data-i18n="involve-job-14">Finance &amp; Live Ledger Manager. Keeps every dollar on the public, audited ledger.</li>
-          <li data-i18n="involve-job-15">Local Hiring &amp; Training Lead. Builds the local workforce — three of every four jobs hired nearby.</li>
+          <li data-i18n="involve-job-15">Local Hiring &amp; Training Lead. Builds the local workforce, three of every four jobs hired nearby.</li>
           <li data-i18n="involve-job-16">Communications &amp; Dispatches Lead. Tells the story in five languages, on site and to the world.</li>
         </ul>
       </div>
@@ -2648,7 +2648,7 @@ img, video { max-width: 100%; height: auto; }
 
       <!-- Subscribe block -->
       <div class="bg-[var(--limestone)] text-[var(--navy)] rounded-xl p-8 max-w-xl mx-auto">
-        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="dispatches-subscribe-eyebrow">SUBSCRIBE — TWICE A MONTH</div>
+        <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="dispatches-subscribe-eyebrow">SUBSCRIBE, TWICE A MONTH</div>
         <h3 class="serif text-2xl font-bold mb-4" data-i18n="dispatches-subscribe-h3">Get the next dispatch in your inbox.</h3>
         <form class="space-y-3">
           <div class="grid md:grid-cols-2 gap-3">
@@ -2699,13 +2699,13 @@ img, video { max-width: 100%; height: auto; }
 <section class="page" data-page="nominate">
   <div class="py-12">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="nominate-eyebrow">NOMINATE A SITE</div>
-    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4" data-i18n="nominate-h1">If your government has forgotten — tell us.</h1>
+    <h1 class="serif text-6xl font-semibold text-[var(--navy)] mb-4" data-i18n="nominate-h1">If your government has forgotten, tell us.</h1>
     <p class="text-xl text-[var(--stone)] max-w-3xl" data-i18n="nominate-intro">Any citizen of the world may nominate a historic site at risk. You do not need to live in that country. You only need to care. Every nomination is published. Nothing is hidden behind committee doors.</p>
     <div class="gold-rule mt-6 mb-10"></div>
 
     <div class="bg-[var(--limestone)] rounded-xl p-7 mb-12">
       <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-2" data-i18n="nominate-examples-eyebrow">SITES ALREADY ON OUR RADAR</div>
-      <p class="text-sm text-[var(--stone)] leading-relaxed mb-5" data-i18n="nominate-examples-p">Examples of the kind of place a nomination can save — real, verified at-risk sites around the world. Yours could be next.</p>
+      <p class="text-sm text-[var(--stone)] leading-relaxed mb-5" data-i18n="nominate-examples-p">Examples of the kind of place a nomination can save, real, verified at-risk sites around the world. Yours could be next.</p>
       <div class="flex flex-wrap gap-2 mb-5 text-sm">
         <span class="bg-white rounded-full px-4 py-2 border border-[#E0D9C8] text-[var(--navy)]" data-i18n="watch-la1-name">Chan Chan, Peru</span>
         <span class="bg-white rounded-full px-4 py-2 border border-[#E0D9C8] text-[var(--navy)]" data-i18n="watch-af1-name">Grand-Bassam, Côte d'Ivoire</span>
@@ -2740,7 +2740,7 @@ img, video { max-width: 100%; height: auto; }
         </div>
         <div>
           <label data-i18n="nominate-label-significance">Historical Significance</label>
-          <textarea class="input" rows="4" placeholder="What makes this site important — to its country, to humanity, to your community?" data-i18n-placeholder="nominate-ph-significance"></textarea>
+          <textarea class="input" rows="4" placeholder="What makes this site important, to its country, to humanity, to your community?" data-i18n-placeholder="nominate-ph-significance"></textarea>
         </div>
         <div>
           <label data-i18n="nominate-label-evidence">Evidence of Neglect</label>
@@ -2750,7 +2750,7 @@ img, video { max-width: 100%; height: auto; }
           <label data-i18n="nominate-label-photos">Photographs or Documentation</label>
           <div class="border-2 border-dashed border-[#D5CDB8] rounded-lg p-8 text-center cursor-pointer hover:border-[var(--gold)]">
             <div class="text-sm text-[var(--stone)]" data-i18n="nominate-photos-drag">Drag photos or evidence files here</div>
-            <div class="text-xs text-[var(--stone)] mt-1 opacity-60" data-i18n="nominate-photos-types">PNG, JPG, PDF — up to 50MB total</div>
+            <div class="text-xs text-[var(--stone)] mt-1 opacity-60" data-i18n="nominate-photos-types">PNG, JPG, PDF, up to 50MB total</div>
           </div>
         </div>
         <div class="pt-4 border-t border-[#E5E0D5]">
@@ -2978,10 +2978,10 @@ img, video { max-width: 100%; height: auto; }
       <div>
         <label data-i18n="steward-form-label-tier">Tier</label>
         <select class="input">
-          <option data-i18n="steward-form-tier-bronze">Bronze — $150</option>
-          <option data-i18n="steward-form-tier-silver">Silver — $1,000</option>
-          <option data-i18n="steward-form-tier-gold">Gold — $5,000</option>
-          <option data-i18n="steward-form-tier-patron">Heritage Patron — $25,000</option>
+          <option data-i18n="steward-form-tier-bronze">Bronze, $150</option>
+          <option data-i18n="steward-form-tier-silver">Silver, $1,000</option>
+          <option data-i18n="steward-form-tier-gold">Gold, $5,000</option>
+          <option data-i18n="steward-form-tier-patron">Heritage Patron, $25,000</option>
         </select>
       </div>
       <div>
@@ -3042,7 +3042,7 @@ img, video { max-width: 100%; height: auto; }
     <div class="lg:col-span-2">
       <div class="bg-white rounded-xl p-8 border border-[#E5E0D5]">
         <h2 class="serif text-3xl font-bold text-[var(--navy)] mb-2" data-i18n="crypto-assets-h2">Accepted Digital Assets</h2>
-        <p class="text-sm text-[var(--stone)] mb-8" data-i18n="crypto-assets-intro">Seven assets cover 95% of charitable crypto giving. Processed via The Giving Block — IRS-compliant tax receipts within 24 hours.</p>
+        <p class="text-sm text-[var(--stone)] mb-8" data-i18n="crypto-assets-intro">Seven assets cover 95% of charitable crypto giving. Processed via The Giving Block, IRS-compliant tax receipts within 24 hours.</p>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div class="border border-[#E5E0D5] rounded-lg p-4 text-center hover:border-[var(--gold)] cursor-pointer">
@@ -3088,7 +3088,7 @@ img, video { max-width: 100%; height: auto; }
           </div>
         </div>
 
-        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-4" data-i18n="crypto-hold-h3">Heritage Patrons — HOLD Option</h3>
+        <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-4" data-i18n="crypto-hold-h3">Heritage Patrons, HOLD Option</h3>
         <p class="text-sm leading-relaxed mb-4" data-i18n="crypto-hold-body">For Patron-tier gifts of $25,000+, you may direct Levoila to HOLD your gift in its original crypto form (rather than auto-converting to USD). HOLD positions are managed under multi-signature controls in a cold vault and reviewed quarterly by the Board.</p>
         <a href="https://www.levoila.org/#" class="text-[var(--gold)] font-semibold text-sm" data-i18n="crypto-hold-cta">Request a HOLD Patron consultation →</a>
       </div>
@@ -3102,7 +3102,7 @@ img, video { max-width: 100%; height: auto; }
           <li><span class="text-[var(--gold)] font-bold mr-2">2.</span><span data-i18n="crypto-how-2">Complete the transaction in your wallet of choice. Network gas fees are your responsibility.</span></li>
           <li><span class="text-[var(--gold)] font-bold mr-2">3.</span><span data-i18n="crypto-how-3">Your donation auto-converts to USD at the market rate. The USD amount is what enters the per-site escrow.</span></li>
           <li><span class="text-[var(--gold)] font-bold mr-2">4.</span><span data-i18n="crypto-how-4">Within 24 hours, you receive an IRS-compliant tax receipt by email.</span></li>
-          <li><span class="text-[var(--gold)] font-bold mr-2">5.</span><span data-i18n="crypto-how-5">Your contribution appears on the public ledger and counts toward your Steward tier — same as any other gift.</span></li>
+          <li><span class="text-[var(--gold)] font-bold mr-2">5.</span><span data-i18n="crypto-how-5">Your contribution appears on the public ledger and counts toward your Steward tier, same as any other gift.</span></li>
         </ol>
 
         <div class="mt-8 pt-6 border-t border-[var(--gold)]/30">
@@ -3296,7 +3296,7 @@ img, video { max-width: 100%; height: auto; }
 
   <div class="bg-[var(--limestone)] rounded-xl p-8 text-center">
     <p class="quote mb-4" data-i18n="ledger-compact-quote">"No funds move from the restoration account without a digital signature from the Project Architect and an independent Third-Party Auditor."</p>
-    <p class="text-xs tracking-[2px] text-[var(--gold)] font-bold" data-i18n="ledger-compact-attrib">SOVEREIGNTY COMPACT · ARTICLE V — FINANCIAL TRANSPARENCY</p>
+    <p class="text-xs tracking-[2px] text-[var(--gold)] font-bold" data-i18n="ledger-compact-attrib">SOVEREIGNTY COMPACT · ARTICLE V, FINANCIAL TRANSPARENCY</p>
   </div>
 </section>
 
@@ -3310,7 +3310,7 @@ img, video { max-width: 100%; height: auto; }
     <div class="max-w-4xl">
       <div class="text-xs tracking-[4px] text-[var(--gold)] font-bold mb-5" data-i18n="compact-eyebrow">THE SOVEREIGNTY COMPACT</div>
       <h1 class="serif text-5xl md:text-6xl font-semibold mb-6 leading-tight" data-i18n="compact-h1-html">A promise we make in public, <em class="text-[var(--gold)]">before we ask anyone to trust us.</em></h1>
-      <p class="text-lg max-w-3xl leading-relaxed text-[var(--limestone)]/85" data-i18n="compact-intro">The Sovereignty Compact is the agreement a nation signs when it asks Levoila to restore and operate one of its heritage sites. Below is what we promise, and the shape of the deal — published in full, in plain language, so there are no surprises at the table.</p>
+      <p class="text-lg max-w-3xl leading-relaxed text-[var(--limestone)]/85" data-i18n="compact-intro">The Sovereignty Compact is the agreement a nation signs when it asks Levoila to restore and operate one of its heritage sites. Below is what we promise, and the shape of the deal, published in full, in plain language, so there are no surprises at the table.</p>
     </div>
   </div>
 
@@ -3325,11 +3325,11 @@ img, video { max-width: 100%; height: auto; }
       <li class="flex gap-4"><span class="serif text-2xl text-[var(--gold)] font-semibold shrink-0">3</span><span data-i18n="compact-promise-3">The world funds the restoration. Not your treasury. We raise the money to bring the site back. Your budget is never touched.</span></li>
       <li class="flex gap-4"><span class="serif text-2xl text-[var(--gold)] font-semibold shrink-0">4</span><span data-i18n="compact-promise-4">We restore to international standard. The work meets UNESCO conservation practice, supervised by qualified heritage professionals.</span></li>
       <li class="flex gap-4"><span class="serif text-2xl text-[var(--gold)] font-semibold shrink-0">5</span><span data-i18n="compact-promise-5">The books are open. Every dollar of revenue and cost appears on a public, independently audited ledger. Anyone can read it.</span></li>
-      <li class="flex gap-4"><span class="serif text-2xl text-[var(--gold)] font-semibold shrink-0">6</span><span data-i18n="compact-promise-6">The work is local. The majority of jobs on the site — masons, guides, guards, conservators — are hired from the community around it.</span></li>
+      <li class="flex gap-4"><span class="serif text-2xl text-[var(--gold)] font-semibold shrink-0">6</span><span data-i18n="compact-promise-6">The work is local. The majority of jobs on the site, masons, guides, guards, conservators, are hired from the community around it.</span></li>
       <li class="flex gap-4"><span class="serif text-2xl text-[var(--gold)] font-semibold shrink-0">7</span><span data-i18n="compact-promise-7">Memory comes first. The story and dignity of the place lead. Revenue serves the site; the site never serves revenue alone.</span></li>
       <li class="flex gap-4"><span class="serif text-2xl text-[var(--gold)] font-semibold shrink-0">8</span><span data-i18n="compact-promise-8">We pay our taxes. Every tax your law requires, like any operator on your soil. We ask for no special exemption.</span></li>
       <li class="flex gap-4"><span class="serif text-2xl text-[var(--gold)] font-semibold shrink-0">9</span><span data-i18n="compact-promise-9">Your nation shares the revenue. A defined share is paid to your treasury, by contract, every year of the term.</span></li>
-      <li class="flex gap-4"><span class="serif text-2xl text-[var(--gold)] font-semibold shrink-0">10</span><span data-i18n="compact-promise-10">You get it back better. At the end of the term, the site returns to you as a working, earning asset — not a ruin, not a debt.</span></li>
+      <li class="flex gap-4"><span class="serif text-2xl text-[var(--gold)] font-semibold shrink-0">10</span><span data-i18n="compact-promise-10">You get it back better. At the end of the term, the site returns to you as a working, earning asset, not a ruin, not a debt.</span></li>
     </ul>
   </div>
 
@@ -3338,7 +3338,7 @@ img, video { max-width: 100%; height: auto; }
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="compact-articles-eyebrow">PART TWO · THE SHAPE OF THE DEAL</div>
     <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-4" data-i18n="compact-articles-h2">What a government reviews before we ever sit down.</h2>
     <div class="gold-rule mt-2 mb-6"></div>
-    <p class="leading-relaxed text-[var(--navy)] mb-8" data-i18n="compact-articles-intro">This is the structure of the Compact — the articles a binding agreement covers. It is a framework, not the signed instrument. The final Compact is negotiated and executed with legal counsel, under the law of the country where the site sits.</p>
+    <p class="leading-relaxed text-[var(--navy)] mb-8" data-i18n="compact-articles-intro">This is the structure of the Compact, the articles a binding agreement covers. It is a framework, not the signed instrument. The final Compact is negotiated and executed with legal counsel, under the law of the country where the site sits.</p>
 
     <div class="space-y-6">
       <div class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-7 py-5">
@@ -3347,7 +3347,7 @@ img, video { max-width: 100%; height: auto; }
       </div>
       <div class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-7 py-5">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="compact-art-2-label">ARTICLE II · THE TERM</div>
-        <p class="text-sm leading-relaxed text-[var(--navy)]" data-i18n="compact-art-2">Sets the length — 25, 50, or 100 years — chosen by the scale of the restoration. The term is fixed at signing and renews only by mutual agreement.</p>
+        <p class="text-sm leading-relaxed text-[var(--navy)]" data-i18n="compact-art-2">Sets the length, 25, 50, or 100 years, chosen by the scale of the restoration. The term is fixed at signing and renews only by mutual agreement.</p>
       </div>
       <div class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-7 py-5">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="compact-art-3-label">ARTICLE III · MANAGEMENT AND OPERATION</div>
@@ -3355,7 +3355,7 @@ img, video { max-width: 100%; height: auto; }
       </div>
       <div class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-7 py-5">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="compact-art-4-label">ARTICLE IV · RESTORATION AND FUNDING</div>
-        <p class="text-sm leading-relaxed text-[var(--navy)]" data-i18n="compact-art-4">Commits Levoila to restore the site to international conservation standard, with the cost raised from donors and operations — never from the host treasury.</p>
+        <p class="text-sm leading-relaxed text-[var(--navy)]" data-i18n="compact-art-4">Commits Levoila to restore the site to international conservation standard, with the cost raised from donors and operations, never from the host treasury.</p>
       </div>
       <div class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-7 py-5">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="compact-art-5-label">ARTICLE V · FINANCIAL TRANSPARENCY</div>
@@ -3371,11 +3371,11 @@ img, video { max-width: 100%; height: auto; }
       </div>
       <div class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-7 py-5">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="compact-art-8-label">ARTICLE VIII · CULTURAL AND COMMUNITY SAFEGUARDS</div>
-        <p class="text-sm leading-relaxed text-[var(--navy)]" data-i18n="compact-art-8">Protects the meaning of the place — religious, cultural, and historical — and gives the surrounding community a standing voice in how the site is run.</p>
+        <p class="text-sm leading-relaxed text-[var(--navy)]" data-i18n="compact-art-8">Protects the meaning of the place, religious, cultural, and historical, and gives the surrounding community a standing voice in how the site is run.</p>
       </div>
       <div class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-7 py-5">
-        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="compact-art-9-label">ARTICLE IX · REVERSION — THE RETURN HOME</div>
-        <p class="text-sm leading-relaxed text-[var(--navy)]" data-i18n="compact-art-9">Defines the condition the site must be in when it returns to the nation, and confirms the nation holds the reversion throughout — sovereignty never leaves home.</p>
+        <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="compact-art-9-label">ARTICLE IX · REVERSION, THE RETURN HOME</div>
+        <p class="text-sm leading-relaxed text-[var(--navy)]" data-i18n="compact-art-9">Defines the condition the site must be in when it returns to the nation, and confirms the nation holds the reversion throughout, sovereignty never leaves home.</p>
       </div>
       <div class="bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-7 py-5">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="compact-art-10-label">ARTICLE X · RENEWAL, DISPUTES, AND GOVERNING LAW</div>
@@ -3413,14 +3413,14 @@ img, video { max-width: 100%; height: auto; }
       <h2 class="serif text-2xl font-semibold mb-3" data-i18n="priv-s1-h2">What we collect</h2>
       <p class="mb-3" data-i18n="priv-s1-p">We collect two kinds of information:</p>
       <ul class="space-y-2 ml-1">
-        <li class="flex gap-3"><span class="text-[var(--gold)] font-bold">·</span><span data-i18n="priv-s1-1">What you give us. When you email us, nominate a site, register as a Steward, or make a donation, we receive what you send — your name, email, message, and similar details.</span></li>
-        <li class="flex gap-3"><span class="text-[var(--gold)] font-bold">·</span><span data-i18n="priv-s1-2">What your visit tells us. Basic, standard web analytics — pages viewed, language chosen, device type, and approximate region. We use this to understand what is useful and fix what is not.</span></li>
+        <li class="flex gap-3"><span class="text-[var(--gold)] font-bold">·</span><span data-i18n="priv-s1-1">What you give us. When you email us, nominate a site, register as a Steward, or make a donation, we receive what you send, your name, email, message, and similar details.</span></li>
+        <li class="flex gap-3"><span class="text-[var(--gold)] font-bold">·</span><span data-i18n="priv-s1-2">What your visit tells us. Basic, standard web analytics, pages viewed, language chosen, device type, and approximate region. We use this to understand what is useful and fix what is not.</span></li>
       </ul>
     </div>
 
     <div>
       <h2 class="serif text-2xl font-semibold mb-3" data-i18n="priv-s2-h2">Steward accounts and donations</h2>
-      <p data-i18n="priv-s2-p">Steward sign-in is handled by a trusted third-party authentication provider, which manages your email, name, and sign-in details on our behalf. Donations are processed by third-party payment and digital-asset processors. We do not store your card numbers, bank details, or wallet keys — those stay with the processor.</p>
+      <p data-i18n="priv-s2-p">Steward sign-in is handled by a trusted third-party authentication provider, which manages your email, name, and sign-in details on our behalf. Donations are processed by third-party payment and digital-asset processors. We do not store your card numbers, bank details, or wallet keys, those stay with the processor.</p>
     </div>
 
     <div>
@@ -3435,7 +3435,7 @@ img, video { max-width: 100%; height: auto; }
 
     <div>
       <h2 class="serif text-2xl font-semibold mb-3" data-i18n="priv-s5-h2">Who we share it with</h2>
-      <p data-i18n="priv-s5-p">Only the service providers who help us operate — our hosting, authentication, payment, and analytics partners — under agreements that limit them to our instructions. We never sell your information. We disclose it only if the law genuinely requires it.</p>
+      <p data-i18n="priv-s5-p">Only the service providers who help us operate, our hosting, authentication, payment, and analytics partners, under agreements that limit them to our instructions. We never sell your information. We disclose it only if the law genuinely requires it.</p>
     </div>
 
     <div>
@@ -3549,7 +3549,7 @@ img, video { max-width: 100%; height: auto; }
   <div class="py-12">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="careers-eyebrow">JOIN THE WORK</div>
     <h1 class="serif text-5xl md:text-6xl font-semibold text-[var(--navy)] mb-4" data-i18n="careers-h1">Help bring forgotten places back to life.</h1>
-    <p class="text-xl text-[var(--stone)] max-w-3xl leading-relaxed" data-i18n="careers-intro">Levoila is built by people, not committees. Volunteers, builders, in-country stewards, and board members — every role here serves a real site and a real community. Find yours below, read what it asks of you, and apply in minutes.</p>
+    <p class="text-xl text-[var(--stone)] max-w-3xl leading-relaxed" data-i18n="careers-intro">Levoila is built by people, not committees. Volunteers, builders, in-country stewards, and board members: every role here serves a real site and a real community. Find yours below, read what it asks of you, and apply in minutes.</p>
     <div class="gold-rule mt-6 mb-8"></div>
 
     <!-- HR assistant -->
@@ -3567,9 +3567,9 @@ img, video { max-width: 100%; height: auto; }
             <button type="button" class="career-q text-xs px-3 py-2 rounded-md bg-white/10 hover:bg-white/20 transition" data-q="data" data-i18n="careers-q-data">Is my data safe?</button>
           </div>
           <div id="careerAnswer" class="hidden bg-white/10 rounded-lg p-4 text-sm leading-relaxed">
-            <span data-i18n="careers-a-apply" class="hidden">Find a role below and open it. Read what it asks for, then click "Apply for this role." The form takes a few minutes — name, where you are, why this work matters to you, and your resume or a LinkedIn link.</span>
+            <span data-i18n="careers-a-apply" class="hidden">Find a role below and open it. Read what it asks for, then click "Apply for this role." The form takes a few minutes, name, where you are, why this work matters to you, and your resume or a LinkedIn link.</span>
             <span data-i18n="careers-a-cv" class="hidden">Not always. For many volunteer and steward roles, a few honest sentences about why you want to help are enough. A LinkedIn link works in place of a formal CV.</span>
-            <span data-i18n="careers-a-where" class="hidden">Our first sites are in northern Haiti — Milot, Fort-Liberté, and the towns around them. Many roles are on-site there; others (archive, translation, grants, governance) are fully remote. Each role card shows its location.</span>
+            <span data-i18n="careers-a-where" class="hidden">Our first sites are in northern Haiti, Milot, Fort-Liberté, and the towns around them. Many roles are on-site there; others (archive, translation, grants, governance) are fully remote. Each role card shows its location.</span>
             <span data-i18n="careers-a-next" class="hidden">A real person reviews every application. You'll get an email back. For paid and steward roles there's a conversation; for most volunteer roles we move quickly to scheduling your first day.</span>
             <span data-i18n="careers-a-data" class="hidden">Yes. We ask only for what we need to consider you, your information is encrypted, and you can ask us to delete it at any time. We never ask for bank details or ID numbers in an application.</span>
           </div>
@@ -3600,7 +3600,7 @@ img, video { max-width: 100%; height: auto; }
         <span class="text-[var(--stone)]" data-i18n="careers-r1-time">A few days to a few weeks</span>
       </div>
       <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-2" data-i18n="careers-r1-title">Site Restoration Volunteer</h3>
-      <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r1-hook">Work shoulder to shoulder with local masons to clear, clean, and help conserve a historic site. No experience needed — just care and willing hands.</p>
+      <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r1-hook">Work shoulder to shoulder with local masons to clear, clean, and help conserve a historic site. No experience needed, just care and willing hands.</p>
       <button type="button" class="career-toggle text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="careers-view">View role →</button>
       <div class="career-detail hidden mt-5 pt-5 border-t border-[#E5E0D5] text-sm leading-relaxed text-[var(--navy)] space-y-3">
         <p><strong data-i18n="careers-lbl-do">What you'll do:</strong> <span data-i18n="careers-r1-do">Clear debris, support conservation work under a steward's direction, and help protect what's left of the site.</span></p>
@@ -3615,7 +3615,7 @@ img, video { max-width: 100%; height: auto; }
         <span class="px-2 py-1 rounded bg-[var(--gold)]/15 text-[var(--gold)] font-bold tracking-wider" data-i18n="careers-tag-volunteer">VOLUNTEER</span>
         <span class="text-[var(--stone)]" data-i18n="careers-r2-loc">Remote</span>
         <span class="text-[var(--stone)]/50">·</span>
-        <span class="text-[var(--stone)]" data-i18n="careers-r2-time">2–4 hrs/week</span>
+        <span class="text-[var(--stone)]" data-i18n="careers-r2-time">2 to 4 hrs/week</span>
       </div>
       <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-2" data-i18n="careers-r2-title">Archive &amp; Memory Volunteer</h3>
       <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r2-hook">Help digitize the photos, documents, and oral histories that tie a site to the people who remember it.</p>
@@ -3672,7 +3672,7 @@ img, video { max-width: 100%; height: auto; }
         <span class="text-[var(--stone)]" data-i18n="careers-r5-time">Full-time</span>
       </div>
       <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-2" data-i18n="careers-r5-title">Operations Manager</h3>
-      <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r5-hook">Run the day-to-day across countries — vendors, logistics, the calendar, and the public ledger — so the work never stalls.</p>
+      <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r5-hook">Run the day-to-day across countries, vendors, logistics, the calendar, and the public ledger, so the work never stalls.</p>
       <button type="button" class="career-toggle text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="careers-view">View role →</button>
       <div class="career-detail hidden mt-5 pt-5 border-t border-[#E5E0D5] text-sm leading-relaxed text-[var(--navy)] space-y-3">
         <p><strong data-i18n="careers-lbl-do">What you'll do:</strong> <span data-i18n="careers-r5-do">Coordinate vendors and logistics across time zones, keep the budget and calendar honest, and support every site team.</span></p>
@@ -3694,7 +3694,7 @@ img, video { max-width: 100%; height: auto; }
       <button type="button" class="career-toggle text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="careers-view">View role →</button>
       <div class="career-detail hidden mt-5 pt-5 border-t border-[#E5E0D5] text-sm leading-relaxed text-[var(--navy)] space-y-3">
         <p><strong data-i18n="careers-lbl-do">What you'll do:</strong> <span data-i18n="careers-r6-do">Research funders, write proposals and reports, and help build long-term institutional partnerships.</span></p>
-        <p><strong data-i18n="careers-lbl-need">What we need:</strong> <span data-i18n="careers-r6-need">A strong, clear writer with grant or fundraising experience — heritage or international work a plus.</span></p>
+        <p><strong data-i18n="careers-lbl-need">What we need:</strong> <span data-i18n="careers-r6-need">A strong, clear writer with grant or fundraising experience, heritage or international work a plus.</span></p>
         <button type="button" class="career-apply btn-primary mt-2 px-6 py-2.5 rounded-md uppercase text-xs tracking-wider" data-role="Grants &amp; Partnerships Writer" data-i18n="careers-apply-btn">Apply for this role</button>
       </div>
     </article>
@@ -3708,7 +3708,7 @@ img, video { max-width: 100%; height: auto; }
         <span class="text-[var(--stone)]" data-i18n="careers-r7-time">Part-time</span>
       </div>
       <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-2" data-i18n="careers-r7-title">People &amp; HR Coordinator</h3>
-      <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r7-hook">Be the human heart of how Levoila welcomes people — working alongside our HR assistant to make every arrival feel like a homecoming.</p>
+      <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r7-hook">Be the human heart of how Levoila welcomes people, working alongside our HR assistant to make every arrival feel like a homecoming.</p>
       <button type="button" class="career-toggle text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="careers-view">View role →</button>
       <div class="career-detail hidden mt-5 pt-5 border-t border-[#E5E0D5] text-sm leading-relaxed text-[var(--navy)] space-y-3">
         <p><strong data-i18n="careers-lbl-do">What you'll do:</strong> <span data-i18n="careers-r7-do">Review applications, make hiring decisions with managers, and own the quality of onboarding for every group.</span></p>
@@ -3725,13 +3725,13 @@ img, video { max-width: 100%; height: auto; }
         <span class="text-[var(--stone)]/50">·</span>
         <span class="text-[var(--stone)]" data-i18n="careers-r8-time">Ongoing appointment</span>
       </div>
-      <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-2" data-i18n="careers-r8-title">Country Steward — Haiti</h3>
+      <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-2" data-i18n="careers-r8-title">Country Steward, Haiti</h3>
       <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r8-hook">Carry Levoila's name in your community. Hold the relationships, oversee the sites, and answer for every dollar on the public ledger.</p>
       <button type="button" class="career-toggle text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="careers-view">View role →</button>
       <div class="career-detail hidden mt-5 pt-5 border-t border-[#E5E0D5] text-sm leading-relaxed text-[var(--navy)] space-y-3">
         <p><strong data-i18n="careers-lbl-do">What you'll do:</strong> <span data-i18n="careers-r8-do">Represent Levoila to communities and authorities, oversee local sites and budget, and report every month.</span></p>
         <p><strong data-i18n="careers-lbl-need">What we need:</strong> <span data-i18n="careers-r8-need">Deep local trust and references, sound judgment, and a commitment to transparency. Nominations welcome.</span></p>
-        <button type="button" class="career-apply btn-primary mt-2 px-6 py-2.5 rounded-md uppercase text-xs tracking-wider" data-role="Country Steward — Haiti" data-i18n="careers-apply-btn">Apply for this role</button>
+        <button type="button" class="career-apply btn-primary mt-2 px-6 py-2.5 rounded-md uppercase text-xs tracking-wider" data-role="Country Steward, Haiti" data-i18n="careers-apply-btn">Apply for this role</button>
       </div>
     </article>
 
@@ -3762,7 +3762,7 @@ img, video { max-width: 100%; height: auto; }
         <span class="text-[var(--stone)]" data-i18n="careers-r10-time">Quarterly + committee</span>
       </div>
       <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-2" data-i18n="careers-r10-title">Board Member</h3>
-      <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r10-hook">Govern the trust. Bring expertise — heritage, law, finance, or the countries we serve — and the judgment to hold us to our word.</p>
+      <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r10-hook">Govern the trust. Bring expertise, heritage, law, finance, or the countries we serve, and the judgment to hold us to our word.</p>
       <button type="button" class="career-toggle text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="careers-view">View role →</button>
       <div class="career-detail hidden mt-5 pt-5 border-t border-[#E5E0D5] text-sm leading-relaxed text-[var(--navy)] space-y-3">
         <p><strong data-i18n="careers-lbl-do">What you'll do:</strong> <span data-i18n="careers-r10-do">Provide fiduciary oversight, shape strategy, and hold Levoila accountable to its mission and its ledger.</span></p>
@@ -3780,7 +3780,7 @@ img, video { max-width: 100%; height: auto; }
         <span class="text-[var(--stone)]" data-i18n="careers-r11-time">Light commitment</span>
       </div>
       <h3 class="serif text-2xl font-semibold text-[var(--navy)] mb-2" data-i18n="careers-r11-title">Advisory Council Member</h3>
-      <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r11-hook">Lend your voice and expertise without fiduciary duty — a way for respected people to help steer the work.</p>
+      <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="careers-r11-hook">Lend your voice and expertise without fiduciary duty, a way for respected people to help steer the work.</p>
       <button type="button" class="career-toggle text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="careers-view">View role →</button>
       <div class="career-detail hidden mt-5 pt-5 border-t border-[#E5E0D5] text-sm leading-relaxed text-[var(--navy)] space-y-3">
         <p><strong data-i18n="careers-lbl-do">What you'll do:</strong> <span data-i18n="careers-r11-do">Advise on strategy and your area of expertise, and open doors where you can.</span></p>
@@ -3793,7 +3793,7 @@ img, video { max-width: 100%; height: auto; }
 
   <!-- Express general interest -->
   <div class="text-center -mt-10 mb-20">
-    <p class="text-[var(--stone)] mb-4" data-i18n="careers-general-q">Don't see your exact role — or just want to be part of the work?</p>
+    <p class="text-[var(--stone)] mb-4" data-i18n="careers-general-q">Don't see your exact role, or just want to be part of the work?</p>
     <button type="button" id="careerGeneralBtn" class="btn-secondary inline-block px-8 py-3 rounded-md uppercase text-sm tracking-wider" data-i18n="careers-general-cta">Express general interest &amp; send your resume</button>
   </div>
 
@@ -3811,7 +3811,7 @@ img, video { max-width: 100%; height: auto; }
             <label data-i18n="careers-f-role">Role you're applying for</label>
             <select id="careerRole" class="input">
               <option value="" data-i18n="careers-role-choose">Choose a role…</option>
-              <option value="General interest" data-i18n="careers-role-general">General interest — I just want to help</option>
+              <option value="General interest" data-i18n="careers-role-general">General interest, I just want to help</option>
               <option value="Site Restoration Volunteer" data-i18n="careers-r1-title">Site Restoration Volunteer</option>
               <option value="Archive &amp; Memory Volunteer" data-i18n="careers-r2-title">Archive &amp; Memory Volunteer</option>
               <option value="Translation Volunteer" data-i18n="careers-r3-title">Translation Volunteer</option>
@@ -3819,7 +3819,7 @@ img, video { max-width: 100%; height: auto; }
               <option value="Operations Manager" data-i18n="careers-r5-title">Operations Manager</option>
               <option value="Grants &amp; Partnerships Writer" data-i18n="careers-r6-title">Grants &amp; Partnerships Writer</option>
               <option value="People &amp; HR Coordinator" data-i18n="careers-r7-title">People &amp; HR Coordinator</option>
-              <option value="Country Steward — Haiti" data-i18n="careers-r8-title">Country Steward — Haiti</option>
+              <option value="Country Steward, Haiti" data-i18n="careers-r8-title">Country Steward, Haiti</option>
               <option value="Heritage Fellow" data-i18n="careers-r9-title">Heritage Fellow</option>
               <option value="Board Member" data-i18n="careers-r10-title">Board Member</option>
               <option value="Advisory Council Member" data-i18n="careers-r11-title">Advisory Council Member</option>
@@ -3862,10 +3862,10 @@ img, video { max-width: 100%; height: auto; }
           </div>
           <div>
             <label data-i18n="careers-f-resume">Resume / CV</label>
-            <input type="file" id="careerResume" class="hidden" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+            <input type="file" id="careerResume" class="hidden" accept=".pdf.doc.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
             <div id="careerDrop" class="border-2 border-dashed border-[#D5CDB8] rounded-lg p-8 text-center cursor-pointer hover:border-[var(--gold)]">
               <div class="text-sm text-[var(--stone)]" data-i18n="careers-f-resume-drag">Drag your resume here, or click to choose a file</div>
-              <div class="text-xs text-[var(--stone)] mt-1 opacity-60" data-i18n="careers-f-resume-types">PDF or Word — up to 10MB</div>
+              <div class="text-xs text-[var(--stone)] mt-1 opacity-60" data-i18n="careers-f-resume-types">PDF or Word, up to 10MB</div>
             </div>
             <div id="careerFileName" class="hidden text-sm text-[var(--navy)] font-semibold mt-2"></div>
           </div>
@@ -3874,7 +3874,7 @@ img, video { max-width: 100%; height: auto; }
             <input id="careerLinkedin" class="input" placeholder="" data-i18n-placeholder="careers-f-linkedin-ph">
           </div>
           <button type="button" id="careerSubmit" class="btn-primary w-full px-6 py-4 rounded-md uppercase tracking-wider" data-i18n="careers-f-submit">Submit application</button>
-          <div id="careerThanks" class="hidden bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-5 text-sm leading-relaxed text-[var(--navy)]" data-i18n="careers-f-thanks">Thank you — your application is on its way. A real person will read it and email you back. While our secure intake finishes coming online, your email app may open so you can send your details and attach your resume to careers@levoila.org.</div>
+          <div id="careerThanks" class="hidden bg-[var(--limestone)] border-l-2 border-[var(--gold)] rounded-r-md px-6 py-5 text-sm leading-relaxed text-[var(--navy)]" data-i18n="careers-f-thanks">Thank you, your application is on its way. A real person will read it and email you back. While our secure intake finishes coming online, your email app may open so you can send your details and attach your resume to careers@levoila.org.</div>
           <p class="text-xs text-[var(--stone)] text-center leading-relaxed" data-i18n="careers-f-privacy">We collect this only to consider you for a role. Your information is encrypted, never sold, and you can ask us to delete it anytime. We never ask for bank details or ID numbers here. See our Privacy Policy.</p>
         </form>
       </div>
@@ -3883,10 +3883,10 @@ img, video { max-width: 100%; height: auto; }
         <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-xl p-8 sticky top-24">
           <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-4" data-i18n="careers-next-eyebrow">WHAT HAPPENS NEXT</div>
           <ol class="space-y-4 text-sm leading-relaxed">
-            <li><span class="text-[var(--gold)] font-bold mr-2">1.</span><span data-i18n="careers-next-1">A real person reviews your application — usually within a week.</span></li>
+            <li><span class="text-[var(--gold)] font-bold mr-2">1.</span><span data-i18n="careers-next-1">A real person reviews your application, usually within a week.</span></li>
             <li><span class="text-[var(--gold)] font-bold mr-2">2.</span><span data-i18n="careers-next-2">For paid and steward roles, we set up a conversation. For most volunteer roles, we move straight to scheduling.</span></li>
             <li><span class="text-[var(--gold)] font-bold mr-2">3.</span><span data-i18n="careers-next-3">If it's a fit, our HR guide walks you through onboarding step by step, in your language.</span></li>
-            <li><span class="text-[var(--gold)] font-bold mr-2">4.</span><span data-i18n="careers-next-4">You start — and you become part of the story of these places.</span></li>
+            <li><span class="text-[var(--gold)] font-bold mr-2">4.</span><span data-i18n="careers-next-4">You start, and you become part of the story of these places.</span></li>
           </ol>
           <div class="mt-8 pt-6 border-t border-white/15 text-xs text-[var(--limestone)]/70 leading-relaxed" data-i18n="careers-next-foot">Questions before you apply? Our HR assistant at the top of this page can help, or write to careers@levoila.org.</div>
         </div>
@@ -3897,13 +3897,13 @@ img, video { max-width: 100%; height: auto; }
 </section>
 
 <!-- ============================================ -->
-<!--  WHERE WE WORK — COUNTRIES HUB  -->
+<!--  WHERE WE WORK, COUNTRIES HUB  -->
 <!-- ============================================ -->
 <section class="page" data-page="where-we-work">
   <div class="py-12">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="www-eyebrow">WHERE WE WORK</div>
     <h1 class="serif text-5xl md:text-6xl font-semibold text-[var(--navy)] mb-4" data-i18n="www-h1">Every country has its own home.</h1>
-    <p class="text-xl text-[var(--stone)] max-w-3xl leading-relaxed" data-i18n="www-intro">levoila.org tells the global story. Each country we work in gets its own local portal — the sites, the money, the team, and the progress on the ground. Choose a country to see how the work is moving.</p>
+    <p class="text-xl text-[var(--stone)] max-w-3xl leading-relaxed" data-i18n="www-intro">levoila.org tells the global story. Each country we work in gets its own local portal, the sites, the money, the team, and the progress on the ground. Choose a country to see how the work is moving.</p>
     <div class="gold-rule mt-6 mb-12"></div>
   </div>
 
@@ -3913,7 +3913,7 @@ img, video { max-width: 100%; height: auto; }
         <h2 class="serif text-4xl font-bold text-[var(--limestone)]" data-i18n="www-haiti-h2">Haiti</h2>
         <span class="text-xs tracking-[2px] text-[var(--gold)] font-bold" data-i18n="www-haiti-status">PHASE ONE · ACTIVE</span>
       </div>
-      <p class="text-sm leading-relaxed text-[var(--limestone)]/85 mb-4" data-i18n="www-haiti-p">Three UNESCO-recognized sites in the north — the Citadelle Henri Christophe, Palais Sans-Souci, and Fort Liberté. See site progress, the Haiti ledger, dispatches, and the local team.</p>
+      <p class="text-sm leading-relaxed text-[var(--limestone)]/85 mb-4" data-i18n="www-haiti-p">Three UNESCO-recognized sites in the north, the Citadelle Henri Christophe, Palais Sans-Souci, and Fort Liberté. See site progress, the Haiti ledger, dispatches, and the local team.</p>
       <span class="text-sm font-semibold text-[var(--gold)]" data-i18n="www-haiti-link">Open Haiti's portal · levoila.org/haiti →</span>
     </a>
 
@@ -3938,15 +3938,15 @@ img, video { max-width: 100%; height: auto; }
   <div class="mb-12">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="watch-eyebrow">SITES UNDER WATCH</div>
     <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-3" data-i18n="watch-h2">The world is full of forgotten places.</h2>
-    <p class="text-[var(--stone)] max-w-3xl leading-relaxed mb-2" data-i18n="watch-sub">A few of the at-risk sites we're watching, by region. None is a Levoila commitment — they show the kind of place the world can still choose to save. Anyone can nominate one.</p>
-    <p class="text-xs text-[var(--stone)]/60 max-w-3xl mb-8" data-i18n="watch-caveat">Status verified May 2026 from UNESCO and the World Monuments Fund. Conditions change — every candidate gets a fresh condition report before it ever reaches a vote.</p>
+    <p class="text-[var(--stone)] max-w-3xl leading-relaxed mb-2" data-i18n="watch-sub">A few of the at-risk sites we're watching, by region. None is a Levoila commitment, they show the kind of place the world can still choose to save. Anyone can nominate one.</p>
+    <p class="text-xs text-[var(--stone)]/60 max-w-3xl mb-8" data-i18n="watch-caveat">Status verified May 2026 from UNESCO and the World Monuments Fund. Conditions change, every candidate gets a fresh condition report before it ever reaches a vote.</p>
 
     <!-- Africa -->
     <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-3" data-i18n="watch-africa">AFRICA</div>
     <div class="grid md:grid-cols-3 gap-4 mb-8">
       <div class="border border-[#E0D9C8] rounded-xl p-5 bg-white">
         <div class="flex items-start justify-between gap-2 mb-1"><h3 class="serif text-lg font-bold text-[var(--navy)]" data-i18n="watch-af1-name">Grand-Bassam, Côte d'Ivoire</h3><span class="shrink-0 text-[9px] tracking-wider uppercase font-bold text-[var(--gold)] mt-1" data-i18n="watch-tag-neglected">Neglected</span></div>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-af1-note">The former colonial capital — many buildings dilapidated, squatted, and flood-damaged. UNESCO-listed, but restoration is beyond what owners can afford.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-af1-note">The former colonial capital, many buildings dilapidated, squatted, and flood-damaged. UNESCO-listed, but restoration is beyond what owners can afford.</p>
       </div>
       <div class="border border-[#E0D9C8] rounded-xl p-5 bg-white">
         <div class="flex items-start justify-between gap-2 mb-1"><h3 class="serif text-lg font-bold text-[var(--navy)]" data-i18n="watch-af2-name">Moçâmedes Cinema, Angola</h3><span class="shrink-0 text-[9px] tracking-wider uppercase font-bold text-[var(--gold)] mt-1" data-i18n="watch-tag-abandoned">Abandoned</span></div>
@@ -3971,7 +3971,7 @@ img, video { max-width: 100%; height: auto; }
       </div>
       <div class="border border-[#E0D9C8] rounded-xl p-5 bg-white">
         <div class="flex items-start justify-between gap-2 mb-1"><h3 class="serif text-lg font-bold text-[var(--navy)]" data-i18n="watch-la3-name">Humberstone, Chile</h3><span class="shrink-0 text-[9px] tracking-wider uppercase font-bold text-[var(--gold)] mt-1" data-i18n="watch-tag-abandoned">Abandoned</span></div>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-la3-note">An abandoned saltpeter works — a whole ghost town in the Atacama desert.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-la3-note">An abandoned saltpeter works, a whole ghost town in the Atacama desert.</p>
       </div>
     </div>
 
@@ -3980,11 +3980,11 @@ img, video { max-width: 100%; height: auto; }
     <div class="grid md:grid-cols-3 gap-4 mb-8">
       <div class="border border-[#E0D9C8] rounded-xl p-5 bg-white">
         <div class="flex items-start justify-between gap-2 mb-1"><h3 class="serif text-lg font-bold text-[var(--navy)]" data-i18n="watch-ee1-name">Tskaltubo, Georgia</h3><span class="shrink-0 text-[9px] tracking-wider uppercase font-bold text-[var(--gold)] mt-1" data-i18n="watch-tag-stalling">Rescue stalling</span></div>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-ee1-note">A Soviet spa town of grand abandoned sanatoriums. A state revival began in 2022 but has stalled — only a few of fourteen buildings sold.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-ee1-note">A Soviet spa town of grand abandoned sanatoriums. A state revival began in 2022 but has stalled, only a few of fourteen buildings sold.</p>
       </div>
       <div class="border border-[#E0D9C8] rounded-xl p-5 bg-white">
         <div class="flex items-start justify-between gap-2 mb-1"><h3 class="serif text-lg font-bold text-[var(--navy)]" data-i18n="watch-ee2-name">Buzludzha, Bulgaria</h3><span class="shrink-0 text-[9px] tracking-wider uppercase font-bold text-[#3C7A4E] mt-1" data-i18n="watch-tag-rescue">Rescue underway</span></div>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-ee2-note">The abandoned mountaintop monument — now under a €35M citizen-backed rescue. Proof that a derelict landmark can be reclaimed.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-ee2-note">The abandoned mountaintop monument, now under a €35M citizen-backed rescue. Proof that a derelict landmark can be reclaimed.</p>
       </div>
       <div class="border border-[#E0D9C8] rounded-xl p-5 bg-white">
         <div class="flex items-start justify-between gap-2 mb-1"><h3 class="serif text-lg font-bold text-[var(--navy)]" data-i18n="watch-ee3-name">Saxon churches, Transylvania, Romania</h3><span class="shrink-0 text-[9px] tracking-wider uppercase font-bold text-[var(--gold)] mt-1" data-i18n="watch-tag-atrisk">At risk</span></div>
@@ -4014,15 +4014,15 @@ img, video { max-width: 100%; height: auto; }
     <div class="grid md:grid-cols-3 gap-4 mb-10">
       <div class="border border-[#E0D9C8] rounded-xl p-5 bg-white">
         <div class="flex items-start justify-between gap-2 mb-1"><h3 class="serif text-lg font-bold text-[var(--navy)]" data-i18n="watch-cb1-name">Falmouth, Jamaica</h3><span class="shrink-0 text-[9px] tracking-wider uppercase font-bold text-[#B23A3A] mt-1" data-i18n="watch-tag-disaster">Disaster-hit</span></div>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-cb1-note">One of the Caribbean's finest Georgian towns, long decaying — then gutted by Hurricane Melissa in 2025. Rebuild plans are only now forming.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-cb1-note">One of the Caribbean's finest Georgian towns, long decaying, then gutted by Hurricane Melissa in 2025. Rebuild plans are only now forming.</p>
       </div>
       <div class="border border-[#E0D9C8] rounded-xl p-5 bg-white">
         <div class="flex items-start justify-between gap-2 mb-1"><h3 class="serif text-lg font-bold text-[var(--navy)]" data-i18n="watch-cb2-name">Saint-Pierre, Martinique</h3><span class="shrink-0 text-[9px] tracking-wider uppercase font-bold text-[var(--gold)] mt-1" data-i18n="watch-tag-abandoned">Abandoned</span></div>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-cb2-note">The "Pompeii of the Caribbean" — ruins of the town destroyed by the 1902 eruption of Mont Pelée.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-cb2-note">The "Pompeii of the Caribbean", ruins of the town destroyed by the 1902 eruption of Mont Pelée.</p>
       </div>
       <div class="border border-[#E0D9C8] rounded-xl p-5 bg-white">
         <div class="flex items-start justify-between gap-2 mb-1"><h3 class="serif text-lg font-bold text-[var(--navy)]" data-i18n="watch-cb3-name">Sugar-estate ruins, Antigua &amp; St. Kitts</h3><span class="shrink-0 text-[9px] tracking-wider uppercase font-bold text-[var(--gold)] mt-1" data-i18n="watch-tag-neglected">Neglected</span></div>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-cb3-note">Abandoned plantation works — mills, boiling houses, and great houses standing open across the islands.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="watch-cb3-note">Abandoned plantation works, mills, boiling houses, and great houses standing open across the islands.</p>
       </div>
     </div>
 
@@ -4031,7 +4031,7 @@ img, video { max-width: 100%; height: auto; }
 </section>
 
 <!-- ============================================ -->
-<!--  PODCAST — LE VOILÀ (/podcast)  -->
+<!--  PODCAST, LE VOILÀ (/podcast)  -->
 <!-- ============================================ -->
 <section class="page" data-page="podcast">
 
@@ -4043,7 +4043,7 @@ img, video { max-width: 100%; height: auto; }
           <div class="text-xs tracking-[4px] text-[var(--gold)] font-bold mb-5" data-i18n="pod-eyebrow">THE PODCAST</div>
           <h1 class="serif text-7xl font-semibold mb-3 leading-none">Le Voilà</h1>
           <p class="serif text-2xl italic text-[var(--limestone)]/80 mb-8" data-i18n="pod-tagline">Stories from the sites the world refuses to forget.</p>
-          <p class="text-base leading-relaxed text-[var(--limestone)]/80 max-w-xl mb-8" data-i18n="pod-intro">A monthly podcast from Levoila — The Global Heritage Trust. Conversations with the architects, historians, community leaders, and government officials shaping the restoration of the world's abandoned heritage sites. Hosted by founder Jacques M. Jean.</p>
+          <p class="text-base leading-relaxed text-[var(--limestone)]/80 max-w-xl mb-8" data-i18n="pod-intro">A monthly podcast from Levoila, The Global Heritage Trust. Conversations with the architects, historians, community leaders, and government officials shaping the restoration of the world's abandoned heritage sites. Hosted by founder Jacques M. Jean.</p>
           <div class="flex flex-wrap gap-3 mb-8">
             <a class="platform-btn" href="https://www.levoila.org/#" aria-label="Apple Podcasts"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.41 2.87 8.15 6.84 9.49.5.09.66-.22.66-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.34.85.01 1.7.12 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.16.58.67.48A10.01 10.01 0 0022 12c0-5.52-4.48-10-10-10z"></path></svg>Apple Podcasts</a>
             <a class="platform-btn" href="https://www.levoila.org/#" aria-label="Spotify"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"></circle></svg>Spotify</a>
@@ -4079,7 +4079,7 @@ img, video { max-width: 100%; height: auto; }
   <div class="max-w-5xl mx-auto mb-12 text-center">
     <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="pod-season1-eyebrow">SEASON ONE</div>
     <h2 class="serif text-5xl font-semibold text-[var(--navy)] mb-4" data-i18n="pod-season1-h2">The Restoration of Haiti</h2>
-    <p class="text-lg text-[var(--stone)] max-w-2xl mx-auto leading-relaxed" data-i18n="pod-season1-intro">Ten episodes following Phase One as it unfolds. The Citadelle Henri Christophe, the Palais Sans-Souci, Fort Liberté — and the people building them back.</p>
+    <p class="text-lg text-[var(--stone)] max-w-2xl mx-auto leading-relaxed" data-i18n="pod-season1-intro">Ten episodes following Phase One as it unfolds. The Citadelle Henri Christophe, the Palais Sans-Souci, Fort Liberté, and the people building them back.</p>
     <div class="gold-rule mx-auto mt-8"></div>
   </div>
 
@@ -4138,7 +4138,7 @@ img, video { max-width: 100%; height: auto; }
           <span class="text-xs text-[var(--stone)] opacity-60">~42 min</span>
         </div>
         <h3 class="serif text-xl font-bold text-[var(--navy)] mb-2" data-i18n="pod-ep3-title">What a Sovereignty Compact actually is.</h3>
-        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4 flex-1" data-i18n="pod-ep3-desc">The legal architecture behind every Levoila restoration — how a host nation keeps its sovereignty, how the Heritage Royalty works, and why this model is different from every foundation that came before.</p>
+        <p class="text-sm leading-relaxed text-[var(--stone)] mb-4 flex-1" data-i18n="pod-ep3-desc">The legal architecture behind every Levoila restoration, how a host nation keeps its sovereignty, how the Heritage Royalty works, and why this model is different from every foundation that came before.</p>
         <div class="flex items-center justify-between pt-4 border-t border-[#E5E0D5]">
           <span class="text-xs text-[var(--stone)] opacity-60" data-i18n="pod-ep3-date">Coming soon</span>
           <button class="pod-play" aria-label="Play" disabled="" style="opacity:0.5;cursor:not-allowed;"><svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M3 1.5v11l9-5.5z"></path></svg></button>
@@ -4154,7 +4154,7 @@ img, video { max-width: 100%; height: auto; }
       <div class="text-xs tracking-[3px] text-[var(--gold)] font-bold mb-3" data-i18n="pod-about-eyebrow">ABOUT THE SHOW</div>
       <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-6" data-i18n="pod-about-h2">Why a podcast for a heritage trust.</h2>
       <p class="text-base leading-relaxed text-[var(--stone)] mb-4" data-i18n="pod-about-p1">Restoration is slow. Buildings take years. Sovereignty Compacts take seasons. Steward votes happen quarterly. The work doesn't fit a press release.</p>
-      <p class="text-base leading-relaxed text-[var(--stone)] mb-4" data-i18n="pod-about-p2">Le Voilà is how we tell it as it happens. Field recordings from the sites. Long conversations with the people doing the work. Voices in five languages — English, French, Kreyòl, Spanish, Portuguese — because Levoila operates everywhere our sites do.</p>
+      <p class="text-base leading-relaxed text-[var(--stone)] mb-4" data-i18n="pod-about-p2">Le Voilà is how we tell it as it happens. Field recordings from the sites. Long conversations with the people doing the work. Voices in five languages, English, French, Kreyòl, Spanish, Portuguese, because Levoila operates everywhere our sites do.</p>
       <p class="text-base leading-relaxed text-[var(--stone)]" data-i18n="pod-about-p3">If you're a Steward, this is your front-row seat. If you're not yet, this is the invitation.</p>
 
       <div class="grid md:grid-cols-2 gap-8 mt-12 pt-10 border-t border-[#E5E0D5]">
@@ -4185,7 +4185,7 @@ img, video { max-width: 100%; height: auto; }
 </section>
 
 <!-- ============================================ -->
-<!--  HAITI — LOCAL COUNTRY PORTAL (/haiti)  -->
+<!--  HAITI, LOCAL COUNTRY PORTAL (/haiti)  -->
 <!-- ============================================ -->
 <section class="page" data-page="haiti">
 
@@ -4233,7 +4233,7 @@ img, video { max-width: 100%; height: auto; }
         </div>
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="haiti-site1-label">SITE 1 · MILOT, NORD</div>
         <h3 class="serif text-2xl font-bold text-[var(--navy)] mb-2">Citadelle Henri Christophe</h3>
-        <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="haiti-site1-p">The largest fortress in the Americas. First act: a permanent memorial to the lives lost on April 11, 2026, designed with the families — then stabilization, security, and a museum.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed mb-4" data-i18n="haiti-site1-p">The largest fortress in the Americas. First act: a permanent memorial to the lives lost on April 11, 2026, designed with the families, then stabilization, security, and a museum.</p>
         <div class="progress-bar mb-1"><div style="width:0%"></div></div>
         <div class="text-xs text-[var(--stone)]" data-i18n="haiti-site1-progress">Funding window opening · first act is the April 11 memorial</div>
       </div>
@@ -4332,7 +4332,7 @@ img, video { max-width: 100%; height: auto; }
           <span class="text-[10px] tracking-wider uppercase text-[var(--stone)]/55 font-bold" data-i18n="haiti-prog-soon">Coming soon</span>
         </div>
         <h3 class="serif text-xl font-bold text-[var(--navy)] mb-2" data-i18n="haiti-prog-1-h">Events &amp; performances</h3>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-prog-1-p">Concerts, ceremonies, and open-air shows — anchored by the amphitheater at Fort Liberté and programming under the Sans-Souci colonnades.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-prog-1-p">Concerts, ceremonies, and open-air shows, anchored by the amphitheater at Fort Liberté and programming under the Sans-Souci colonnades.</p>
         <a id="haitiTicketsCta" href="https://www.levoila.org/#" target="_blank" rel="noopener" class="hidden text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5 mt-3 inline-block" data-i18n="haiti-prog-tickets-cta">Get tickets →</a>
       </div>
 
@@ -4342,7 +4342,7 @@ img, video { max-width: 100%; height: auto; }
           <span class="text-[10px] tracking-wider uppercase text-[var(--stone)]/55 font-bold" data-i18n="haiti-prog-soon">Coming soon</span>
         </div>
         <h3 class="serif text-xl font-bold text-[var(--navy)] mb-2" data-i18n="haiti-prog-2-h">Site store &amp; marketplace</h3>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-prog-2-p">Books, crafts, and local goods sold directly by Haitian artisans — keeping the money from every visit in the community.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-prog-2-p">Books, crafts, and local goods sold directly by Haitian artisans, keeping the money from every visit in the community.</p>
         <a id="haitiStoreCta" href="https://www.levoila.org/#" target="_blank" rel="noopener" class="hidden text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5 mt-3 inline-block" data-i18n="haiti-prog-store-cta">Visit the store →</a>
       </div>
 
@@ -4352,7 +4352,7 @@ img, video { max-width: 100%; height: auto; }
           <span class="text-[10px] tracking-wider uppercase text-[var(--stone)]/55 font-bold" data-i18n="haiti-prog-soon">Coming soon</span>
         </div>
         <h3 class="serif text-xl font-bold text-[var(--navy)] mb-2" data-i18n="haiti-prog-3-h">School site visits</h3>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-prog-3-p">Free guided visits for Haitian schools, built with the Universal Learning Centre libraries — so the next generation knows what their ancestors built.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-prog-3-p">Free guided visits for Haitian schools, built with the Universal Learning Centre libraries, so the next generation knows what their ancestors built.</p>
       </div>
 
       <div class="border border-[#E0D9C8] rounded-xl p-6 bg-white">
@@ -4370,7 +4370,7 @@ img, video { max-width: 100%; height: auto; }
           <span class="text-[10px] tracking-wider uppercase text-[var(--stone)]/55 font-bold" data-i18n="haiti-prog-soon">Coming soon</span>
         </div>
         <h3 class="serif text-xl font-bold text-[var(--navy)] mb-2" data-i18n="haiti-prog-5-h">Holiday &amp; memorial programs</h3>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-prog-5-p">Programming around Independence Day, national holidays, and the April 11 memorial — the dates that hold Haiti's memory.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-prog-5-p">Programming around Independence Day, national holidays, and the April 11 memorial, the dates that hold Haiti's memory.</p>
       </div>
 
       <div class="border border-[#E0D9C8] rounded-xl p-6 bg-white">
@@ -4379,7 +4379,7 @@ img, video { max-width: 100%; height: auto; }
           <span class="text-[10px] tracking-wider uppercase text-[var(--stone)]/55 font-bold" data-i18n="haiti-prog-soon">Coming soon</span>
         </div>
         <h3 class="serif text-xl font-bold text-[var(--navy)] mb-2" data-i18n="haiti-prog-6-h">Printing &amp; craft workshops</h3>
-        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-prog-6-p">A heritage print shop and artisan workshops — training local makers and producing the books, prints, and goods sold at the sites.</p>
+        <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-prog-6-p">A heritage print shop and artisan workshops, training local makers and producing the books, prints, and goods sold at the sites.</p>
       </div>
 
     </div>
@@ -4388,14 +4388,14 @@ img, video { max-width: 100%; height: auto; }
   <!-- Partnerships & sponsorship -->
   <div class="mb-16">
     <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-2" data-i18n="haiti-part-h2">Partnerships &amp; sponsorship</h2>
-    <p class="text-[var(--stone)] max-w-3xl mb-8" data-i18n="haiti-part-sub">Levoila works with the people and institutions who hold Haiti's heritage — and invites those who want to back it.</p>
+    <p class="text-[var(--stone)] max-w-3xl mb-8" data-i18n="haiti-part-sub">Levoila works with the people and institutions who hold Haiti's heritage, and invites those who want to back it.</p>
     <div class="grid md:grid-cols-3 gap-6">
 
       <div class="border border-[#E0D9C8] rounded-xl p-7 bg-white">
         <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-4" data-i18n="haiti-part-local-label">ON THE GROUND IN HAITI</div>
         <ul class="space-y-2 text-sm text-[var(--navy)] leading-relaxed">
           <li data-i18n="haiti-part-local-1">Ministère de la Culture et de la Communication</li>
-          <li data-i18n="haiti-part-local-2">ISPAN — Institut de Sauvegarde du Patrimoine National</li>
+          <li data-i18n="haiti-part-local-2">ISPAN, Institut de Sauvegarde du Patrimoine National</li>
           <li data-i18n="haiti-part-local-3">The municipalities of Milot and Fort-Liberté</li>
           <li data-i18n="haiti-part-local-4">Universal Learning Centre libraries (Pilate, Ferrier, Ouanaminthe)</li>
         </ul>
@@ -4418,13 +4418,13 @@ img, video { max-width: 100%; height: auto; }
   <!-- Local team & roles -->
   <div class="mb-16">
     <h2 class="serif text-4xl font-semibold text-[var(--navy)] mb-2" data-i18n="haiti-team-h2">The Haiti team</h2>
-    <p class="text-[var(--stone)] max-w-3xl mb-8" data-i18n="haiti-team-sub">Levoila Haiti is led by Haitians. These are the roles we're building now — most are open, and three of every four jobs on a site are hired locally.</p>
+    <p class="text-[var(--stone)] max-w-3xl mb-8" data-i18n="haiti-team-sub">Levoila Haiti is led by Haitians. These are the roles we're building now, most are open, and three of every four jobs on a site are hired locally.</p>
     <!-- Tier 1 · Country leadership -->
     <div class="text-xs tracking-[2px] text-[var(--gold)] font-bold mb-3" data-i18n="haiti-org-country-label">COUNTRY LEADERSHIP</div>
     <div class="bg-[var(--navy)] text-[var(--limestone)] rounded-xl p-6 mb-4">
       <div class="text-[10px] tracking-[2px] text-[var(--gold)] font-bold mb-1" data-i18n="haiti-org-cd-tag">REPORTS TO THE GLOBAL BOARD</div>
-      <h3 class="serif text-2xl font-bold text-[var(--limestone)] mb-1" data-i18n="haiti-org-cd">Country Director — Haiti</h3>
-      <p class="text-sm text-[var(--limestone)]/80 leading-relaxed" data-i18n="haiti-org-cd-desc">Leads all of Levoila's work in Haiti — the three site teams, the government relationships, the local budget, and the people. Reports to the global Board.</p>
+      <h3 class="serif text-2xl font-bold text-[var(--limestone)] mb-1" data-i18n="haiti-org-cd">Country Director, Haiti</h3>
+      <p class="text-sm text-[var(--limestone)]/80 leading-relaxed" data-i18n="haiti-org-cd-desc">Leads all of Levoila's work in Haiti, the three site teams, the government relationships, the local budget, and the people. Reports to the global Board.</p>
     </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-12">
       <div class="flex items-center justify-between px-4 py-3 border border-[#E5E0D5] rounded-lg bg-white"><span class="text-sm font-semibold text-[var(--navy)]" data-i18n="haiti-org-fn1">Government Affairs Lead</span><span class="text-[10px] tracking-wider uppercase text-[var(--gold)] font-bold" data-i18n="haiti-org-open">Open</span></div>
@@ -4482,7 +4482,7 @@ img, video { max-width: 100%; height: auto; }
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
       <div class="flex items-center justify-between px-4 py-3 border border-[#E5E0D5] rounded-lg bg-white"><span class="text-sm font-semibold text-[var(--navy)]" data-i18n="haiti-org-t1">Lead Heritage Architect</span><span class="text-[10px] tracking-wider uppercase text-[var(--gold)] font-bold" data-i18n="haiti-org-open">Open</span></div>
       <div class="flex items-center justify-between px-4 py-3 border border-[#E5E0D5] rounded-lg bg-white"><span class="text-sm font-semibold text-[var(--navy)]" data-i18n="haiti-org-t2">Conservation Manager</span><span class="text-[10px] tracking-wider uppercase text-[var(--gold)] font-bold" data-i18n="haiti-org-open">Open</span></div>
-      <div class="flex items-center justify-between px-4 py-3 border border-[#E5E0D5] rounded-lg bg-white"><span class="text-sm font-semibold text-[var(--navy)]" data-i18n="haiti-org-t3">Site Engineer — Structural</span><span class="text-[10px] tracking-wider uppercase text-[var(--gold)] font-bold" data-i18n="haiti-org-open">Open</span></div>
+      <div class="flex items-center justify-between px-4 py-3 border border-[#E5E0D5] rounded-lg bg-white"><span class="text-sm font-semibold text-[var(--navy)]" data-i18n="haiti-org-t3">Site Engineer, Structural</span><span class="text-[10px] tracking-wider uppercase text-[var(--gold)] font-bold" data-i18n="haiti-org-open">Open</span></div>
       <div class="flex items-center justify-between px-4 py-3 border border-[#E5E0D5] rounded-lg bg-white"><span class="text-sm font-semibold text-[var(--navy)]" data-i18n="haiti-org-t4">Master Mason &amp; Trades Foreman</span><span class="text-[10px] tracking-wider uppercase text-[var(--gold)] font-bold" data-i18n="haiti-org-open">Open</span></div>
     </div>
     <a href="https://www.levoila.org/#careers" data-page="careers" class="nav-trigger inline-block mt-6 btn-primary px-7 py-3 rounded-md uppercase text-sm" data-i18n="haiti-team-cta">See open roles &amp; apply</a>
@@ -4984,7 +4984,7 @@ img, video { max-width: 100%; height: auto; }
   })();
 
   function careerMailtoFallback(role) {
-    var subject = encodeURIComponent('Application — ' + (role || 'a role'));
+    var subject = encodeURIComponent('Application, ' + (role || 'a role'));
     var body = encodeURIComponent('Please attach your resume to this email and add anything you would like us to know.\n\nRole: ' + (role || '') + '\n');
     window.location.href = 'mailto:careers@levoila.org?subject=' + subject + '&body=' + body;
   }
@@ -5022,7 +5022,7 @@ img, video { max-width: 100%; height: auto; }
         if (thanks) thanks.classList.remove('hidden');
         careerSubmit.textContent = 'Application sent';
       } catch (err) {
-        // Never strand the applicant — open a pre-filled email instead.
+        // Never strand the applicant, open a pre-filled email instead.
         careerMailtoFallback(data.role);
         careerSubmit.disabled = false;
       }
@@ -5030,7 +5030,7 @@ img, video { max-width: 100%; height: auto; }
   }
 </script>
 
-<!-- Levoila Dispatches — dynamic blog feed from /api/dispatches -->
+<!-- Levoila Dispatches, dynamic blog feed from /api/dispatches -->
 <script>
 (function(){
   var GOLD='#B6862C', NAVY='#0B2545';
@@ -5089,9 +5089,9 @@ img, video { max-width: 100%; height: auto; }
     var body=(d.body||'').split(/\n\n+/).map(function(p){return '<p style="margin:0 0 1.1em;line-height:1.75;color:#3a3a3a;font-size:17px">'+esc(p)+'</p>';}).join('');
     var ov=document.createElement('div');
     ov.id='__dispReader';
-    ov.style.cssText='position:fixed;inset:0;z-index:9995;background:rgba(6,39,68,.55);backdrop-filter:blur(3px);overflow-y:auto;padding:40px 16px;';
+    ov.style.cssText='position:fixed;inset:0;z-index:9995;background:rgba(6,39,68.55);backdrop-filter:blur(3px);overflow-y:auto;padding:40px 16px;';
     ov.onclick=function(e){if(e.target===ov)ov.remove();};
-    ov.innerHTML='<div style="max-width:720px;margin:0 auto;background:#FAF7F0;border-radius:6px;border:1px solid rgba(182,134,44,.35);box-shadow:0 40px 90px rgba(2,16,30,.5);overflow:hidden">'
+    ov.innerHTML='<div style="max-width:720px;margin:0 auto;background:#FAF7F0;border-radius:6px;border:1px solid rgba(182,134,44.35);box-shadow:0 40px 90px rgba(2,16,30.5);overflow:hidden">'
       + '<div style="height:3px;background:linear-gradient(90deg,'+GOLD+',rgba(182,134,44,0) 70%)"></div>'
       + '<div style="padding:34px 40px 42px">'
       + '<button onclick="document.getElementById(\'__dispReader\').remove()" style="float:right;background:none;border:none;font-size:24px;color:#9a938a;cursor:pointer;line-height:1">×</button>'
@@ -5115,7 +5115,7 @@ img, video { max-width: 100%; height: auto; }
 })();
 </script>
 
-<!-- Levoila Concierge — multilingual AI intake (safe fallback to email until API key is set) -->
+<!-- Levoila Concierge, multilingual AI intake (safe fallback to email until API key is set) -->
 <script src="https://www.levoila.org/concierge.js" defer=""></script>
 
 
