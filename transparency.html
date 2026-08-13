@@ -61,6 +61,16 @@ section{padding:38px 0}
 .empty h3{font-family:"EB Garamond",Georgia,serif;color:var(--navy);font-size:22px;margin:0 0 8px}
 .empty p{color:var(--mut);max-width:52ch;margin:0 auto;font-size:15px}
 
+/* impact band */
+.ig{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:820px){.ig{grid-template-columns:1fr}}
+.icard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 10px 30px rgba(11,37,69,.05)}
+.icard .gift{font-family:"EB Garamond",Georgia,serif;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:12px}
+.icard .line{display:flex;gap:10px;align-items:center;padding:7px 0}
+.icard .line .ic{font-size:20px;width:26px;text-align:center}
+.icard .line .n{font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.icard .line .l{font-size:13px;color:var(--mut)}
+
 /* site bars */
 .bars{display:flex;flex-direction:column;gap:14px}
 .barrow .lab{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
@@ -122,6 +132,16 @@ footer a{color:#c9d5e6;text-decoration:none;font-weight:600}
   <div class="stats" id="stats"></div>
 </div>
 
+<div class="wrap" id="impactWrap" style="display:none">
+  <section style="padding-top:30px;padding-bottom:8px">
+    <div class="sec-h">
+      <h2 class="serif">What your support makes possible</h2>
+      <span class="hint">Based on what this work actually costs on the ground</span>
+    </div>
+    <div id="impactBand" class="ig"></div>
+  </section>
+</div>
+
 <div id="content" class="wrap">
   <div class="loading"><span class="spin"></span></div>
 </div>
@@ -174,6 +194,29 @@ async function load(){
   }
   if (!d){ render(fail()); return; }
   render(normalize(d));
+  loadImpact();
+}
+
+// Money-to-impact engine: translate sample gifts into concrete units of good.
+async function loadImpact(){
+  if (!CFG.supabaseUrl || !window.supabase) return;
+  const sb = supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey);
+  const amounts = [100, 500, 2500];
+  try{
+    const results = await Promise.all(amounts.map(a => sb.rpc('impact_translate', {p_amount:a})));
+    const cards = results.map((res, i) => {
+      const arr = (res && res.data) || [];
+      if (!arr.length) return '';
+      const lines = arr.slice(0,4).map(x=>`<div class="line"><span class="ic">${esc(x.icon||'•')}</span>
+        <span class="n">${Number(x.count).toLocaleString('en-US')}</span>
+        <span class="l">${esc(x.label)}</span></div>`).join('');
+      return `<div class="icard"><div class="gift">A ${USD0(amounts[i])} gift</div>${lines}</div>`;
+    }).filter(Boolean).join('');
+    if (cards){
+      document.getElementById('impactBand').innerHTML = cards;
+      document.getElementById('impactWrap').style.display = '';
+    }
+  }catch(e){}
 }
 
 function fail(){ return {updated:'unavailable',totalRaised:0,totalDisbursed:0,balance:0,restrictedRaised:0,entriesCount:0,stewards:0,countries:0,bySite:[],byCategory:[],byProject:[],stewardTiers:[],entries:[],_failed:true}; }
