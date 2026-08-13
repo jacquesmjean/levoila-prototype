@@ -6,7 +6,8 @@
     { "source": "/vendor-onboarding", "destination": "/vendor-onboarding.html" },
     { "source": "/join-onboarding", "destination": "/join-onboarding.html" },
     { "source": "/sign", "destination": "/sign.html" },
-    { "source": "/transparency", "destination": "/transparency.html" }
+    { "source": "/transparency", "destination": "/transparency.html" },
+    { "source": "/portal", "destination": "/portal.html" }
   ],
   "headers": [
     { "source": "/servicedesk", "headers": [
@@ -15,6 +16,7 @@
     ]},
     { "source": "/vendor-onboarding", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]},
     { "source": "/join-onboarding", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]},
-    { "source": "/sign", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]}
+    { "source": "/sign", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]},
+    { "source": "/portal", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]}
   ]
 }

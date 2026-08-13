@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Your Levoila — Donor & Funder Portal</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="tenant.config.js"></script>
+<style>
+:root{--navy:#0B2545;--gold:#B6862C;--soft:#D4A857;--cream:#FAF7F0;--lime:#F4F1EA;--ink:#2b2a26;--mut:#6b6355;--line:#E5E0D5}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:var(--cream);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+.serif{font-family:"EB Garamond",Georgia,serif}
+header.top{background:var(--navy);color:#fff}
+.topbar{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 22px}
+.brand{display:flex;flex-direction:column;line-height:1.1}
+.brand .name{font-family:"EB Garamond",Georgia,serif;font-size:22px;font-weight:700}
+.brand .over{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--soft);margin-top:2px}
+.topbar a{color:#dbe3ef;text-decoration:none;font-size:13px;font-weight:600}
+.wrap{max-width:960px;margin:0 auto;padding:34px 22px}
+.center{max-width:460px;margin:6vh auto;padding:0 22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 16px 40px rgba(11,37,69,.08)}
+h1.big{font-family:"EB Garamond",Georgia,serif;font-size:30px;color:var(--navy);margin:0 0 8px}
+.eyebrow{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 10px}
+p.sub{color:var(--mut);margin:0 0 20px;font-size:15px}
+label{display:block;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mut);margin:0 0 6px}
+input{width:100%;padding:12px 14px;border:1px solid #D5CDB8;border-radius:10px;font-size:15px;font-family:inherit}
+button{background:var(--gold);color:#fff;border:0;padding:13px 22px;border-radius:999px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;font-size:13px;cursor:pointer;font-family:inherit}
+button.ghost{background:transparent;color:var(--navy);border:1px solid #D5CDB8}
+button:disabled{opacity:.6;cursor:default}
+.msg{font-size:13px;color:var(--mut);margin-top:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:22px 0}
+@media(max-width:560px){.stats{grid-template-columns:1fr}}
+.tile{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
+.tile .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:700}
+.tile .v{font-family:"EB Garamond",Georgia,serif;font-size:28px;font-weight:700;color:var(--navy);margin-top:6px;line-height:1}
+.tile .s{font-size:12px;color:var(--mut);margin-top:5px}
+.sec{margin-top:30px}
+.sec h2{font-family:"EB Garamond",Georgia,serif;font-size:22px;color:var(--navy);margin:0 0 14px}
+.impact{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:560px){.impact{grid-template-columns:1fr}}
+.imp{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
+.imp .ic{font-size:26px;line-height:1}
+.imp .n{font-family:"EB Garamond",Georgia,serif;font-size:20px;font-weight:700;color:var(--navy)}
+.imp .l{font-size:13px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);font-weight:700;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--lime)}
+td{padding:12px 14px;border-bottom:1px solid #f0ece1}
+tr:last-child td{border-bottom:0}
+.amt{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--navy);white-space:nowrap}
+.pill{display:inline-block;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--lime);color:var(--mut)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.steward{background:linear-gradient(160deg,#0B2545,#16406e);color:#fff;border-radius:16px;padding:22px;margin-top:22px}
+.steward .no{font-family:"EB Garamond",Georgia,serif;font-size:24px}
+.steward .lab{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+.loading{padding:60px 0;text-align:center;color:var(--mut)}
+.spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--gold);border-radius:50%;display:inline-block;animation:s 1s linear infinite}
+@keyframes s{to{transform:rotate(360deg)}}
+.dlbtns{display:flex;gap:10px;flex-wrap:wrap}
+.foot{color:var(--mut);font-size:12px;margin-top:30px;text-align:center}
+</style></head><body>
+
+<header class="top"><div class="topbar">
+  <div class="brand"><span class="name" id="brandName">Levoila</span><span class="over">Donor &amp; Funder Portal</span></div>
+  <a href="https://www.levoila.org">levoila.org</a>
+</div></header>
+
+<div id="app">
+  <div class="loading"><span class="spin"></span></div>
+</div>
+
+<script>
+const CFG = window.TENANT_CONFIG || {};
+const sb = supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey);
+if (CFG.org && CFG.org.name){ document.getElementById('brandName').textContent = CFG.org.name; }
+const app = document.getElementById('app');
+const USD0 = n => '$' + Math.round(Number(n)||0).toLocaleString('en-US');
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const REDIRECT = location.origin + '/portal';
+
+function signInView(prefill){
+  app.innerHTML = `<div class="center"><div class="card">
+    <p class="eyebrow">Your giving, in one place</p>
+    <h1 class="big serif">Welcome back.</h1>
+    <p class="sub">Enter the email you gave with. We'll send you a secure sign-in link — no password to remember. Inside you'll find your full giving history, what your support has made possible, and your year-end tax statements.</p>
+    <label for="email">Email address</label>
+    <input id="email" type="email" autocomplete="email" placeholder="you@example.com" value="${esc(prefill||'')}">
+    <div style="height:16px"></div>
+    <button id="send">Email me a sign-in link</button>
+    <div class="msg" id="msg"></div>
+  </div>
+  <p class="foot">Are you Levoila staff? The operations console is at <a href="/servicedesk">/servicedesk</a>.</p>
+  </div>`;
+  const btn = document.getElementById('send'), msg = document.getElementById('msg'), em = document.getElementById('email');
+  const go = async ()=>{
+    const email = (em.value||'').trim().toLowerCase();
+    if(!email || !/.+@.+\..+/.test(email)){ msg.textContent='Please enter a valid email address.'; return; }
+    btn.disabled = true; msg.textContent='Sending…';
+    const { error } = await sb.auth.signInWithOtp({ email, options:{ emailRedirectTo: REDIRECT, shouldCreateUser:true } });
+    if(error){ btn.disabled=false; msg.textContent = error.message || 'Could not send the link. Please try again.'; return; }
+    app.innerHTML = `<div class="center"><div class="card">
+      <p class="eyebrow">Check your inbox</p>
+      <h1 class="big serif">Link sent.</h1>
+      <p class="sub">We emailed a secure sign-in link to <b>${esc(email)}</b>. Open it on this device to see your giving. The link expires in one hour.</p>
+      <button class="ghost" onclick="location.href='/portal'">Use a different email</button>
+    </div></div>`;
+  };
+  btn.onclick = go;
+  em.addEventListener('keydown', e=>{ if(e.key==='Enter') go(); });
+}
+
+async function dashboard(){
+  app.innerHTML = `<div class="loading"><span class="spin"></span></div>`;
+  const { data, error } = await sb.rpc('donor_me');
+  if(error || !data){ app.innerHTML=`<div class="wrap"><div class="card"><h1 class="big serif">We hit a snag</h1><p class="sub">${esc((error&&error.message)||'Please try again in a moment.')}</p><button class="ghost" onclick="signOut()">Sign out</button></div></div>`; return; }
+  if(!data.ok){ signInView(''); return; }
+  const d = data;
+  const gifts = d.gifts||[], impact = d.impact||[];
+  const impCards = impact.slice(0,4).map(i=>`<div class="imp"><div class="ic">${esc(i.icon||'•')}</div>
+      <div><div class="n">${Number(i.count).toLocaleString('en-US')}</div><div class="l">${esc(i.label)}</div></div></div>`).join('');
+  const giftRows = gifts.map(g=>`<tr>
+      <td style="white-space:nowrap;color:var(--mut)">${esc(g.date)}</td>
+      <td>${g.site?`<span class="pill">${esc(g.site)}</span>`:''} ${g.recurring?'<span class="pill" style="background:#f7ecd4;color:#8a6a1e">monthly</span>':''} ${g.tier?esc(g.tier):''}</td>
+      <td class="amt">${USD0(g.amount)}</td></tr>`).join('') || `<tr><td colspan="3" style="color:var(--mut)">No gifts recorded under this email yet. If you gave recently, it may take a day to appear.</td></tr>`;
+  const years = d.byYear||[];
+  const yearRows = years.map(y=>`<tr><td>${y.year}</td><td class="amt">${USD0(y.total)}</td>
+      <td style="text-align:right"><button class="ghost" style="padding:8px 14px;font-size:11px" onclick="statement(${y.year})">Year-end statement</button></td></tr>`).join('')
+      || `<tr><td colspan="3" style="color:var(--mut)">Your first statement will appear here after your first gift.</td></tr>`;
+
+  const stewardHtml = d.steward ? `<div class="steward"><div class="lab">Founding Steward</div>
+     <div class="no">No. ${esc(d.steward.no)} · ${esc(d.steward.tier||'Steward')}</div>
+     ${d.steward.engrave?`<div style="margin-top:6px;color:#cdd8e8;font-size:14px">Engraved as: “${esc(d.steward.engrave)}”</div>`:''}</div>` : '';
+
+  app.innerHTML = `<div class="wrap">
+    <div class="row">
+      <div><p class="eyebrow">Your Levoila</p><h1 class="big serif">${esc(d.name||'Welcome')}</h1>
+        <p class="sub">Signed in as ${esc(d.email)}</p></div>
+      <button class="ghost" onclick="signOut()">Sign out</button>
+    </div>
+
+    <div class="stats">
+      <div class="tile"><div class="k">Total given</div><div class="v">${USD0(d.totalGiven)}</div><div class="s">${d.recurring?'Includes monthly support':'Thank you'}</div></div>
+      <div class="tile"><div class="k">Gifts</div><div class="v">${Number(d.giftCount||0).toLocaleString('en-US')}</div><div class="s">${d.firstGift?('Since '+d.firstGift):'—'}</div></div>
+      <div class="tile"><div class="k">Most recent</div><div class="v">${d.lastGift?d.lastGift:'—'}</div><div class="s">Every gift is on the public ledger</div></div>
+    </div>
+
+    ${stewardHtml}
+
+    ${impact.length?`<div class="sec"><h2 class="serif">What your support makes possible</h2>
+      <p class="sub" style="margin-top:-6px">An estimate, based on what this work actually costs on the ground.</p>
+      <div class="impact">${impCards}</div></div>`:''}
+
+    <div class="sec"><h2 class="serif">Your giving history</h2>
+      <table><thead><tr><th>Date</th><th>Designation</th><th class="amt">Amount</th></tr></thead>
+      <tbody>${giftRows}</tbody></table></div>
+
+    <div class="sec"><h2 class="serif">Tax statements</h2>
+      <table><thead><tr><th>Year</th><th class="amt">Deductible total</th><th style="text-align:right">Statement</th></tr></thead>
+      <tbody>${yearRows}</tbody></table>
+      <p class="foot" style="text-align:left;margin-top:12px">Levoila is a heritage trust. Retain your statement for your records. Consult your tax advisor on deductibility in your country.</p>
+    </div>
+
+    <p class="foot">Questions about your giving? Write to <a href="mailto:hello@levoila.org">hello@levoila.org</a>.</p>
+  </div>`;
+  window._donor = d;
+}
+
+window.statement = function(year){
+  const d = window._donor; if(!d) return;
+  const gifts = (d.gifts||[]).filter(g => (g.date||'').startsWith(String(year)));
+  const total = gifts.reduce((s,g)=>s+(Number(g.amount)||0),0);
+  const rows = gifts.map(g=>`<tr><td>${esc(g.date)}</td><td>${esc(g.site||'General fund')}</td><td style="text-align:right">${USD0(g.amount)}</td></tr>`).join('');
+  const w = window.open('', '_blank');
+  w.document.write(`<html><head><title>Levoila — ${year} Giving Statement</title>
+    <style>body{font-family:Georgia,serif;color:#0B2545;max-width:700px;margin:40px auto;padding:0 24px;line-height:1.6}
+    h1{font-size:24px;margin:0} .gold{color:#B6862C;letter-spacing:.2em;text-transform:uppercase;font-size:11px;font-family:Arial}
+    table{width:100%;border-collapse:collapse;margin:24px 0;font-family:Arial;font-size:14px}
+    th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left} th{font-size:11px;text-transform:uppercase;color:#666}
+    .tot{font-size:20px;font-weight:bold} .muted{color:#666;font-size:13px;font-family:Arial}
+    @media print{button{display:none}}</style></head><body>
+    <div class="gold">Levoila · Heritage Trust for Haiti</div>
+    <h1>${year} Year-End Giving Statement</h1>
+    <p class="muted">Prepared for ${esc(d.name||d.email)} · ${esc(d.email)}</p>
+    <table><thead><tr><th>Date</th><th>Designation</th><th style="text-align:right">Amount</th></tr></thead>
+    <tbody>${rows||'<tr><td colspan=3>No gifts recorded for this year.</td></tr>'}</tbody></table>
+    <p class="tot">Total ${year}: ${USD0(total)}</p>
+    <p class="muted">No goods or services were provided in exchange for these contributions except as noted. Retain this statement for your tax records. Consult your advisor on deductibility.</p>
+    <p style="margin-top:30px"><button onclick="window.print()" style="padding:10px 18px;font-family:Arial;background:#B6862C;color:#fff;border:0;border-radius:6px;cursor:pointer">Print / Save as PDF</button></p>
+    </body></html>`);
+  w.document.close();
+};
+
+window.signOut = async function(){ await sb.auth.signOut(); signInView(''); };
+
+async function boot(){
+  // supabase-js auto-detects the magic-link token in the URL hash
+  const { data:{ session } } = await sb.auth.getSession();
+  if(session){ // clean the token out of the address bar
+    if(location.hash && location.hash.includes('access_token')) history.replaceState(null,'',location.pathname);
+    dashboard();
+  } else {
+    // brief wait in case detectSessionInUrl is still resolving the hash
+    sb.auth.onAuthStateChange((_e, s)=>{ if(s){ history.replaceState(null,'',location.pathname); dashboard(); } });
+    setTimeout(async ()=>{ const { data:{ session:s2 } } = await sb.auth.getSession(); if(!s2) signInView(''); }, 700);
+  }
+}
+boot();
+</script>
+</body></html>
