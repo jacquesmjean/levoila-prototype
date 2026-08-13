@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Vendor Onboarding — Levoila</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="tenant.config.js"></script>
+<style>
+:root{--navy:#0B2545;--gold:#B6862C;--limestone:#F4F1EA;--cream:#FAF7F0}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--navy)}
+.wrap{max-width:640px;margin:0 auto;padding:48px 20px}
+.card{background:#fff;border:1px solid #E5E0D5;border-radius:16px;padding:32px;box-shadow:0 20px 50px rgba(11,37,69,.08)}
+h1{font-family:Georgia,serif;font-size:28px;margin:0 0 6px}
+.sub{color:#6b6355;font-size:14px;margin:0 0 24px}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#6b6355;margin:14px 0 6px}
+input,select,textarea{width:100%;padding:11px 13px;border:1px solid #D5CDB8;border-radius:9px;font-size:15px;font-family:inherit;background:#fff}
+.req{color:var(--gold)}
+button{margin-top:22px;width:100%;background:var(--gold);color:#fff;border:0;padding:14px;border-radius:999px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:13px;cursor:pointer}
+button:disabled{opacity:.6;cursor:default}
+.ok{display:none;text-align:center;padding:24px 0}.ok h2{font-family:Georgia,serif}
+.brand{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--gold);margin-bottom:22px}
+.note{font-size:12px;color:#9a9384;margin-top:18px;text-align:center}
+</style></head><body>
+<div class="wrap"><div class="card">
+  <div class="brand" id="brand">Levoila · Mission Control</div>
+  <div id="form">
+    <h1>Vendor onboarding</h1>
+    <p class="sub">Tell us about your company. Our team reviews every application and follows up about required documents (W-9, insurance, banking).</p>
+    <label>Legal company name <span class="req">*</span></label><input id="legal_name">
+    <label>Doing business as (DBA)</label><input id="dba">
+    <label>Contact name</label><input id="contact_name">
+    <label>Email</label><input id="email" type="email">
+    <label>Phone</label><input id="phone">
+    <label>Website</label><input id="website">
+    <label>Country</label><input id="country">
+    <label>Business address</label><input id="address">
+    <label>Category</label><select id="category"><option value="">Select…</option><option>construction</option><option>professional-services</option><option>supplies</option><option>technology</option><option>logistics</option><option>other</option></select>
+    <label>Services you provide</label><textarea id="services" rows="3"></textarea>
+    <button id="btn" onclick="submitVendor()">Submit application</button>
+    <div class="note" id="msg"></div>
+  </div>
+  <div class="ok" id="ok"><h2>Thank you.</h2><p class="sub">Your application has been received. Our team will be in touch.</p></div>
+</div></div>
+<script>
+const CFG=window.TENANT_CONFIG; const sb=supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey);
+if(CFG.org&&CFG.org.name){document.getElementById('brand').textContent=CFG.org.name+' · '+(CFG.org.product||'');}
+async function submitVendor(){
+  const g=id=>document.getElementById(id).value.trim();
+  if(!g('legal_name')){document.getElementById('msg').textContent='Legal company name is required.';return;}
+  const btn=document.getElementById('btn'); btn.disabled=true; btn.textContent='Submitting…';
+  const payload={legal_name:g('legal_name'),dba:g('dba'),contact_name:g('contact_name'),email:g('email'),phone:g('phone'),website:g('website'),country:g('country'),address:g('address'),category:g('category'),services:g('services')};
+  const {error}=await sb.rpc('submit_vendor_application',{payload});
+  if(error){btn.disabled=false;btn.textContent='Submit application';document.getElementById('msg').textContent=error.message;return;}
+  document.getElementById('form').style.display='none';document.getElementById('ok').style.display='block';
+}
+</script></body></html>

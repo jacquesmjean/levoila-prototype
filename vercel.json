@@ -1,15 +1,17 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
-  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/haiti", "destination": "/index.html" },
+    { "source": "/podcast", "destination": "/index.html" },
+    { "source": "/servicedesk", "destination": "/servicedesk.html" },
+    { "source": "/vendor-onboarding", "destination": "/vendor-onboarding.html" },
+    { "source": "/join-onboarding", "destination": "/join-onboarding.html" }
+  ],
   "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
-      ]
-    }
+    { "source": "/servicedesk", "headers": [
+      { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+      { "key": "X-Frame-Options", "value": "DENY" }
+    ]},
+    { "source": "/vendor-onboarding", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]},
+    { "source": "/join-onboarding", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]}
   ]
 }
