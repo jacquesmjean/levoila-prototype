@@ -2174,8 +2174,8 @@ async function createMatter(){
 // ========== Security & Audit ==========
 const SCOPES = ['finance:read','finance:write','board:audit','board:financials:read','site:milot:read','site:milot:write','beneficiary:read','donor:read','grants:write','legal:read','all:read'];
 async function loadSecurity(){
-  await sb.rpc('expire_grants').catch(()=>{});         // defensive; cron also does this
-  await sb.rpc('expire_access').catch(()=>{});         // strip standing access past its expiry
+  try { await sb.rpc('expire_grants'); } catch(e){}    // defensive; cron also does this
+  try { await sb.rpc('expire_access'); } catch(e){}    // strip standing access past its expiry
   loadRoles(); loadAccessReview();
   sb.rpc('log_audit', { p_event:'DATA_ACCESS', p_resource:'Security & Audit', p_action:'VIEW' }).catch(()=>{});
   const { data: m, error } = await sb.rpc('governance_matrix');
