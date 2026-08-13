@@ -116,6 +116,9 @@
   input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);
     box-shadow:0 0 0 3px rgba(182,134,44,.14);}
   label{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#9a938a;display:block;margin-bottom:6px;}
+  .chkgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;}
+  .chk{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink);margin:0;}
+  .chk input{width:auto;margin:0;}
 
   /* ---- modal: a document, not a popup ---- */
   .modal-bg{position:fixed;inset:0;background:rgba(4,24,43,.66);backdrop-filter:blur(3px);
@@ -528,9 +531,20 @@
         <p class="text-xs text-gray-400 mb-4">Every grant carries a TTL and expires automatically, server-side. Grant, expiry, and revocation are all written to the audit chain.</p>
         <div id="grantsTable" class="mb-9"></div>
 
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <div class="cc-section-label" style="margin-bottom:0">Access roles · reusable profiles</div>
+          <button class="btn btn-ghost" onclick="openRoleEditor()">+ New role</button>
+        </div>
+        <p class="text-xs text-gray-400 mb-4">A role bundles the sections, document groups, and countries a person can see. Assign a role to provision someone in one click; you can still fine-tune any individual afterward.</p>
+        <div id="rolesGrid" class="mb-9"></div>
+
         <div class="cc-section-label">Function access · who sees what</div>
-        <p class="text-xs text-gray-400 mb-4">Control which sections each account can open. Onboarding grants the standard set for the role; departure deactivates the account, revokes every grant, and archives the person — all written to the audit chain.</p>
+        <p class="text-xs text-gray-400 mb-4">Assign a role, or fine-tune the exact sections an account can open. Departure deactivates the account, revokes every grant, and archives the person — all written to the audit chain.</p>
         <div id="functionAccessTable" class="mb-9"></div>
+
+        <div class="cc-section-label">Access review · who can see what, and until when</div>
+        <p class="text-xs text-gray-400 mb-4">A plain-language view of every account's role, document groups, countries, and expiry. Rows flagged red are expired or overdue for review.</p>
+        <div id="accessReview" class="mb-9"></div>
 
         <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
           <div class="cc-section-label" style="margin-bottom:0">Cryptographic audit ledger</div>
@@ -2161,6 +2175,8 @@ async function createMatter(){
 const SCOPES = ['finance:read','finance:write','board:audit','board:financials:read','site:milot:read','site:milot:write','beneficiary:read','donor:read','grants:write','legal:read','all:read'];
 async function loadSecurity(){
   await sb.rpc('expire_grants').catch(()=>{});         // defensive; cron also does this
+  await sb.rpc('expire_access').catch(()=>{});         // strip standing access past its expiry
+  loadRoles(); loadAccessReview();
   sb.rpc('log_audit', { p_event:'DATA_ACCESS', p_resource:'Security & Audit', p_action:'VIEW' }).catch(()=>{});
   const { data: m, error } = await sb.rpc('governance_matrix');
   if (error) return toast(error.message, true);
@@ -2238,6 +2254,107 @@ async function revokeGrant(id){
   if (error) return toast(error.message, true);
   toast('Access revoked'); loadSecurity();
 }
+// --- Access roles, assignment, country/doc-group scoping ---
+const DOC_GROUPS = ['board','governance','legal','finance','hr','program','vendor','marketing','general'];
+const ACCESS_COUNTRIES = Array.from(new Set([...(CFG&&CFG.countries?CFG.countries:['Haiti'])]));
+let ROLE_CACHE = [];
+
+async function loadRoles(){
+  const { data, error } = await sb.from('access_roles').select('*').eq('active',true).order('sort');
+  if (error){ $('rolesGrid').innerHTML = '<div class="empty-elegant"><div class="e-t">Roles are admin-restricted</div></div>'; return; }
+  ROLE_CACHE = data||[];
+  $('rolesGrid').innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px">` +
+    ROLE_CACHE.map(r=>{
+      const secs = r.sections===null ? 'All sections' : (r.sections||[]).length+' sections';
+      const grp = r.doc_groups===null ? 'all docs' : (r.doc_groups||[]).join(', ')||'none';
+      const ctry = (!r.countries||r.countries.includes('*')) ? 'all countries' : r.countries.join(', ');
+      return `<div class="kpi" style="text-align:left;cursor:pointer" onclick="openRoleEditor('${r.key}')">
+        <div class="flex items-center justify-between"><b style="color:var(--navy)">${esc(r.name)}</b>${r.is_system?'<span class="badge b-P3">system</span>':''}</div>
+        <div class="text-xs text-gray-500" style="margin:6px 0 8px;min-height:32px">${esc(r.description||'')}</div>
+        <div class="text-xs" style="color:var(--gold);font-weight:600">${secs} · ${esc(grp)}</div>
+        <div class="text-xs text-gray-400" style="margin-top:2px">Countries: ${esc(ctry)}</div>
+      </div>`;
+    }).join('') + `</div>`;
+}
+
+function openRoleEditor(key){
+  const r = ROLE_CACHE.find(x=>x.key===key) || {sections:[],doc_groups:[],countries:['*'],is_system:false};
+  const secBoxes = VIEWS.map(([k,l])=>`<label class="chk"><input type="checkbox" class="rSec" value="${k}" ${(r.sections===null||(r.sections||[]).includes(k))?'checked':''}> ${l}</label>`).join('');
+  const grpBoxes = DOC_GROUPS.map(g=>`<label class="chk"><input type="checkbox" class="rGrp" value="${g}" ${(r.doc_groups===null||(r.doc_groups||[]).includes(g))?'checked':''}> ${g}</label>`).join('');
+  const allCtry = !r.countries || r.countries.includes('*');
+  const ctryBoxes = ACCESS_COUNTRIES.map(c=>`<label class="chk"><input type="checkbox" class="rCtry" value="${c}" ${(!allCtry&&(r.countries||[]).includes(c))?'checked':''}> ${c}</label>`).join('');
+  modal(`<div class="flex items-start justify-between mb-1"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${key?'Edit role':'New access role'}</h2><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    <div class="grid md:grid-cols-2 gap-3 mb-3">
+      <div><label>Role name</label><input id="roName" value="${esc(r.name||'')}" ${r.is_system?'':''} placeholder="e.g. Regional Coordinator"></div>
+      <div><label>Key (no spaces)</label><input id="roKey" value="${esc(r.key||'')}" ${key?'disabled':''} placeholder="e.g. regional_coord"></div>
+      <div class="md:col-span-2"><label>Description</label><input id="roDesc" value="${esc(r.description||'')}"></div>
+    </div>
+    <label style="margin-top:4px">Sections this role can open</label>
+    <div class="chkgrid mb-3">${secBoxes}</div>
+    <label>Document groups this role can see</label>
+    <div class="chkgrid mb-3">${grpBoxes}</div>
+    <label><input type="checkbox" id="roAllCtry" ${allCtry?'checked':''} onchange="document.getElementById('roCtryWrap').style.opacity=this.checked?.4:1"> All countries</label>
+    <div class="chkgrid mb-4" id="roCtryWrap" style="opacity:${allCtry?.4:1}">${ctryBoxes}</div>
+    <div class="text-right"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="saveRole()">Save role</button></div>`);
+}
+async function saveRole(){
+  const key = ($('roKey').value||'').trim().toLowerCase().replace(/[^a-z0-9_]/g,'_');
+  const name = ($('roName').value||'').trim();
+  if(!key||!name) return toast('Name and key are required', true);
+  const secs = [...document.querySelectorAll('.rSec:checked')].map(b=>b.value);
+  const grps = [...document.querySelectorAll('.rGrp:checked')].map(b=>b.value);
+  const sections = secs.length===VIEWS.length ? null : secs;
+  const doc_groups = grps.length===DOC_GROUPS.length ? null : grps;
+  const countries = $('roAllCtry').checked ? ['*'] : [...document.querySelectorAll('.rCtry:checked')].map(b=>b.value);
+  const row = { tenant_id:'levoila', key, name, description:$('roDesc').value||null, sections, doc_groups, countries: countries.length?countries:['*'] };
+  const { error } = await sb.from('access_roles').upsert(row, { onConflict:'tenant_id,key' });
+  if (error) return toast(error.message, true);
+  sb.rpc('log_audit',{p_event:'ACCESS_ROLE_UPDATED',p_resource:'access_roles',p_action:'upsert',p_subject:key}).catch(()=>{});
+  toast('Role saved'); closeModal(); loadRoles();
+}
+
+function openAssignRole(email){
+  const opts = ROLE_CACHE.map(r=>`<option value="${r.key}">${esc(r.name)}</option>`).join('');
+  const ctryBoxes = ACCESS_COUNTRIES.map(c=>`<label class="chk"><input type="checkbox" class="aCtry" value="${c}"> ${c}</label>`).join('');
+  modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">Assign role</h2>
+    <p class="text-xs text-gray-400 mb-4">Sets ${esc(email)}'s sections, document groups and countries from the role. You can fine-tune sections afterward.</p>
+    <div class="grid md:grid-cols-2 gap-3 mb-3">
+      <div class="md:col-span-2"><label>Role</label><select id="asRole">${opts}</select></div>
+      <div><label>Access expires (optional)</label><input id="asExpire" type="date"></div>
+      <div><label>Review on (optional)</label><input id="asReview" type="date"></div>
+    </div>
+    <label><input type="checkbox" id="asAllCtry" checked onchange="document.getElementById('asCtryWrap').style.opacity=this.checked?.4:1"> Use the role's default countries</label>
+    <div class="chkgrid mb-3" id="asCtryWrap" style="opacity:.4">${ctryBoxes}</div>
+    <div><label>Reason (for the record)</label><input id="asReason" placeholder="e.g. joined finance committee"></div>
+    <div class="text-right mt-3"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="doAssignRole('${esc(email)}')">Assign</button></div>`);
+}
+async function doAssignRole(email){
+  const p_countries = $('asAllCtry').checked ? null : [...document.querySelectorAll('.aCtry:checked')].map(b=>b.value);
+  const { error } = await sb.rpc('assign_access_role', { p_email:email, p_role:$('asRole').value,
+    p_expires: $('asExpire').value? new Date($('asExpire').value).toISOString():null,
+    p_review: $('asReview').value||null, p_countries, p_reason:$('asReason').value||null });
+  if (error) return toast(error.message, true);
+  toast('Role assigned'); closeModal(); loadFunctionAccess(); loadAccessReview();
+}
+
+async function loadAccessReview(){
+  const { data, error } = await sb.rpc('access_review_list');
+  if (error){ $('accessReview').innerHTML=''; return; }
+  $('accessReview').innerHTML = tableHtml(['Account','Role','Sees sections','Document groups','Countries','Expires','Review'],
+    (data||[]).map(r=>{
+      const flag = (r.expired||r.reviewDue) ? 'style="color:var(--red);font-weight:600"' : '';
+      return [
+        `<span style="font-family:monospace;font-size:12px">${esc(r.email)}</span>${r.active?'':' <span class="badge b-P3">inactive</span>'}`,
+        esc(r.accessRole),
+        r.sections===null?'<span class="text-gray-400">all</span>':r.sections,
+        (r.docGroups||[]).map(g=>`<span class="badge b-P3" style="margin:1px">${esc(g)}</span>`).join(' '),
+        (r.countries||[]).join(', '),
+        `<span ${r.expired?flag:''}>${r.expiresAt||'—'}${r.expired?' · expired':''}</span>`,
+        `<span ${r.reviewDue?flag:''}>${r.reviewAt||'—'}${r.reviewDue?' · due':''}</span>`
+      ];
+    }), null, 'No accounts yet.');
+}
+
 // --- Function-level visibility + onboarding/departure ---
 async function loadFunctionAccess(){
   const { data: staffRows, error } = await sb.from('staff').select('*').order('email');
@@ -2247,7 +2364,8 @@ async function loadFunctionAccess(){
       const fns = s.functions === null ? '<span class="text-gray-400">all (role default)</span>'
         : (s.functions||[]).map(f=>`<span class="badge b-P3" style="margin:1px">${esc(f)}</span>`).join(' ') || '<span class="text-gray-400">none</span>';
       return [`<span style="font-family:monospace;font-size:12px">${esc(s.email)}</span>`, esc(s.role), badge(s.active?'active':'inactive'), fns,
-        `<div class="flex gap-1"><button class="btn btn-ghost" style="padding:4px 10px" onclick="event.stopPropagation();editFunctions('${s.id}')">Edit access</button>
+        `<div class="flex gap-1"><button class="btn btn-ghost" style="padding:4px 10px" onclick="event.stopPropagation();openAssignRole('${esc(s.email)}')">Assign role</button>
+         <button class="btn btn-ghost" style="padding:4px 10px" onclick="event.stopPropagation();editFunctions('${s.id}')">Fine-tune</button>
          ${s.active?`<button class="btn btn-ghost" style="padding:4px 10px;color:var(--red);border-color:rgba(178,58,72,.4)" onclick="event.stopPropagation();departUser('${s.id}')">Depart</button>`
                    :`<button class="btn btn-ghost" style="padding:4px 10px" onclick="event.stopPropagation();reonboardUser('${s.id}')">Re-onboard</button>`}</div>`];
     }), null, 'No staff accounts.');
@@ -2336,8 +2454,15 @@ async function loadDocuments(){
   const active=rows.filter(d=>d.status==='active').length;
   $('docKpis').innerHTML=[['Documents',rows.length],['Active',active],['Expiring ≤30d',expiring],['Categories',new Set(rows.map(d=>d.category)).size]]
     .map(([l,n])=>`<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
-  $('docsTable').innerHTML=tableHtml(['Title','Category','Owner','Ver.','Status','Expires'],
-    rows.map(d=>[`<b style="color:var(--navy)">${esc(d.title)}</b>${d.file_name?`<div class="text-xs text-gray-400">${esc(d.file_name)}</div>`:''}`, esc(d.category), esc(d.owner||'—'), 'v'+(d.version||1), badge(d.status), d.expires_on?fmtD(d.expires_on):'—']),
+  const audienceCell=d=>{
+    const parts=[];
+    if(d.groups&&d.groups.length) parts.push(d.groups.map(g=>`<span class="badge b-P3" style="margin:1px">${esc(g)}</span>`).join(''));
+    else parts.push('<span class="text-xs text-gray-400">all staff</span>');
+    if(d.country) parts.push(`<span class="badge b-qualified" style="margin:1px">${esc(d.country)}</span>`);
+    return parts.join(' ');
+  };
+  $('docsTable').innerHTML=tableHtml(['Title','Category','Who can see','Owner','Status','Expires'],
+    rows.map(d=>[`<b style="color:var(--navy)">${esc(d.title)}</b>${d.file_name?`<div class="text-xs text-gray-400">${esc(d.file_name)}</div>`:''}`, esc(d.category), audienceCell(d), esc(d.owner||'—'), badge(d.status), d.expires_on?fmtD(d.expires_on):'—']),
     i=>`openDoc('${rows[i].id}')`, 'No documents yet. Click “Upload document” to add the first.');
 }
 function openUploadDoc(){
@@ -2348,7 +2473,10 @@ function openUploadDoc(){
       <div><label>Owner</label><input id="udOwner" value="${esc(ME.name||ME.email)}"></div>
       <div><label>Expires on</label><input id="udExp" type="date"></div>
       <div><label>Tags (comma-separated)</label><input id="udTags"></div>
+      <div><label>Country (blank = all)</label><select id="udCountry"><option value="">All countries</option>${ACCESS_COUNTRIES.map(c=>`<option>${c}</option>`).join('')}</select></div>
       <div class="md:col-span-2"><label>Description</label><textarea id="udDesc" rows="2"></textarea></div>
+      <div class="md:col-span-2"><label>Who can see it — leave all unticked = every staff member</label>
+        <div class="chkgrid">${DOC_GROUPS.map(g=>`<label class="chk"><input type="checkbox" class="udGrp" value="${g}"> ${g}</label>`).join('')}</div></div>
       <div class="md:col-span-2"><label>File</label><input id="udFile" type="file"></div>
     </div>
     <div id="udMsg" class="text-xs text-gray-400 mb-2"></div>
@@ -2367,8 +2495,9 @@ async function createDoc(){
     file_name=f.name; mime_type=f.type; size_bytes=f.size;
   }
   const tags=($('udTags').value||'').split(',').map(x=>x.trim()).filter(Boolean);
+  const groups=[...document.querySelectorAll('.udGrp:checked')].map(b=>b.value);
   const { error }=await sb.from('documents').insert({title, category:$('udCat').value, owner:$('udOwner').value||null,
-    expires_on:$('udExp').value||null, tags, description:$('udDesc').value||null,
+    expires_on:$('udExp').value||null, tags, description:$('udDesc').value||null, groups, country:$('udCountry').value||null,
     storage_path, file_name, mime_type, size_bytes, uploaded_by:ME.id, status:'active'});
   if(error) return toast(error.message,true);
   sb.rpc('log_audit',{p_event:'document.upload',p_resource:'documents',p_action:'insert',p_subject:title}).catch(()=>{});
@@ -2384,6 +2513,9 @@ async function openDoc(id){
       <div><label>Expires on</label><input id="dExp" type="date" value="${d.expires_on||''}"></div>
       <div class="md:col-span-2"><label>Tags</label><input id="dTags" value="${esc((d.tags||[]).join(', '))}"></div>
       <div class="md:col-span-2"><label>Description</label><textarea id="dDesc" rows="2">${esc(d.description||'')}</textarea></div>
+      <div><label>Country (blank = all)</label><select id="dCountry"><option value="">All countries</option>${ACCESS_COUNTRIES.map(c=>`<option ${d.country===c?'selected':''}>${c}</option>`).join('')}</select></div>
+      <div><label>Who can see it — none ticked = all staff</label>
+        <div class="chkgrid">${DOC_GROUPS.map(g=>`<label class="chk"><input type="checkbox" class="dGrp" value="${g}" ${(d.groups||[]).includes(g)?'checked':''}> ${g}</label>`).join('')}</div></div>
     </div>
     <div class="flex items-center justify-between">
       <div>${d.storage_path?`<button class="btn btn-ghost" onclick="downloadDoc('${d.storage_path}')">⬇ Download (v${d.version||1})</button>`:'<span class="text-xs text-gray-400">No file attached</span>'}</div>
@@ -2392,8 +2524,11 @@ async function openDoc(id){
 }
 async function saveDoc(id){
   const tags=($('dTags').value||'').split(',').map(x=>x.trim()).filter(Boolean);
-  const { error }=await sb.from('documents').update({category:$('dCat').value,status:$('dStatus').value,owner:$('dOwner').value||null,expires_on:$('dExp').value||null,tags,description:$('dDesc').value||null}).eq('id',id);
-  if(error) return toast(error.message,true); toast('Saved'); closeModal(); loadDocuments();
+  const groups=[...document.querySelectorAll('.dGrp:checked')].map(b=>b.value);
+  const { error }=await sb.from('documents').update({category:$('dCat').value,status:$('dStatus').value,owner:$('dOwner').value||null,expires_on:$('dExp').value||null,tags,description:$('dDesc').value||null,groups,country:$('dCountry').value||null}).eq('id',id);
+  if(error) return toast(error.message,true);
+  sb.rpc('log_audit',{p_event:'DOC_VISIBILITY_SET',p_resource:'documents',p_action:'update',p_subject:id,p_details:groups.length?('groups: '+groups.join(', ')):'all staff'}).catch(()=>{});
+  toast('Saved'); closeModal(); loadDocuments();
 }
 async function downloadDoc(path){
   const { data, error }=await sb.storage.from('vault').createSignedUrl(path,300);
@@ -2508,10 +2643,43 @@ async function openOnboarding(id){
     </div>
     <div class="cc-section-label">Checklist</div>
     <div class="table-wrap mb-4"><table class="grid"><thead><tr><th></th><th>Item</th><th>Type</th><th>Status</th></tr></thead><tbody>${(tasks||[]).map(trow).join('')}</tbody></table></div>
-    <div class="flex items-center justify-between">
-      <button class="btn btn-ghost" onclick="convertToPerson('${o.id}')">Add to People &amp; HR</button>
+    <div class="flex items-center justify-between flex-wrap gap-2">
+      <div class="flex gap-2">
+        <button class="btn btn-ghost" onclick="convertToPerson('${o.id}')">Add to People &amp; HR</button>
+        <button class="btn btn-navy" onclick="openProvision('${o.id}','${esc(o.email||'')}','${esc(o.candidate_name||'')}')">Provision access →</button>
+      </div>
       <button class="btn btn-gold" onclick="saveOnboarding('${o.id}')">Save</button>
     </div>`);
+}
+async function ensureRoles(){
+  if(ROLE_CACHE.length) return;
+  const { data } = await sb.from('access_roles').select('*').eq('active',true).order('sort');
+  ROLE_CACHE = data||[];
+}
+async function openProvision(caseId, email, name){
+  if(!email) return toast('Add an email to this case first',true);
+  await ensureRoles();
+  const opts = (ROLE_CACHE.length?ROLE_CACHE:[]).map(r=>`<option value="${r.key}">${esc(r.name)}</option>`).join('');
+  const ctryBoxes = ACCESS_COUNTRIES.map(c=>`<label class="chk"><input type="checkbox" class="pvCtry" value="${c}"> ${c}</label>`).join('');
+  modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">Provision access — ${esc(name||email)}</h2>
+    <p class="text-xs text-gray-400 mb-4">Grants the role's sections, document groups and countries to <b>${esc(email)}</b>. If they haven't signed in yet, it's held for them and applies automatically at first sign-in.</p>
+    <div class="grid md:grid-cols-2 gap-3 mb-3">
+      <div class="md:col-span-2"><label>Role</label><select id="pvRole">${opts||'<option value="">No roles defined</option>'}</select></div>
+      <div><label>Access expires (optional)</label><input id="pvExpire" type="date"></div>
+      <div><label>Review on (optional)</label><input id="pvReview" type="date"></div>
+    </div>
+    <label><input type="checkbox" id="pvAllCtry" checked onchange="document.getElementById('pvCtryWrap').style.opacity=this.checked?.4:1"> Use the role's / case's default countries</label>
+    <div class="chkgrid mb-4" id="pvCtryWrap" style="opacity:.4">${ctryBoxes}</div>
+    <div class="text-right"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="doProvision('${caseId}')">Provision</button></div>`);
+}
+async function doProvision(caseId){
+  const role=$('pvRole').value; if(!role) return toast('Pick a role',true);
+  const p_countries = $('pvAllCtry').checked ? null : [...document.querySelectorAll('.pvCtry:checked')].map(b=>b.value);
+  const { data, error } = await sb.rpc('provision_from_onboarding', { p_case_id:caseId, p_role:role,
+    p_expires: $('pvExpire').value? new Date($('pvExpire').value).toISOString():null,
+    p_review: $('pvReview').value||null, p_countries });
+  if (error) return toast(error.message,true);
+  toast(data&&data.existed?'Access provisioned':'Access held for first sign-in'); closeModal(); loadOnboarding();
 }
 async function toggleTask(taskId, caseId, done){
   await sb.from('onboarding_tasks').update({status:done?'done':'pending',completed_at:done?new Date().toISOString():null}).eq('id',taskId);
