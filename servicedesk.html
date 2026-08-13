@@ -532,7 +532,7 @@
       <div id="view-documents" class="view">
         <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Documents</h1>
-          <button class="btn btn-gold" onclick="openUploadDoc()">+ Upload document</button>
+          <div class="flex gap-2"><button class="btn btn-ghost" onclick="openGenerateDoc()">+ Generate &amp; sign</button><button class="btn btn-gold" onclick="openUploadDoc()">+ Upload document</button></div>
         </div>
         <p class="text-sm text-gray-500 mb-6">The organization's document vault — contracts, filings, policies, and records, tracked with owners, versions, and expiry dates.</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="docKpis"></div>
@@ -542,6 +542,8 @@
           <select id="docStatus" onchange="loadDocuments()"><option value="">All statuses</option><option>active</option><option>archived</option><option>expired</option></select>
         </div>
         <div id="docsTable"></div>
+        <div class="cc-section-label" style="margin-top:36px">Signature requests</div>
+        <div id="sigTable"></div>
       </div>
 
       <div id="view-vendors" class="view">
@@ -566,6 +568,27 @@
         <p class="text-sm text-gray-500 mb-6">Employee and contractor onboarding — a tracked checklist of documents, policies, and training from offer to day one.</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="onbKpis"></div>
         <div id="onbTable"></div>
+      </div>
+
+
+      <div id="view-blog" class="view">
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Blog</h1>
+          <button class="btn btn-gold" onclick="openNewPost()">+ New post</button>
+        </div>
+        <p class="text-sm text-gray-500 mb-6">Write and publish posts to the public site. Published posts appear under Dispatches on levoila.org.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="blogKpis"></div>
+        <div id="blogTable"></div>
+      </div>
+
+      <div id="view-social" class="view">
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Social</h1>
+          <button class="btn btn-gold" onclick="openNewSocial()">+ Compose</button>
+        </div>
+        <p class="text-sm text-gray-500 mb-6">Compose, schedule, and publish across platforms. Approved posts publish via the social agent; performance flows back here.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="socialKpis"></div>
+        <div id="socialTable"></div>
       </div>
 
   </main>
@@ -663,12 +686,13 @@ const VIEWS = [
   ['volunteers','Volunteers'],['grants','Grant Engine'],['donors','Donor CRM'],
   ['influencers','Influencers'],['finance','Finance'],['content','Content'],['applications','Careers'],
   ['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding'],
+  ['blog','Blog'],['social','Social'],
   ['people','People & HR'],['board','Board'],['legal','Legal'],['security','Security & Audit']
 ];
 const NAV_GROUPS = [
   ['Operations', [['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],['volunteers','Volunteers']]],
   ['Funding',    [['grants','Grant Engine'],['donors','Donor CRM'],['influencers','Influencers'],['finance','Finance']]],
-  ['Presence',   [['content','Content'],['applications','Careers']]],
+  ['Presence',   [['content','Content'],['social','Social'],['blog','Blog'],['applications','Careers']]],
   ['Records',    [['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding']]],
   ['Governance', [['people','People & HR'],['board','Board & Admin'],['legal','Legal'],['security','Security & Audit']]]
 ];
@@ -690,7 +714,7 @@ function show(k){
   const n=$(`nav-${k}`); if(n) n.classList.add('active');
   ({overview:loadOverview, tickets:loadTickets, beneficiaries:loadBenefs, volunteers:loadVols,
     grants:loadGrants, donors:loadDonors, influencers:loadInfluencers, finance:loadFinance, content:loadContent, applications:loadApps,
-    documents:loadDocuments, vendors:loadVendors, onboarding:loadOnboarding,
+    documents:loadDocsView, vendors:loadVendors, onboarding:loadOnboarding, blog:loadBlog, social:loadSocial,
     people:loadPeople, board:loadBoard, legal:loadLegal, security:loadSecurity})[k]();
 }
 
@@ -2369,6 +2393,186 @@ async function convertToPerson(id){
 function copyIntakeLink(kind){
   const url = location.origin + (kind==='vendor'?'/vendor-onboarding':'/join-onboarding');
   (navigator.clipboard&&navigator.clipboard.writeText(url).then(()=>toast('Intake link copied: '+url)).catch(()=>toast(url))) || toast(url);
+}
+
+/* ===================== Documents: generate + e-sign ===================== */
+function renderTemplate(md, vals){ return (md||'').replace(/{{\s*(\w+)\s*}}/g,(m,k)=> (vals[k]!=null&&vals[k]!=='')?vals[k]:('['+k.replace(/_/g,' ')+']')); }
+function mdToHtml(md){
+  const e=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return (md||'').split(/\n{2,}/).map(b=>{b=b.trim(); if(!b) return '';
+    if(b.startsWith('## ')) return '<h3 style="font-family:Georgia,serif;color:#0B2545;margin:16px 0 4px">'+e(b.slice(3))+'</h3>';
+    if(b.startsWith('# ')) return '<h2 style="font-family:Georgia,serif;color:#0B2545;margin:0 0 10px">'+e(b.slice(2))+'</h2>';
+    return '<p style="margin:0 0 10px;line-height:1.65">'+e(b).replace(/\n/g,'<br>')+'</p>';}).join('');
+}
+let GEN_TPL=[];
+async function openGenerateDoc(){
+  const { data }=await sb.from('doc_templates').select('*').eq('active',true).order('name'); GEN_TPL=data||[];
+  modal(`<div class="flex items-start justify-between mb-3"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">Generate &amp; sign</h2><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    <label>Template</label><select id="genTpl" onchange="genPick()"><option value="">Select a template…</option>${GEN_TPL.map((t,i)=>`<option value="${i}">${esc(t.name)} · ${esc(t.category)}</option>`).join('')}</select>
+    <div id="genFields" class="mt-2"></div>`);
+}
+function genPick(){
+  const i=$('genTpl').value; if(i===''){ $('genFields').innerHTML=''; return; }
+  const t=GEN_TPL[i];
+  $('genFields').innerHTML=`<div class="cc-section-label" style="margin-top:14px">Merge fields</div>
+    <div class="grid md:grid-cols-2 gap-3">${(t.fields||[]).map(f=>`<div><label>${esc(f.replace(/_/g,' '))}</label><input id="gf_${f}"></div>`).join('')||'<div class="text-xs text-gray-400">No merge fields.</div>'}</div>
+    <div class="cc-section-label" style="margin-top:16px">Signer</div>
+    <div class="grid md:grid-cols-3 gap-3">
+      <div><label>Signer name</label><input id="genSName"></div>
+      <div><label>Signer email</label><input id="genSEmail"></div>
+      <div><label>Title / role</label><input id="genSRole"></div>
+    </div>
+    <div class="flex items-center justify-between mt-4"><button class="btn btn-ghost" onclick="genPreview(${i})">Preview</button>
+      <div><button class="btn btn-ghost mr-2" onclick="genSaveVault(${i})">Save to vault</button><button class="btn btn-gold" onclick="genCreateSign(${i})">Create signing link</button></div></div>
+    <div id="genPrev" class="mt-3"></div>`;
+}
+function genRender(i){ const t=GEN_TPL[i]; const vals={}; (t.fields||[]).forEach(f=>vals[f]=(($('gf_'+f)||{}).value)||''); return {t, html:mdToHtml(renderTemplate(t.body_md, vals))}; }
+function genPreview(i){ const {html}=genRender(i); $('genPrev').innerHTML=`<div style="border:1px solid #E5E0D5;border-radius:10px;padding:18px;background:#fff;max-height:300px;overflow:auto">${html}</div>`; }
+async function genSaveVault(i){
+  const {t}=genRender(i);
+  const cat=t.category==='hr'?'hr':(t.category==='agreement'?'contract':(t.category==='governance'?'governance':'general'));
+  const { error }=await sb.from('documents').insert({title:t.name+' — '+new Date().toISOString().slice(0,10), category:cat, description:'Generated from template: '+t.name, owner:ME.name||ME.email, status:'active', uploaded_by:ME.id, tags:['generated']});
+  if(error) return toast(error.message,true); toast('Saved to Documents'); closeModal(); loadDocsView();
+}
+async function genCreateSign(i){
+  const {t,html}=genRender(i); const name=$('genSName').value.trim();
+  const { data, error }=await sb.from('signature_requests').insert({title:t.name, body_html:html, signer_name:name||null, signer_email:$('genSEmail').value||null, signer_role:$('genSRole').value||null, status:'sent', created_by:ME.id}).select('token').single();
+  if(error) return toast(error.message,true);
+  const url=location.origin+'/sign?t='+data.token;
+  modal(`<h2 class="serif text-2xl font-semibold mb-2" style="color:var(--navy)">Signing link ready</h2><p class="text-sm text-gray-500 mb-3">Send this private link to ${esc(name||'the signer')}. It opens the document and records their signature into your audit chain.</p>
+    <input value="${url}" readonly onclick="this.select()"><div class="text-right mt-3"><button class="btn btn-ghost mr-2" onclick="navigator.clipboard.writeText('${url}').then(()=>toast('Copied'))">Copy link</button><button class="btn btn-gold" onclick="closeModal();loadDocsView()">Done</button></div>`);
+}
+async function loadSignatures(){
+  const { data }=await sb.from('signature_requests').select('*').order('created_at',{ascending:false}).limit(100);
+  const rows=data||[];
+  $('sigTable').innerHTML=tableHtml(['Document','Signer','Status','Created','Signed'],
+    rows.map(s=>[`<b style="color:var(--navy)">${esc(s.title)}</b>`, esc(s.signer_name||s.signer_email||'—'), badge(s.status), fmtD(s.created_at), s.signed_at?fmtD(s.signed_at):'—']),
+    i=>`openSignature('${rows[i].id}')`, 'No signing requests yet. Use “Generate & sign”.');
+}
+async function openSignature(id){
+  const { data:s }=await sb.from('signature_requests').select('*').eq('id',id).single();
+  const url=location.origin+'/sign?t='+s.token;
+  modal(`<div class="flex items-start justify-between mb-3"><div><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(s.title)}</h2><div class="text-xs text-gray-400">${esc(s.signer_name||'')} · ${badge(s.status)}</div></div><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    ${s.status==='signed'?`<div class="kpi mb-3"><div class="text-sm" style="color:#1a7f37">Signed ${fmtDt(s.signed_at)}</div><div class="text-xs text-gray-400" style="word-break:break-all">Integrity hash: ${esc(s.signature_hash||'')}</div>${(s.signature_type==='drawn'&&s.signature_value)?`<img src="${s.signature_value}" style="max-height:70px;margin-top:8px">`:`<div class="serif italic text-lg" style="color:var(--navy);margin-top:6px">${esc(s.signature_value||s.signer_name||'')}</div>`}</div>`:`<div class="mb-3"><label>Private signing link</label><input value="${url}" readonly onclick="this.select()"><div class="text-right mt-2"><button class="btn btn-ghost" onclick="navigator.clipboard.writeText('${url}').then(()=>toast('Copied'))">Copy link</button></div></div>`}
+    <div style="border:1px solid #E5E0D5;border-radius:10px;padding:16px;background:#fff;max-height:320px;overflow:auto">${s.body_html}</div>
+    ${(s.status!=='signed'&&s.status!=='voided')?`<div class="text-right mt-3"><button class="btn btn-ghost" onclick="voidSignature('${s.id}')">Void request</button></div>`:''}`);
+}
+async function voidSignature(id){ const { error }=await sb.from('signature_requests').update({status:'voided'}).eq('id',id); if(error) return toast(error.message,true); toast('Voided'); closeModal(); loadDocsView(); }
+function loadDocsView(){ loadDocuments(); loadSignatures(); }
+
+/* ===================== Blog (dispatches) ===================== */
+const BLOG_CATS=['story','update','field-note','announcement','press'];
+function blogSlugify(s){ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+async function loadBlog(){
+  const { data, error }=await sb.from('content_calendar').select('*').eq('platform','dispatch').order('created_at',{ascending:false}).limit(300);
+  if(error) return toast(error.message,true);
+  const rows=data||[]; const pub=rows.filter(r=>r.status==='published').length;
+  $('blogKpis').innerHTML=[['Posts',rows.length],['Published',pub],['Drafts',rows.length-pub],['Categories',new Set(rows.map(r=>r.category).filter(Boolean)).size]]
+    .map(([l,n])=>`<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+  $('blogTable').innerHTML=tableHtml(['Title','Category','Author','Status','Published'],
+    rows.map(p=>[`<b style="color:var(--navy)">${esc(p.title||'(untitled)')}</b><div class="text-xs text-gray-400">/${esc(p.slug||'')}</div>`, esc(p.category||'—'), esc(p.author||'—'), badge(p.status), p.published_at?fmtD(p.published_at):'—']),
+    i=>`openPost('${rows[i].id}')`, 'No posts yet. Click “New post”.');
+}
+function openNewPost(){
+  modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">New blog post</h2>
+    <div class="grid gap-3 mb-3">
+      <div><label>Title</label><input id="bpTitle" oninput="if($('bpSlug'))$('bpSlug').value=blogSlugify(this.value)"></div>
+      <div class="grid md:grid-cols-3 gap-3"><div><label>Slug</label><input id="bpSlug"></div><div><label>Category</label><select id="bpCat">${BLOG_CATS.map(c=>`<option>${c}</option>`).join('')}</select></div><div><label>Author</label><input id="bpAuthor" value="${esc(ME.name||ME.email)}"></div></div>
+      <div><label>Excerpt</label><textarea id="bpExcerpt" rows="2"></textarea></div>
+      <div><label>Body</label><textarea id="bpBody" rows="8"></textarea></div>
+      <div><label>Read minutes</label><input id="bpRead" type="number" style="max-width:120px"></div>
+    </div><div class="text-right"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="createPost()">Create draft</button></div>`);
+}
+async function createPost(){
+  const title=$('bpTitle').value.trim(); if(!title) return toast('Title required',true);
+  const { error }=await sb.from('content_calendar').insert({platform:'dispatch', status:'draft', language:'en', title, slug:$('bpSlug').value||blogSlugify(title), category:$('bpCat').value, author:$('bpAuthor').value||null, excerpt:$('bpExcerpt').value||null, body:$('bpBody').value||null, read_minutes:$('bpRead').value?parseInt($('bpRead').value):null});
+  if(error) return toast(error.message,true); toast('Draft created'); closeModal(); loadBlog();
+}
+async function openPost(id){
+  const { data:p }=await sb.from('content_calendar').select('*').eq('id',id).single();
+  modal(`<div class="flex items-start justify-between mb-3"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(p.title||'(untitled)')}</h2><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    <div class="grid gap-3 mb-3">
+      <div><label>Title</label><input id="bpTitle" value="${esc(p.title||'')}"></div>
+      <div class="grid md:grid-cols-3 gap-3"><div><label>Slug</label><input id="bpSlug" value="${esc(p.slug||'')}"></div><div><label>Category</label><select id="bpCat">${BLOG_CATS.map(c=>`<option ${p.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div><label>Author</label><input id="bpAuthor" value="${esc(p.author||'')}"></div></div>
+      <div><label>Excerpt</label><textarea id="bpExcerpt" rows="2">${esc(p.excerpt||'')}</textarea></div>
+      <div><label>Body</label><textarea id="bpBody" rows="10">${esc(p.body||'')}</textarea></div>
+      <div><label>Read minutes</label><input id="bpRead" type="number" style="max-width:120px" value="${p.read_minutes||''}"></div>
+    </div>
+    <div class="flex items-center justify-between">
+      <div>${p.status==='published'?`<button class="btn btn-ghost" onclick="unpublishPost('${p.id}')">Unpublish</button> <span class="text-xs text-gray-400">Live at /dispatches</span>`:`<button class="btn btn-ghost" onclick="publishPost('${p.id}')">Publish to site</button>`}</div>
+      <button class="btn btn-gold" onclick="savePost('${p.id}')">Save</button>
+    </div>`);
+}
+async function savePost(id){
+  const { error }=await sb.from('content_calendar').update({title:$('bpTitle').value,slug:$('bpSlug').value||null,category:$('bpCat').value,author:$('bpAuthor').value||null,excerpt:$('bpExcerpt').value||null,body:$('bpBody').value||null,read_minutes:$('bpRead').value?parseInt($('bpRead').value):null}).eq('id',id);
+  if(error) return toast(error.message,true); toast('Saved'); closeModal(); loadBlog();
+}
+async function publishPost(id){
+  const { error }=await sb.from('content_calendar').update({status:'published',published_at:new Date().toISOString()}).eq('id',id);
+  if(error) return toast(error.message,true);
+  sb.rpc('log_audit',{p_event:'blog.publish',p_resource:'content_calendar',p_action:'publish',p_subject:id}).catch(()=>{});
+  toast('Published to the site'); closeModal(); loadBlog();
+}
+async function unpublishPost(id){
+  const { error }=await sb.from('content_calendar').update({status:'draft',published_at:null}).eq('id',id);
+  if(error) return toast(error.message,true); toast('Unpublished'); closeModal(); loadBlog();
+}
+
+/* ===================== Social ===================== */
+const SM_PLATFORMS2=['twitter','linkedin','instagram','facebook','tiktok','youtube','threads'];
+async function loadSocial(){
+  const { data, error }=await sb.from('content_calendar').select('*').neq('platform','dispatch').order('scheduled_at',{ascending:false,nullsFirst:false}).limit(300);
+  if(error) return toast(error.message,true);
+  const rows=data||[]; const c=x=>rows.filter(r=>r.status===x).length;
+  $('socialKpis').innerHTML=[['Posts',rows.length],['Scheduled',c('scheduled')+c('approved')],['Published',c('published')+c('posted')],['Drafts',c('draft')]]
+    .map(([l,n])=>`<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+  $('socialTable').innerHTML=tableHtml(['Platform','Post','Campaign','Scheduled','Status'],
+    rows.map(p=>[esc(p.platform||'—'), `<div style="max-width:360px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--navy)">${esc((p.body||'').slice(0,120))}</div>`, esc(p.campaign||'—'), p.scheduled_at?fmtDt(p.scheduled_at):'—', badge(p.status)]),
+    i=>`openSocialPost('${rows[i].id}')`, 'No social posts yet. Click “Compose”.');
+}
+function openNewSocial(){
+  modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">Compose post</h2>
+    <div class="grid gap-3 mb-3">
+      <div class="grid md:grid-cols-3 gap-3"><div><label>Platform</label><select id="spPlatform">${SM_PLATFORMS2.map(p=>`<option>${p}</option>`).join('')}</select></div><div><label>Campaign</label><input id="spCampaign"></div><div><label>Language</label><input id="spLang" value="en"></div></div>
+      <div><label>Post text</label><textarea id="spBody" rows="5"></textarea></div>
+      <div><label>Media URL (optional)</label><input id="spMedia"></div>
+      <div><label>Schedule for (optional)</label><input id="spWhen" type="datetime-local"></div>
+    </div><div class="text-right"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="createSocial()">Save</button></div>`);
+}
+async function createSocial(){
+  const body=$('spBody').value.trim(); if(!body) return toast('Post text required',true);
+  const when=$('spWhen').value?new Date($('spWhen').value).toISOString():null;
+  const { error }=await sb.from('content_calendar').insert({platform:$('spPlatform').value, status:when?'scheduled':'draft', body, campaign:$('spCampaign').value||null, language:$('spLang').value||'en', media_url:$('spMedia').value||null, scheduled_at:when});
+  if(error) return toast(error.message,true); toast('Saved'); closeModal(); loadSocial();
+}
+async function openSocialPost(id){
+  const { data:p }=await sb.from('content_calendar').select('*').eq('id',id).single();
+  const perf=p.performance&&typeof p.performance==='object'?p.performance:{};
+  modal(`<div class="flex items-start justify-between mb-3"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(p.platform)} post</h2><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    <div class="grid gap-3 mb-3">
+      <div class="grid md:grid-cols-3 gap-3"><div><label>Platform</label><select id="spPlatform">${SM_PLATFORMS2.map(x=>`<option ${p.platform===x?'selected':''}>${x}</option>`).join('')}</select></div><div><label>Campaign</label><input id="spCampaign" value="${esc(p.campaign||'')}"></div><div><label>Status</label><select id="spStatus">${['draft','scheduled','approved','published','posted'].map(x=>`<option ${p.status===x?'selected':''}>${x}</option>`).join('')}</select></div></div>
+      <div><label>Post text</label><textarea id="spBody" rows="5">${esc(p.body||'')}</textarea></div>
+      <div class="grid md:grid-cols-2 gap-3"><div><label>Media URL</label><input id="spMedia" value="${esc(p.media_url||'')}"></div><div><label>Scheduled</label><input id="spWhen" type="datetime-local" value="${p.scheduled_at?new Date(p.scheduled_at).toISOString().slice(0,16):''}"></div></div>
+      ${Object.keys(perf).length?`<div class="text-xs text-gray-400">Performance: ${esc(JSON.stringify(perf))}</div>`:''}
+    </div>
+    <div class="flex items-center justify-between">
+      <button class="btn btn-ghost" onclick="publishSocialNow('${p.id}')">Publish now</button>
+      <button class="btn btn-gold" onclick="saveSocialPost('${p.id}')">Save</button>
+    </div>`);
+}
+async function saveSocialPost(id){
+  const when=$('spWhen').value?new Date($('spWhen').value).toISOString():null;
+  const { error }=await sb.from('content_calendar').update({platform:$('spPlatform').value,campaign:$('spCampaign').value||null,status:$('spStatus').value,body:$('spBody').value,media_url:$('spMedia').value||null,scheduled_at:when}).eq('id',id);
+  if(error) return toast(error.message,true); toast('Saved'); closeModal(); loadSocial();
+}
+async function publishSocialNow(id){
+  let token=null; try{ const { data }=await sb.auth.getSession(); token=data.session&&data.session.access_token; }catch(e){}
+  try{
+    const r=await fetch('/api/social-publish',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({id})});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok){ return toast(d.error||'Publish failed',true); }
+    toast(d.queued?'Approved & queued for the Social Agent':'Published'); closeModal(); loadSocial();
+  }catch(e){ toast('Publishing endpoint unavailable — check /api deploy and Blotato key',true); }
 }
 
 </script>

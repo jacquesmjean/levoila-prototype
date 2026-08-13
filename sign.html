@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Sign document — Levoila</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="tenant.config.js"></script>
+<style>
+:root{--navy:#0B2545;--gold:#B6862C;--cream:#FAF7F0}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--navy)}
+.wrap{max-width:760px;margin:0 auto;padding:40px 20px}
+.card{background:#fff;border:1px solid #E5E0D5;border-radius:16px;padding:30px;box-shadow:0 20px 50px rgba(11,37,69,.08)}
+.brand{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--gold);margin-bottom:18px}
+.doc{border:1px solid #E5E0D5;border-radius:10px;padding:22px;background:#fff;max-height:46vh;overflow:auto;margin-bottom:22px}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#6b6355;margin:12px 0 6px}
+input{width:100%;padding:11px 13px;border:1px solid #D5CDB8;border-radius:9px;font-size:15px}
+canvas{border:1px dashed #B6862C;border-radius:9px;width:100%;height:150px;touch-action:none;background:#fffdf8}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:8px}
+button{background:var(--gold);color:#fff;border:0;padding:13px 22px;border-radius:999px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;font-size:13px;cursor:pointer}
+button.ghost{background:transparent;color:var(--navy);border:1px solid #D5CDB8}
+.note{font-size:12px;color:#9a9384;margin-top:14px}
+.center{text-align:center;padding:20px 0}.center h1{font-family:Georgia,serif}
+h1.title{font-family:Georgia,serif;font-size:24px;margin:0 0 4px}
+.sub{color:#6b6355;font-size:13px;margin:0 0 20px}
+</style></head><body>
+<div class="wrap"><div class="card" id="card">
+  <div class="brand" id="brand">Levoila · Mission Control</div>
+  <div id="loading" class="center"><p class="sub">Loading document…</p></div>
+  <div id="signArea" style="display:none">
+    <h1 class="title" id="docTitle"></h1>
+    <p class="sub" id="docFor"></p>
+    <div class="doc" id="docBody"></div>
+    <label>Type your full legal name <span style="color:var(--gold)">*</span></label>
+    <input id="typedName">
+    <label>Draw your signature</label>
+    <canvas id="pad"></canvas>
+    <div class="row"><button class="ghost" type="button" onclick="clearPad()">Clear</button>
+      <button type="button" onclick="submitSig()">Adopt &amp; sign</button></div>
+    <div class="note" id="msg"></div>
+    <div class="note">By signing, you agree your electronic signature is the legal equivalent of your handwritten signature. Your name, the time, and a tamper-proof hash are recorded.</div>
+  </div>
+  <div id="done" class="center" style="display:none"><h1>Signed. Thank you.</h1><p class="sub" id="doneMsg"></p></div>
+  <div id="bad" class="center" style="display:none"><h1>Link unavailable</h1><p class="sub" id="badMsg">This signing link is invalid, already completed, or has been voided.</p></div>
+</div></div>
+<script>
+const CFG=window.TENANT_CONFIG; const sb=supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey);
+if(CFG.org&&CFG.org.name){document.getElementById('brand').textContent=CFG.org.name+' · '+(CFG.org.product||'');}
+const token=new URLSearchParams(location.search).get('t');
+const $=id=>document.getElementById(id);
+let ctx, drawing=false, hasInk=false;
+function showBad(m){ $('loading').style.display='none'; $('signArea').style.display='none'; $('bad').style.display='block'; if(m)$('badMsg').textContent=m; }
+async function boot(){
+  if(!token){ return showBad('No document token provided.'); }
+  const { data, error }=await sb.rpc('sign_get',{p_token:token});
+  if(error||!data||!data.ok){ return showBad(); }
+  if(['signed','declined','voided'].includes(data.status)){ return showBad(data.status==='signed'?'This document has already been signed.':'This link is no longer active.'); }
+  $('loading').style.display='none'; $('signArea').style.display='block';
+  $('docTitle').textContent=data.title||'Document';
+  $('docFor').textContent=data.signer_name?('Prepared for '+data.signer_name+(data.signer_role?', '+data.signer_role:'')):'';
+  $('docBody').innerHTML=data.body_html||'';
+  if(data.signer_name) $('typedName').value=data.signer_name;
+  initPad();
+}
+function initPad(){
+  const c=$('pad'); const r=c.getBoundingClientRect(); c.width=r.width; c.height=150; ctx=c.getContext('2d'); ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.strokeStyle='#0B2545';
+  const pos=e=>{ const b=c.getBoundingClientRect(); const t=e.touches?e.touches[0]:e; return [t.clientX-b.left, t.clientY-b.top]; };
+  const down=e=>{ drawing=true; hasInk=true; const [x,y]=pos(e); ctx.beginPath(); ctx.moveTo(x,y); e.preventDefault(); };
+  const move=e=>{ if(!drawing)return; const [x,y]=pos(e); ctx.lineTo(x,y); ctx.stroke(); e.preventDefault(); };
+  const up=()=>{ drawing=false; };
+  c.addEventListener('mousedown',down); c.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
+  c.addEventListener('touchstart',down,{passive:false}); c.addEventListener('touchmove',move,{passive:false}); c.addEventListener('touchend',up);
+}
+function clearPad(){ const c=$('pad'); ctx.clearRect(0,0,c.width,c.height); hasInk=false; }
+async function submitSig(){
+  const name=$('typedName').value.trim(); if(!name){ $('msg').textContent='Please type your full legal name.'; return; }
+  const sig = hasInk ? $('pad').toDataURL('image/png') : name;
+  const type = hasInk ? 'drawn' : 'typed';
+  const { data, error }=await sb.rpc('sign_submit',{p_token:token,p_name:name,p_signature:sig,p_type:type});
+  if(error||!data||!data.ok){ $('msg').textContent=(data&&data.error)||(error&&error.message)||'Could not submit. Please try again.'; return; }
+  $('signArea').style.display='none'; $('done').style.display='block';
+  $('doneMsg').textContent='A record has been saved. You may close this page.';
+}
+boot();
+</script></body></html>

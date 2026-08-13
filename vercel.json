@@ -4,7 +4,8 @@
     { "source": "/podcast", "destination": "/index.html" },
     { "source": "/servicedesk", "destination": "/servicedesk.html" },
     { "source": "/vendor-onboarding", "destination": "/vendor-onboarding.html" },
-    { "source": "/join-onboarding", "destination": "/join-onboarding.html" }
+    { "source": "/join-onboarding", "destination": "/join-onboarding.html" },
+    { "source": "/sign", "destination": "/sign.html" }
   ],
   "headers": [
     { "source": "/servicedesk", "headers": [
@@ -12,6 +13,7 @@
       { "key": "X-Frame-Options", "value": "DENY" }
     ]},
     { "source": "/vendor-onboarding", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]},
-    { "source": "/join-onboarding", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]}
+    { "source": "/join-onboarding", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]},
+    { "source": "/sign", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]}
   ]
 }
