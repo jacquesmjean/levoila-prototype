@@ -1821,7 +1821,7 @@ async function startOnboarding(id){
   const rows = (reqd||[]).filter(t=>(t.required_for||[]).includes('staff')).map(t=>({person_id:person.id, training_id:t.id}));
   if (rows.length) await sb.from('training_records').insert(rows);
   await sb.from('applications').update({status:'onboarding'}).eq('id', id);
-  sb.rpc('log_audit',{p_event:'ONBOARDING_STARTED',p_resource:'people',p_action:'onboard',p_subject:a.email,p_details:'Hired from careers pipeline; required training assigned'}).catch(()=>{});
+  sb.rpc('log_audit',{p_event:'ONBOARDING_STARTED',p_resource:'people',p_action:'onboard',p_subject:a.email,p_details:'Hired from careers pipeline; required training assigned'}).then(undefined,()=>{});
   toast('Onboarding started — added to People & HR with required training'); closeModal(); loadApps();
 }
 async function saveApp(id){
@@ -2177,7 +2177,7 @@ async function loadSecurity(){
   try { await sb.rpc('expire_grants'); } catch(e){}    // defensive; cron also does this
   try { await sb.rpc('expire_access'); } catch(e){}    // strip standing access past its expiry
   loadRoles(); loadAccessReview();
-  sb.rpc('log_audit', { p_event:'DATA_ACCESS', p_resource:'Security & Audit', p_action:'VIEW' }).catch(()=>{});
+  sb.rpc('log_audit', { p_event:'DATA_ACCESS', p_resource:'Security & Audit', p_action:'VIEW' }).then(undefined,()=>{});
   const { data: m, error } = await sb.rpc('governance_matrix');
   if (error) return toast(error.message, true);
   const hiring = m.local_hiring_pct==null ? 'Not reported' : m.local_hiring_pct+'%';
@@ -2227,7 +2227,7 @@ async function saveSiteCompliance(site){
     incidents: parseInt($('scInc').value,10)||0, risk_level:$('scRisk').value, notes:$('scNotes').value||null, updated_at:new Date().toISOString() };
   const { error } = await sb.from('site_compliance').update(patch).eq('site', site);
   if (error) return toast(error.message, true);
-  sb.rpc('log_audit', { p_event:'COMPLIANCE_UPDATE', p_resource:'site_compliance', p_action:'update', p_subject:site }).catch(()=>{});
+  sb.rpc('log_audit', { p_event:'COMPLIANCE_UPDATE', p_resource:'site_compliance', p_action:'update', p_subject:site }).then(undefined,()=>{});
   toast('Saved'); closeModal(); loadSecurity();
 }
 function openGrantModal(){
@@ -2309,7 +2309,7 @@ async function saveRole(){
   const row = { tenant_id:'levoila', key, name, description:$('roDesc').value||null, sections, doc_groups, countries: countries.length?countries:['*'] };
   const { error } = await sb.from('access_roles').upsert(row, { onConflict:'tenant_id,key' });
   if (error) return toast(error.message, true);
-  sb.rpc('log_audit',{p_event:'ACCESS_ROLE_UPDATED',p_resource:'access_roles',p_action:'upsert',p_subject:key}).catch(()=>{});
+  sb.rpc('log_audit',{p_event:'ACCESS_ROLE_UPDATED',p_resource:'access_roles',p_action:'upsert',p_subject:key}).then(undefined,()=>{});
   toast('Role saved'); closeModal(); loadRoles();
 }
 
@@ -2386,7 +2386,7 @@ async function saveFunctions(staffId, email){
   const value = picked.length===VIEWS.length ? null : picked;   // all = role default
   const { error } = await sb.from('staff').update({functions:value}).eq('id', staffId);
   if (error) return toast(error.message, true);
-  sb.rpc('log_audit',{p_event:'FUNCTION_ACCESS_CHANGED',p_resource:'staff',p_action:'update',p_subject:email,p_details:value===null?'Full access (role default)':'Visible: '+picked.join(', ')}).catch(()=>{});
+  sb.rpc('log_audit',{p_event:'FUNCTION_ACCESS_CHANGED',p_resource:'staff',p_action:'update',p_subject:email,p_details:value===null?'Full access (role default)':'Visible: '+picked.join(', ')}).then(undefined,()=>{});
   toast('Access updated'); closeModal(); loadFunctionAccess();
 }
 async function departUser(staffId){
@@ -2396,14 +2396,14 @@ async function departUser(staffId){
   const { data: grants } = await sb.from('access_grants').select('id').eq('subject_email', s.email).eq('status','active');
   for (const g of (grants||[])) await sb.rpc('revoke_access',{p_id:g.id});
   await sb.from('people').update({status:'inactive'}).eq('email', s.email);
-  sb.rpc('log_audit',{p_event:'USER_DEPARTED',p_resource:'staff',p_action:'depart',p_subject:s.email,p_details:'Account deactivated, grants revoked, person archived'}).catch(()=>{});
+  sb.rpc('log_audit',{p_event:'USER_DEPARTED',p_resource:'staff',p_action:'depart',p_subject:s.email,p_details:'Account deactivated, grants revoked, person archived'}).then(undefined,()=>{});
   toast('Departed — access removed everywhere'); loadFunctionAccess();
 }
 async function reonboardUser(staffId){
   const { data: s } = await sb.from('staff').select('*').eq('id', staffId).single();
   await sb.from('staff').update({active:true, functions:null}).eq('id', staffId);
   await sb.from('people').update({status:'active'}).eq('email', s.email);
-  sb.rpc('log_audit',{p_event:'USER_ONBOARDED',p_resource:'staff',p_action:'onboard',p_subject:s.email,p_details:'Account reactivated with role-default access'}).catch(()=>{});
+  sb.rpc('log_audit',{p_event:'USER_ONBOARDED',p_resource:'staff',p_action:'onboard',p_subject:s.email,p_details:'Account reactivated with role-default access'}).then(undefined,()=>{});
   toast('Re-onboarded with role-default access'); loadFunctionAccess();
 }
 
@@ -2425,7 +2425,7 @@ async function exportAudit(){
   const blob = new Blob([JSON.stringify(bundle,null,2)], {type:'application/json'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob);
   a.download = 'levoila-audit-bundle-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
-  sb.rpc('log_audit', { p_event:'COMPLIANCE_EXPORT', p_resource:'audit_trail', p_action:'export', p_details:'Compliance bundle exported ('+logs.length+' records)' }).catch(()=>{});
+  sb.rpc('log_audit', { p_event:'COMPLIANCE_EXPORT', p_resource:'audit_trail', p_action:'export', p_details:'Compliance bundle exported ('+logs.length+' records)' }).then(undefined,()=>{});
   toast('Compliance bundle downloaded'); setTimeout(loadSecurity, 600);
 }
 
@@ -2500,7 +2500,7 @@ async function createDoc(){
     expires_on:$('udExp').value||null, tags, description:$('udDesc').value||null, groups, country:$('udCountry').value||null,
     storage_path, file_name, mime_type, size_bytes, uploaded_by:ME.id, status:'active'});
   if(error) return toast(error.message,true);
-  sb.rpc('log_audit',{p_event:'document.upload',p_resource:'documents',p_action:'insert',p_subject:title}).catch(()=>{});
+  sb.rpc('log_audit',{p_event:'document.upload',p_resource:'documents',p_action:'insert',p_subject:title}).then(undefined,()=>{});
   toast('Document saved'); closeModal(); loadDocuments();
 }
 async function openDoc(id){
@@ -2527,7 +2527,7 @@ async function saveDoc(id){
   const groups=[...document.querySelectorAll('.dGrp:checked')].map(b=>b.value);
   const { error }=await sb.from('documents').update({category:$('dCat').value,status:$('dStatus').value,owner:$('dOwner').value||null,expires_on:$('dExp').value||null,tags,description:$('dDesc').value||null,groups,country:$('dCountry').value||null}).eq('id',id);
   if(error) return toast(error.message,true);
-  sb.rpc('log_audit',{p_event:'DOC_VISIBILITY_SET',p_resource:'documents',p_action:'update',p_subject:id,p_details:groups.length?('groups: '+groups.join(', ')):'all staff'}).catch(()=>{});
+  sb.rpc('log_audit',{p_event:'DOC_VISIBILITY_SET',p_resource:'documents',p_action:'update',p_subject:id,p_details:groups.length?('groups: '+groups.join(', ')):'all staff'}).then(undefined,()=>{});
   toast('Saved'); closeModal(); loadDocuments();
 }
 async function downloadDoc(path){
@@ -2596,7 +2596,7 @@ async function saveVendor(id){
 async function approveVendor(id){
   const { error }=await sb.from('vendors').update({status:'active',approved_by:ME.id,approved_at:new Date().toISOString()}).eq('id',id);
   if(error) return toast(error.message,true);
-  sb.rpc('log_audit',{p_event:'vendor.approve',p_resource:'vendors',p_action:'approve',p_subject:id}).catch(()=>{});
+  sb.rpc('log_audit',{p_event:'vendor.approve',p_resource:'vendors',p_action:'approve',p_subject:id}).then(undefined,()=>{});
   toast('Vendor approved'); closeModal(); loadVendors();
 }
 
@@ -2820,7 +2820,7 @@ async function savePost(id){
 async function publishPost(id){
   const { error }=await sb.from('content_calendar').update({status:'published',published_at:new Date().toISOString()}).eq('id',id);
   if(error) return toast(error.message,true);
-  sb.rpc('log_audit',{p_event:'blog.publish',p_resource:'content_calendar',p_action:'publish',p_subject:id}).catch(()=>{});
+  sb.rpc('log_audit',{p_event:'blog.publish',p_resource:'content_calendar',p_action:'publish',p_subject:id}).then(undefined,()=>{});
   toast('Published to the site'); closeModal(); loadBlog();
 }
 async function unpublishPost(id){
