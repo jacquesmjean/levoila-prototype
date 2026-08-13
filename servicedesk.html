@@ -1033,11 +1033,16 @@ async function createBenef(){
 async function loadVols(){
   const { data, error } = await sb.from('volunteers').select('*').order('created_at',{ascending:false}).limit(200);
   if (error) return toast(error.message, true);
+  const gateCell = v => {
+    const gs = [v.background_check==='clear', !!v.nda_signed, !!v.coc_signed, !!v.orientation_done];
+    const met = gs.filter(Boolean).length, total = gs.length, ok = met===total;
+    const color = ok ? '#1a7f37' : (met? 'var(--gold)' : '#b23a48');
+    return `<span style="font-weight:700;color:${color}">${met}/${total}</span>${ok?' <span style="color:#1a7f37">✔</span>':''}`;
+  };
   $('volTable').innerHTML = tableHtml(
-    ['Name','Country','Skills','Background check','NDA','Code of conduct','Status'],
+    ['Name','Country','Skills','Gates cleared','Status'],
     (data||[]).map(v => [ `<b style="color:var(--navy)">${esc(v.name)}</b><div class="text-xs text-gray-400">${esc(v.email)}</div>`,
-      esc(v.country||'—'), esc((v.skills||'').slice(0,60)), badge(v.background_check),
-      v.nda_signed?'✓':'—', v.coc_signed?'✓':'—', badge(v.status)]),
+      esc(v.country||'—'), esc((v.skills||'').slice(0,60)), gateCell(v), badge(v.status)]),
     i => `openVol('${data[i].id}')`, 'No volunteers yet.');
 }
 async function openVol(id){
@@ -1056,6 +1061,8 @@ async function openVol(id){
       <div class="md:col-span-2"><label>Profile / bio</label><textarea id="vBio" rows="2">${esc(v.bio||'')}</textarea></div>
       <div class="md:col-span-2"><label>Notes</label><textarea id="vNotes" rows="2">${esc(v.notes||'')}</textarea></div>
     </div>
+    <div class="cc-section-label">Approval gates · all required must clear before this volunteer goes active</div>
+    <div id="volGates" class="mb-4"><div class="text-xs text-gray-400">Checking gates…</div></div>
     <div class="cc-section-label">Service hours</div>
     <div id="volHours" class="mb-3"><div class="text-xs text-gray-400">Loading…</div></div>
     <div class="flex items-center justify-between">
@@ -1063,6 +1070,74 @@ async function openVol(id){
       <button class="btn btn-gold" onclick="saveVol('${v.id}')">Save</button>
     </div>`);
   loadVolHours(id);
+  loadVolGates(id);
+}
+
+/* ---- Volunteer approval gates ---- */
+async function loadVolGates(id){
+  const box = $('volGates'); if(!box) return;
+  const { data, error } = await sb.rpc('volunteer_gates_status', { p_id:id });
+  if (error || !data || !data.ok){ box.innerHTML = `<div class="text-xs text-gray-400">${esc((error&&error.message)||'Gate status unavailable.')}</div>`; return; }
+  const gates = data.gates||[];
+  const rows = gates.map(g=>{
+    const met = !!g.met;
+    const dot = met ? '<span style="color:#1a7f37;font-weight:700">✔</span>' : '<span style="color:#b23a48;font-weight:700">✕</span>';
+    const detail = g.detail && !met ? ` <span class="text-xs text-gray-400">(${esc(g.detail)})</span>` : '';
+    let action = '';
+    if (!met){
+      if (g.key==='orientation'){
+        action = `<button class="btn btn-ghost" style="padding:4px 10px" onclick="setVolOrientation('${id}',true)">Mark done</button>
+                  <button class="btn btn-ghost" style="padding:4px 10px" onclick="enforceVolGate('${id}','orientation')">Assign</button>`;
+      } else {
+        action = `<button class="btn btn-ghost" style="padding:4px 10px" onclick="enforceVolGate('${id}','${g.key}')">${g.key==='background_check'?'Request check':'Send to sign'}</button>`;
+      }
+    } else if (g.key==='orientation'){
+      action = `<button class="btn btn-ghost" style="padding:4px 10px" onclick="setVolOrientation('${id}',false)">Undo</button>`;
+    }
+    return `<tr>
+      <td style="width:26px">${dot}</td>
+      <td><b style="color:var(--navy)">${esc(g.label)}</b>${g.required?'':' <span class="text-xs text-gray-400">(optional)</span>'}${detail}
+          <div class="text-xs text-gray-400">${esc(g.description||'')}</div></td>
+      <td style="text-align:right;white-space:nowrap">${action}</td></tr>`;
+  }).join('');
+  const ready = !!data.ready;
+  const bar = `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="flex:1;height:8px;background:var(--hairline,#e6e0d4);border-radius:99px;overflow:hidden">
+        <div style="height:100%;width:${data.requiredCount?Math.round(data.metCount/data.requiredCount*100):0}%;background:${ready?'#1a7f37':'var(--gold)'}"></div></div>
+      <span class="text-xs" style="color:var(--mut,#6b6355);font-weight:600">${data.metCount}/${data.requiredCount} cleared</span></div>`;
+  const approveBtn = ready
+    ? `<button class="btn btn-gold" onclick="approveVolunteer('${id}')">Approve volunteer →</button>`
+    : `<button class="btn btn-ghost" disabled title="Clear every required gate first" style="opacity:.5;cursor:not-allowed">Approve volunteer</button>`;
+  const statusLine = data.status==='active'
+    ? `<div class="text-xs" style="color:#1a7f37;font-weight:600">● Active${data.approvedAt?' · approved '+esc(data.approvedAt):''}</div>`
+    : `<div class="text-xs text-gray-400">Status: ${esc(data.status||'—')} — not yet approved</div>`;
+  box.innerHTML = bar +
+    `<div class="table-wrap"><table class="grid"><tbody>${rows}</tbody></table></div>
+     <div class="flex items-center justify-between mt-3">${statusLine}${approveBtn}</div>`;
+}
+async function enforceVolGate(id, gate){
+  const { data, error } = await sb.rpc('enforce_volunteer_gate', { p_id:id, p_gate:gate });
+  if (error) return toast(error.message, true);
+  if (data && data.signUrl){
+    const url = location.origin + data.signUrl;
+    (navigator.clipboard && navigator.clipboard.writeText(url).then(()=>toast('Signature link copied — send it to the volunteer')).catch(()=>toast(url))) || toast(url);
+    modal(`<h2 class="serif text-2xl font-semibold mb-2" style="color:var(--navy)">Send this to the volunteer</h2>
+      <p class="text-sm text-gray-500 mb-3">${esc(data.message||'')}</p>
+      <input readonly value="${esc(url)}" onclick="this.select()" style="width:100%">
+      <div class="text-right mt-4"><button class="btn btn-gold" onclick="closeModal();openVol('${id}')">Done</button></div>`);
+    return;
+  }
+  toast((data && data.message) || 'Requirement enforced'); loadVolGates(id);
+}
+async function setVolOrientation(id, done){
+  const { error } = await sb.rpc('set_volunteer_orientation', { p_id:id, p_done:done });
+  if (error) return toast(error.message, true);
+  toast(done?'Orientation marked complete':'Orientation cleared'); loadVolGates(id);
+}
+async function approveVolunteer(id){
+  const { error } = await sb.rpc('approve_volunteer', { p_id:id });
+  if (error) return toast(error.message, true);
+  toast('Volunteer approved — now active'); loadVolGates(id); loadVols();
 }
 async function saveVol(id){
   const { error } = await sb.from('volunteers').update({status:$('vStatus').value, background_check:$('vBg').value,
