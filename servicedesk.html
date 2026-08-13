@@ -2620,9 +2620,15 @@ async function loadVendors(){
   const c=x=>rows.filter(v=>v.status===x).length;
   $('vendorKpis').innerHTML=[['Vendors',rows.length],['Submitted',c('submitted')],['Under review',c('under_review')],['Active',c('active')]]
     .map(([l,n])=>`<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
-  const chk=b=>b?'<span style="color:#1a7f37">✓</span>':'<span style="color:#c0392b">—</span>';
-  $('vendorsTable').innerHTML=tableHtml(['Vendor','Category','W-9','COI','Bank','Risk','Status'],
-    rows.map(v=>[`<b style="color:var(--navy)">${esc(v.legal_name)}</b>${v.dba?`<div class="text-xs text-gray-400">${esc(v.dba)}</div>`:''}`, esc(v.category||'—'), chk(v.w9_received), chk(v.coi_received), chk(v.banking_received), esc(v.risk_level||'—'), badge(v.status)]),
+  const gateCell=v=>{
+    const coiOk=v.coi_received && (!v.coi_expires || new Date(v.coi_expires)>=new Date(new Date().toDateString()));
+    const gs=[!!v.w9_received, coiOk, !!v.banking_received, !!v.references_ok];
+    const met=gs.filter(Boolean).length, total=gs.length, ok=met===total;
+    const color=ok?'#1a7f37':(met?'var(--gold)':'#b23a48');
+    return `<span style="font-weight:700;color:${color}">${met}/${total}</span>${ok?' <span style="color:#1a7f37">✔</span>':''}`;
+  };
+  $('vendorsTable').innerHTML=tableHtml(['Vendor','Category','Gates cleared','Risk','Status'],
+    rows.map(v=>[`<b style="color:var(--navy)">${esc(v.legal_name)}</b>${v.dba?`<div class="text-xs text-gray-400">${esc(v.dba)}</div>`:''}`, esc(v.category||'—'), gateCell(v), esc(v.risk_level||'—'), badge(v.status)]),
     i=>`openVendor('${rows[i].id}')`, 'No vendors yet.');
 }
 function openNewVendor(){
@@ -2659,20 +2665,70 @@ async function openVendor(id){
       <div class="md:col-span-2"><label>Notes</label><textarea id="vNotes" rows="2">${esc(v.notes||'')}</textarea></div>
     </div>
     <div class="text-xs text-gray-400 mb-3">Linked documents: ${docs&&docs.length?docs.map(d=>`<a href="#" onclick="downloadDoc('${d.storage_path||''}');return false">${esc(d.file_name||d.title)}</a>`).join(', '):'none yet — upload in Documents and set the link to this vendor'}</div>
-    <div class="flex items-center justify-between">
-      <button class="btn btn-ghost" onclick="approveVendor('${v.id}')">✓ Approve &amp; activate</button>
+    <div class="cc-section-label">Approval gates · all required must clear before the vendor is activated</div>
+    <div id="venGates" class="mb-3"><div class="text-xs text-gray-400">Checking gates…</div></div>
+    <div class="flex items-center justify-end">
       <button class="btn btn-gold" onclick="saveVendor('${v.id}')">Save</button>
     </div>`);
+  loadVendorGates(id);
+}
+/* ---- Vendor approval gates ---- */
+async function loadVendorGates(id){
+  const box=$('venGates'); if(!box) return;
+  const { data, error }=await sb.rpc('vendor_gates_status',{p_id:id});
+  if(error||!data||!data.ok){ box.innerHTML=`<div class="text-xs text-gray-400">${esc((error&&error.message)||'Gate status unavailable.')}</div>`; return; }
+  const gates=data.gates||[];
+  const rows=gates.map(g=>{
+    const met=!!g.met;
+    const dot=met?'<span style="color:#1a7f37;font-weight:700">✔</span>':'<span style="color:#b23a48;font-weight:700">✕</span>';
+    const detail=g.detail?` <span class="text-xs" style="color:${met?'#6b6355':'#b23a48'}">(${esc(g.detail)})</span>`:'';
+    const field={w9:'w9_received',coi:'coi_received',banking:'banking_received',references:'references_ok'}[g.key];
+    let action='';
+    if(!met){
+      action=`<button class="btn btn-ghost" style="padding:4px 10px" onclick="setVendorDoc('${id}','${field}',true)">Mark received</button>
+              <button class="btn btn-ghost" style="padding:4px 10px" onclick="enforceVendorGate('${id}','${g.key}')">Request</button>`;
+    } else {
+      action=`<button class="btn btn-ghost" style="padding:4px 10px" onclick="setVendorDoc('${id}','${field}',false)">Undo</button>`;
+    }
+    return `<tr><td style="width:26px">${dot}</td>
+      <td><b style="color:var(--navy)">${esc(g.label)}</b>${detail}<div class="text-xs text-gray-400">${esc(g.description||'')}</div></td>
+      <td style="text-align:right;white-space:nowrap">${action}</td></tr>`;
+  }).join('');
+  const ready=!!data.ready;
+  const bar=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="flex:1;height:8px;background:var(--hairline,#e6e0d4);border-radius:99px;overflow:hidden">
+        <div style="height:100%;width:${data.requiredCount?Math.round(data.metCount/data.requiredCount*100):0}%;background:${ready?'#1a7f37':'var(--gold)'}"></div></div>
+      <span class="text-xs" style="color:var(--mut,#6b6355);font-weight:600">${data.metCount}/${data.requiredCount} cleared</span></div>`;
+  const approveBtn=ready
+    ? `<button class="btn btn-gold" onclick="approveVendor('${id}')">Approve &amp; activate →</button>`
+    : `<button class="btn btn-ghost" disabled title="Clear every required gate first" style="opacity:.5;cursor:not-allowed">Approve &amp; activate</button>`;
+  const statusLine=data.status==='active'
+    ? `<div class="text-xs" style="color:#1a7f37;font-weight:600">● Active${data.approvedAt?' · approved '+esc(data.approvedAt):''}</div>`
+    : `<div class="text-xs text-gray-400">Status: ${esc(data.status||'—')} — not yet approved</div>`;
+  box.innerHTML=bar+`<div class="table-wrap"><table class="grid"><tbody>${rows}</tbody></table></div>
+     <div class="flex items-center justify-between mt-3">${statusLine}${approveBtn}</div>`;
+}
+async function setVendorDoc(id, field, val){
+  const { error }=await sb.rpc('set_vendor_doc',{p_id:id,p_field:field,p_val:val});
+  if(error) return toast(error.message,true); loadVendorGates(id);
+}
+async function enforceVendorGate(id, gate){
+  const { data, error }=await sb.rpc('enforce_vendor_gate',{p_id:id,p_gate:gate});
+  if(error) return toast(error.message,true);
+  if(data&&data.intakeUrl){
+    const url=location.origin+data.intakeUrl;
+    (navigator.clipboard&&navigator.clipboard.writeText(url).then(()=>toast('Intake link copied — send it to the vendor')).catch(()=>toast(url)))||toast(url);
+  } else toast((data&&data.message)||'Requested');
+  loadVendorGates(id);
 }
 async function saveVendor(id){
   const { error }=await sb.from('vendors').update({status:$('vStatus2').value,risk_level:$('vRisk').value,category:$('vCat').value||null,coi_expires:$('vCoiExp').value||null,w9_received:$('vW9').checked,coi_received:$('vCoi').checked,banking_received:$('vBank').checked,references_ok:$('vRef').checked,notes:$('vNotes').value||null}).eq('id',id);
   if(error) return toast(error.message,true); toast('Saved'); closeModal(); loadVendors();
 }
 async function approveVendor(id){
-  const { error }=await sb.from('vendors').update({status:'active',approved_by:ME.id,approved_at:new Date().toISOString()}).eq('id',id);
+  const { error }=await sb.rpc('approve_vendor',{p_id:id});
   if(error) return toast(error.message,true);
-  sb.rpc('log_audit',{p_event:'vendor.approve',p_resource:'vendors',p_action:'approve',p_subject:id}).then(undefined,()=>{});
-  toast('Vendor approved'); closeModal(); loadVendors();
+  toast('Vendor approved — now active'); loadVendorGates(id); loadVendors();
 }
 
 /* ---- Employee / contractor onboarding ---- */
@@ -2682,8 +2738,12 @@ async function loadOnboarding(){
   const rows=data||[]; const c=x=>rows.filter(o=>o.status===x).length;
   $('onbKpis').innerHTML=[['Cases',rows.length],['Submitted',c('submitted')],['In progress',c('in_progress')],['Complete',c('complete')]]
     .map(([l,n])=>`<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
-  $('onbTable').innerHTML=tableHtml(['Candidate','Role','Type','Start','Progress','Status'],
-    rows.map(o=>[`<b style="color:var(--navy)">${esc(o.candidate_name)}</b>${o.email?`<div class="text-xs text-gray-400">${esc(o.email)}</div>`:''}`, esc(o.role_title||'—'), esc(o.type), o.start_date?fmtD(o.start_date):'—', `${o.progress_pct||0}%`, badge(o.status)]),
+  $('onbTable').innerHTML=tableHtml(['Candidate','Role','Type','Start','Checklist','Status'],
+    rows.map(o=>{
+      const pct=o.progress_pct||0, ok=pct>=100;
+      const prog=`<span style="font-weight:700;color:${ok?'#1a7f37':(pct>0?'var(--gold)':'#b23a48')}">${pct}%</span>${ok?' <span style="color:#1a7f37">✔</span>':''}`;
+      return [`<b style="color:var(--navy)">${esc(o.candidate_name)}</b>${o.email?`<div class="text-xs text-gray-400">${esc(o.email)}</div>`:''}`, esc(o.role_title||'—'), esc(o.type), o.start_date?fmtD(o.start_date):'—', prog, badge(o.status)];
+    }),
     i=>`openOnboarding('${rows[i].id}')`, 'No onboarding cases yet.');
 }
 function openNewOnboarding(){
@@ -2706,22 +2766,39 @@ async function createOnboarding(){
 async function openOnboarding(id){
   const { data:o }=await sb.from('onboarding_cases').select('*').eq('id',id).single();
   const { data:tasks }=await sb.from('onboarding_tasks').select('*').eq('case_id',id).order('sort');
-  const trow=t=>`<tr>
-      <td><input type="checkbox" ${(t.status==='done'||t.status==='received')?'checked':''} onchange="toggleTask('${t.id}','${id}',this.checked)"></td>
+  const DONE=s=>['done','received','complete','waived'].includes(s);
+  const isDoc=t=>['document','agreement','signature','policy','legal'].includes((t.category||'').toLowerCase())||/sign|nda|agreement|policy/i.test(t.title||'');
+  const trow=t=>{
+    const done=DONE(t.status);
+    const act=done?'':`<button class="btn btn-ghost" style="padding:4px 10px" onclick="enforceOnbTask('${t.id}','${id}')">${isDoc(t)?'Send to sign':'Request'}</button>`;
+    return `<tr>
+      <td><input type="checkbox" ${done?'checked':''} onchange="toggleTask('${t.id}','${id}',this.checked)"></td>
       <td><b style="color:var(--navy)">${esc(t.title)}</b>${t.required?'':' <span class="text-xs text-gray-400">(optional)</span>'}</td>
-      <td>${esc(t.category)}</td><td>${badge(t.status)}</td></tr>`;
+      <td>${esc(t.category)}</td><td>${badge(t.status)}</td><td style="text-align:right">${act}</td></tr>`;
+  };
+  const reqTasks=(tasks||[]).filter(t=>t.required);
+  const reqMet=reqTasks.filter(t=>DONE(t.status)).length, reqTotal=reqTasks.length;
+  const ready=reqTotal===0||reqMet===reqTotal;
+  const gateBar=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div style="flex:1;height:8px;background:var(--hairline,#e6e0d4);border-radius:99px;overflow:hidden">
+        <div style="height:100%;width:${reqTotal?Math.round(reqMet/reqTotal*100):100}%;background:${ready?'#1a7f37':'var(--gold)'}"></div></div>
+      <span class="text-xs" style="color:var(--mut,#6b6355);font-weight:600">${reqMet}/${reqTotal} required cleared</span></div>
+    <div class="text-xs ${ready?'':'text-gray-400'}" style="color:${ready?'#1a7f37':'#6b6355'};margin-bottom:10px">${ready?'● All required items cleared — ready to provision access.':'Access provisioning is blocked until every required item is cleared.'}</div>`;
   modal(`<div class="flex items-start justify-between mb-3"><div><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(o.candidate_name)}</h2><div class="text-xs text-gray-400">${esc(o.role_title||'')} · ${esc(o.type)}</div></div><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
     <div class="grid md:grid-cols-3 gap-3 mb-4">
-      <div><label>Status</label><select id="oStatus">${['submitted','in_progress','complete','withdrawn'].map(x=>`<option ${o.status===x?'selected':''}>${x}</option>`).join('')}</select></div>
+      <div><label>Status</label><select id="oStatus">${['submitted','in_progress','complete','provisioned','withdrawn'].map(x=>`<option ${o.status===x?'selected':''}>${x}</option>`).join('')}</select></div>
       <div><label>Start date</label><input id="oStart" type="date" value="${o.start_date||''}"></div>
       <div><label>Progress</label><input value="${o.progress_pct||0}%" disabled></div>
     </div>
-    <div class="cc-section-label">Checklist</div>
-    <div class="table-wrap mb-4"><table class="grid"><thead><tr><th></th><th>Item</th><th>Type</th><th>Status</th></tr></thead><tbody>${(tasks||[]).map(trow).join('')}</tbody></table></div>
+    <div class="cc-section-label">Onboarding gates · required items before access is granted</div>
+    ${gateBar}
+    <div class="table-wrap mb-4"><table class="grid"><thead><tr><th></th><th>Item</th><th>Type</th><th>Status</th><th></th></tr></thead><tbody>${(tasks||[]).map(trow).join('')}</tbody></table></div>
     <div class="flex items-center justify-between flex-wrap gap-2">
       <div class="flex gap-2">
         <button class="btn btn-ghost" onclick="convertToPerson('${o.id}')">Add to People &amp; HR</button>
-        <button class="btn btn-navy" onclick="openProvision('${o.id}','${esc(o.email||'')}','${esc(o.candidate_name||'')}')">Provision access →</button>
+        ${ready
+          ? `<button class="btn btn-navy" onclick="openProvision('${o.id}','${esc(o.email||'')}','${esc(o.candidate_name||'')}')">Provision access →</button>`
+          : `<button class="btn btn-ghost" disabled title="Clear every required item first" style="opacity:.5;cursor:not-allowed">Provision access</button>`}
       </div>
       <button class="btn btn-gold" onclick="saveOnboarding('${o.id}')">Save</button>
     </div>`);
@@ -2755,6 +2832,15 @@ async function doProvision(caseId){
     p_review: $('pvReview').value||null, p_countries });
   if (error) return toast(error.message,true);
   toast(data&&data.existed?'Access provisioned':'Access held for first sign-in'); closeModal(); loadOnboarding();
+}
+async function enforceOnbTask(taskId, caseId){
+  const { data, error }=await sb.rpc('enforce_onboarding_task',{p_task_id:taskId});
+  if(error) return toast(error.message,true);
+  if(data&&data.signUrl){
+    const url=location.origin+data.signUrl;
+    (navigator.clipboard&&navigator.clipboard.writeText(url).then(()=>toast('Signature link copied — send it to the candidate')).catch(()=>toast(url)))||toast(url);
+  } else toast((data&&data.message)||'Requested');
+  openOnboarding(caseId);
 }
 async function toggleTask(taskId, caseId, done){
   await sb.from('onboarding_tasks').update({status:done?'done':'pending',completed_at:done?new Date().toISOString():null}).eq('id',taskId);
