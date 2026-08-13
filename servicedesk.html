@@ -261,16 +261,18 @@
 <div id="appView" class="hidden min-h-screen flex">
   <aside id="sidebar" class="w-64 shrink-0 flex flex-col" style="min-height:100vh;">
     <div class="px-6 pt-8 pb-5">
-      <div class="wordmark text-lg" style="color:var(--limestone);">Levoila</div>
+      <div id="wm" class="wordmark text-lg" style="color:var(--limestone);">Levoila</div>
       <div class="flex items-center gap-2 mt-2">
         <div class="h-px w-6" style="background:rgba(212,168,87,.5);"></div>
-        <div class="overline-label tenant-product" style="color:var(--soft-gold);">Mission Control</div>
+        <div id="wmProduct" class="overline-label tenant-product" style="color:var(--soft-gold);">Mission Control</div>
       </div>
     </div>
     <nav class="flex-1 pb-4" id="navLinks"></nav>
     <div class="px-6 py-5" style="border-top:1px solid rgba(212,168,87,.18);">
       <div id="whoami" class="text-[11px] mb-2 truncate" style="color:rgba(244,241,234,.5);"></div>
       <button class="overline-label" style="color:var(--soft-gold);" onclick="signOut()">Sign out</button>
+      <a href="https://www.techfides.com" target="_blank" rel="noopener" id="poweredBy"
+         class="block mt-4 text-[10px]" style="color:rgba(244,241,234,.35);letter-spacing:.08em;text-decoration:none;">Powered by TechFides</a>
     </div>
   </aside>
 
@@ -557,6 +559,12 @@
         <div id="auditTable"></div>
       </div>
 
+      <div id="view-settings" class="view">
+        <h1 class="page-head serif text-3xl font-semibold mb-1" style="color:var(--navy);">Settings</h1>
+        <p class="text-sm text-gray-500 mb-6">White-label branding and plan entitlements for this deployment. Admin only. Changes apply on next load.</p>
+        <div id="settingsBody"><div class="text-xs text-gray-400">Loading…</div></div>
+      </div>
+
     </div>
 
       <div id="view-documents" class="view">
@@ -705,10 +713,25 @@ sb.auth.onAuthStateChange(async (_e, session) => {
   const { data } = await sb.from('staff').select('*').eq('id', session.user.id).maybeSingle();
   if (!data) { $('authView').classList.add('hidden'); $('deniedView').classList.remove('hidden'); return; }
   ME = data;
+  try { const { data:ts } = await sb.from('tenant_settings').select('*').limit(1).maybeSingle(); if(ts){ TSET=ts; applyTenant(ts); } } catch(e){}
   $('authView').classList.add('hidden'); $('deniedView').classList.add('hidden'); $('appView').classList.remove('hidden');
   $('whoami').textContent = `${ME.email} · ${ME.role}`;
   buildNav(); show('overview');
 });
+let TSET = null;
+function tierAllows(k){
+  if(!TSET) return true;
+  if(k==='copilot') return TSET.copilot_enabled!==false;
+  if(k==='social'||k==='blog') return TSET.social_enabled!==false;
+  return true;
+}
+function applyTenant(ts){
+  if(ts.org_name){ const w=$('wm'); if(w) w.textContent=ts.org_name; document.title=ts.org_name+' · '+(ts.product_name||'Mission Control'); }
+  if(ts.product_name){ const p=$('wmProduct'); if(p) p.textContent=ts.product_name; }
+  const r=document.documentElement.style;
+  if(ts.brand_navy) r.setProperty('--navy', ts.brand_navy);
+  if(ts.brand_gold){ r.setProperty('--gold', ts.brand_gold); r.setProperty('--soft-gold', ts.brand_gold); }
+}
 
 // ---------- nav ----------
 const VIEWS = [
@@ -718,7 +741,7 @@ const VIEWS = [
   ['influencers','Influencers'],['finance','Finance'],['content','Content'],['applications','Careers'],
   ['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding'],
   ['blog','Blog'],['social','Social'],
-  ['people','People & HR'],['board','Board'],['legal','Legal'],['security','Security & Audit']
+  ['people','People & HR'],['board','Board'],['legal','Legal'],['security','Security & Audit'],['settings','Settings']
 ];
 const NAV_GROUPS = [
   ['Executive', [['copilot','Executive Copilot']]],
@@ -726,9 +749,13 @@ const NAV_GROUPS = [
   ['Funding',    [['grants','Grant Engine'],['donors','Donor CRM'],['influencers','Influencers'],['finance','Finance']]],
   ['Presence',   [['content','Content'],['social','Social'],['blog','Blog'],['applications','Careers']]],
   ['Records',    [['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding']]],
-  ['Governance', [['people','People & HR'],['board','Board & Admin'],['legal','Legal'],['security','Security & Audit']]]
+  ['Governance', [['people','People & HR'],['board','Board & Admin'],['legal','Legal'],['security','Security & Audit'],['settings','Settings']]]
 ];
-function canSee(k){ return !ME || !Array.isArray(ME.functions) || ME.functions.includes(k); }
+function canSee(k){
+  if (k==='settings') return ME && ME.role==='admin';           // admin-only
+  if (!tierAllows(k)) return false;                              // tier entitlement
+  return !ME || !Array.isArray(ME.functions) || ME.functions.includes(k);
+}
 function buildNav(){
   $('navLinks').innerHTML = NAV_GROUPS.map(([g, items]) => {
     const vis = items.filter(([k]) => canSee(k));
@@ -747,7 +774,7 @@ function show(k){
   ({copilot:loadCopilot, overview:loadOverview, tickets:loadTickets, beneficiaries:loadBenefs, volunteers:loadVols,
     grants:loadGrants, donors:loadDonors, influencers:loadInfluencers, finance:loadFinance, content:loadContent, applications:loadApps,
     documents:loadDocsView, vendors:loadVendors, onboarding:loadOnboarding, blog:loadBlog, social:loadSocial,
-    people:loadPeople, board:loadBoard, legal:loadLegal, security:loadSecurity})[k]();
+    people:loadPeople, board:loadBoard, legal:loadLegal, security:loadSecurity, settings:loadSettings})[k]();
 }
 
 // ---------- overview ----------
@@ -2248,6 +2275,52 @@ async function createMatter(){
 
 // ========== Security & Audit ==========
 const SCOPES = ['finance:read','finance:write','board:audit','board:financials:read','site:milot:read','site:milot:write','beneficiary:read','donor:read','grants:write','legal:read','all:read'];
+async function loadSettings(){
+  const { data:ts, error }=await sb.from('tenant_settings').select('*').limit(1).maybeSingle();
+  if(error||!ts){ $('settingsBody').innerHTML=`<div class="text-xs text-gray-400">${esc((error&&error.message)||'Settings unavailable.')}</div>`; return; }
+  const tierOpts=['foundation','mission','sovereign'].map(t=>`<option value="${t}" ${ts.tier===t?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('');
+  const flag=(id,lab,on)=>`<label class="chk"><input type="checkbox" id="${id}" ${on?'checked':''}> ${lab}</label>`;
+  $('settingsBody').innerHTML=`
+    <div class="cc-section-label">Branding · white-label</div>
+    <div class="grid md:grid-cols-2 gap-3 mb-6" style="max-width:820px">
+      <div><label>Organization name</label><input id="stOrg" value="${esc(ts.org_name||'')}"></div>
+      <div><label>Product name (overline)</label><input id="stProduct" value="${esc(ts.product_name||'')}"></div>
+      <div class="md:col-span-2"><label>Tagline</label><input id="stTagline" value="${esc(ts.tagline||'')}"></div>
+      <div class="md:col-span-2"><label>Motto</label><input id="stMotto" value="${esc(ts.motto||'')}"></div>
+      <div><label>Navy (primary color)</label><input id="stNavy" type="text" value="${esc(ts.brand_navy||'#0B2545')}" placeholder="#0B2545"></div>
+      <div><label>Gold (accent color)</label><input id="stGold" type="text" value="${esc(ts.brand_gold||'#B6862C')}" placeholder="#B6862C"></div>
+      <div><label>Fundraising goal (USD)</label><input id="stGoal" type="number" value="${ts.fund_goal||''}"></div>
+    </div>
+    <div class="cc-section-label">Plan &amp; entitlements</div>
+    <div class="grid md:grid-cols-2 gap-3 mb-4" style="max-width:820px">
+      <div><label>Tier</label><select id="stTier">${tierOpts}</select></div>
+      <div></div>
+      <div class="md:col-span-2 chkgrid">
+        ${flag('stAi','AI Concierge (public site)', ts.ai_enabled)}
+        ${flag('stCopilot','Executive Copilot', ts.copilot_enabled)}
+        ${flag('stSocial','Social + Blog engine', ts.social_enabled)}
+        ${flag('stMulti','Multi-country', ts.multi_country)}
+      </div>
+    </div>
+    <p class="text-xs text-gray-400 mb-4" style="max-width:820px">Turning an entitlement off hides its section from every user in this deployment. Tier is the label; the switches are what actually enforce it.</p>
+    <div class="flex items-center gap-3">
+      <button class="btn btn-gold" onclick="saveSettings()">Save settings</button>
+      <span class="text-xs text-gray-400">“Powered by TechFides” attribution is a locked element and cannot be removed.</span>
+    </div>`;
+}
+async function saveSettings(){
+  const payload={ org_name:$('stOrg').value, product_name:$('stProduct').value, tagline:$('stTagline').value,
+    motto:$('stMotto').value, brand_navy:$('stNavy').value, brand_gold:$('stGold').value,
+    fund_goal:$('stGoal').value?Number($('stGoal').value):null, tier:$('stTier').value,
+    ai_enabled:$('stAi').checked, copilot_enabled:$('stCopilot').checked,
+    social_enabled:$('stSocial').checked, multi_country:$('stMulti').checked };
+  const { error }=await sb.rpc('save_tenant_settings',{p:payload});
+  if(error) return toast(error.message,true);
+  const { data:ts }=await sb.from('tenant_settings').select('*').limit(1).maybeSingle();
+  if(ts){ TSET=ts; applyTenant(ts); buildNav(); }
+  toast('Settings saved — branding and entitlements updated');
+}
+
 async function loadSecurity(){
   try { await sb.rpc('expire_grants'); } catch(e){}    // defensive; cron also does this
   try { await sb.rpc('expire_access'); } catch(e){}    // strip standing access past its expiry
