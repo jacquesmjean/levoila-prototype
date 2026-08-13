@@ -5,7 +5,8 @@
     { "source": "/servicedesk", "destination": "/servicedesk.html" },
     { "source": "/vendor-onboarding", "destination": "/vendor-onboarding.html" },
     { "source": "/join-onboarding", "destination": "/join-onboarding.html" },
-    { "source": "/sign", "destination": "/sign.html" }
+    { "source": "/sign", "destination": "/sign.html" },
+    { "source": "/transparency", "destination": "/transparency.html" }
   ],
   "headers": [
     { "source": "/servicedesk", "headers": [
