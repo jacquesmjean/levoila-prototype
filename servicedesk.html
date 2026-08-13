@@ -275,6 +275,22 @@
     <div id="mobileNav" class="hidden gap-2 overflow-x-auto p-3" style="background:var(--deep);"></div>
     <div class="p-6 lg:p-8 max-w-[1200px]">
 
+      <div id="view-copilot" class="view">
+        <div style="max-width:860px">
+          <h1 style="font-family:'EB Garamond',Georgia,serif;font-size:30px;font-weight:700;color:var(--navy,#0B2545);margin:0 0 4px">Executive Copilot</h1>
+          <p style="color:#6b6355;margin:0 0 18px;font-size:14px">Ask about anything running through Mission Control — money, donors, vendors, onboarding, volunteers, tickets, content. Answers come only from your live data.</p>
+          <div id="cpBrief" style="margin-bottom:18px"></div>
+          <div id="cpChat" style="background:#fff;border:1px solid #E5E0D5;border-radius:16px;overflow:hidden">
+            <div id="cpLog" style="padding:18px;max-height:52vh;overflow:auto;display:flex;flex-direction:column;gap:12px"></div>
+            <div style="border-top:1px solid #E5E0D5;padding:12px;display:flex;gap:10px;align-items:flex-end;background:#FAF7F0">
+              <textarea id="cpInput" rows="1" placeholder="Ask the Copilot…  e.g. How much have we raised? What's waiting on approval?" style="flex:1;resize:none;border:1px solid #D5CDB8;border-radius:10px;padding:11px 13px;font-family:inherit;font-size:14px;max-height:120px"></textarea>
+              <button class="btn btn-gold" id="cpSend" onclick="cpAsk()" style="white-space:nowrap">Ask</button>
+            </div>
+          </div>
+          <div id="cpChips" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"></div>
+        </div>
+      </div>
+
       <div id="view-overview" class="view">
         <!-- Executive hero -->
         <div class="cc-hero">
@@ -682,6 +698,7 @@ sb.auth.onAuthStateChange(async (_e, session) => {
 
 // ---------- nav ----------
 const VIEWS = [
+  ['copilot','Copilot'],
   ['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],
   ['volunteers','Volunteers'],['grants','Grant Engine'],['donors','Donor CRM'],
   ['influencers','Influencers'],['finance','Finance'],['content','Content'],['applications','Careers'],
@@ -690,6 +707,7 @@ const VIEWS = [
   ['people','People & HR'],['board','Board'],['legal','Legal'],['security','Security & Audit']
 ];
 const NAV_GROUPS = [
+  ['Executive', [['copilot','Executive Copilot']]],
   ['Operations', [['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],['volunteers','Volunteers']]],
   ['Funding',    [['grants','Grant Engine'],['donors','Donor CRM'],['influencers','Influencers'],['finance','Finance']]],
   ['Presence',   [['content','Content'],['social','Social'],['blog','Blog'],['applications','Careers']]],
@@ -712,7 +730,7 @@ function show(k){
   $(`view-${k}`).classList.add('active');
   document.querySelectorAll('.side-link').forEach(v=>v.classList.remove('active'));
   const n=$(`nav-${k}`); if(n) n.classList.add('active');
-  ({overview:loadOverview, tickets:loadTickets, beneficiaries:loadBenefs, volunteers:loadVols,
+  ({copilot:loadCopilot, overview:loadOverview, tickets:loadTickets, beneficiaries:loadBenefs, volunteers:loadVols,
     grants:loadGrants, donors:loadDonors, influencers:loadInfluencers, finance:loadFinance, content:loadContent, applications:loadApps,
     documents:loadDocsView, vendors:loadVendors, onboarding:loadOnboarding, blog:loadBlog, social:loadSocial,
     people:loadPeople, board:loadBoard, legal:loadLegal, security:loadSecurity})[k]();
@@ -1461,6 +1479,118 @@ const DISPATCH_CATS = ['FOUNDER','HISTORY','THE PEOPLE','THE SITES','STEWARDS','
 let CONTENT_FILTER = 'all', SOCIAL_ACCTS = null, SOCIAL_CONFIGURED = false;
 
 async function getToken(){ const { data } = await sb.auth.getSession(); return data.session ? data.session.access_token : null; }
+
+/* ===================== Executive Copilot ===================== */
+let CP_HISTORY = [];
+let CP_SNAP = null;
+const cpMoney = n => '$' + Math.round(Number(n)||0).toLocaleString('en-US');
+const cpEsc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function loadCopilot(){
+  const log = $('cpLog');
+  if (!CP_HISTORY.length && log){
+    log.innerHTML = `<div style="align-self:flex-start;max-width:88%;background:#F4F1EA;border:1px solid #E5E0D5;border-radius:14px;padding:12px 14px;font-size:14px;color:#2b2a26">
+      Good to see you. Ask me anything about where things stand — I read straight from the live books, so I never guess. Try one of the shortcuts below, or type your own question.</div>`;
+  }
+  const chips = ['Give me the state of the mission','How much have we raised?','What is waiting on my approval?','Where do onboarding cases stand?','Any open tickets I should know about?'];
+  $('cpChips').innerHTML = chips.map(c=>`<button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="cpChip(this)">${cpEsc(c)}</button>`).join('');
+  refreshBrief();
+  const ta = $('cpInput');
+  if (ta && !ta._wired){ ta._wired = true;
+    ta.addEventListener('input', ()=>{ ta.style.height='auto'; ta.style.height=Math.min(120, ta.scrollHeight)+'px'; });
+    ta.addEventListener('keydown', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); cpAsk(); } });
+  }
+}
+window.cpChip = function(btn){ $('cpInput').value = btn.textContent; cpAsk(); };
+
+async function refreshBrief(){
+  // Pull the snapshot once (via the copilot endpoint) and render an at-a-glance briefing.
+  try{
+    const token = await getToken(); if(!token) return;
+    const r = await fetch('/api/copilot', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body: JSON.stringify({ messages:[{role:'user',content:'__brief__'}] }) });
+    const d = await r.json();
+    if (d && d.snapshot){ CP_SNAP = d.snapshot; renderBrief(d.snapshot); }
+  }catch(e){}
+}
+function renderBrief(s){
+  const f=s.finance||{}, v=s.vendors||{}, o=s.onboarding||{}, vol=s.volunteers||{}, t=s.tickets||{}, c=s.content||{};
+  const tiles = [
+    ['Raised', cpMoney(f.totalRaised), 'Balance held ' + cpMoney(f.balance)],
+    ['Disbursed', cpMoney(f.totalDisbursed), (f.pendingSignatureEntries||0)+' awaiting 2nd signature'],
+    ['Vendors pending', (v.pending||0), (v.total||0)+' total on file'],
+    ['Onboarding open', (o.open||0), 'Avg '+(o.avgProgress||0)+'% complete'],
+    ['Volunteer hours to approve', (vol.pendingCount||0), (vol.hoursPendingApproval||0)+' hours'],
+    ['Open tickets', (t.open||0), (c.approvedQueue||0)+' posts queued']
+  ];
+  $('cpBrief').innerHTML = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">` +
+    tiles.map(([k,val,sub])=>`<div style="background:#fff;border:1px solid #E5E0D5;border-radius:12px;padding:14px">
+      <div style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#6b6355;font-weight:700">${cpEsc(k)}</div>
+      <div style="font-family:'EB Garamond',Georgia,serif;font-size:24px;font-weight:700;color:#0B2545;margin-top:4px;line-height:1">${cpEsc(val)}</div>
+      <div style="font-size:11px;color:#9a9384;margin-top:4px">${cpEsc(sub)}</div></div>`).join('') + `</div>`;
+}
+
+function cpBubble(role, html){
+  const log=$('cpLog');
+  const mine = role==='user';
+  const div=document.createElement('div');
+  div.style.cssText = `align-self:${mine?'flex-end':'flex-start'};max-width:88%;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.5;`+
+    (mine?'background:#0B2545;color:#fff':'background:#F4F1EA;border:1px solid #E5E0D5;color:#2b2a26');
+  div.innerHTML=html; log.appendChild(div); log.scrollTop=log.scrollHeight; return div;
+}
+
+async function cpAsk(){
+  const ta=$('cpInput'); const q=(ta.value||'').trim(); if(!q) return;
+  ta.value=''; ta.style.height='auto';
+  cpBubble('user', cpEsc(q));
+  CP_HISTORY.push({role:'user',content:q});
+  const thinking = cpBubble('assistant', '<span style="color:#9a9384">Thinking…</span>');
+  $('cpSend').disabled=true;
+  try{
+    const token = await getToken();
+    const r = await fetch('/api/copilot', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body: JSON.stringify({ messages: CP_HISTORY.slice(-16) }) });
+    const d = await r.json();
+    if (d && d.snapshot){ CP_SNAP=d.snapshot; renderBrief(d.snapshot); }
+    let answer;
+    if (d && d.reply){ answer = mdLite(d.reply); CP_HISTORY.push({role:'assistant',content:d.reply}); }
+    else if (d && d.fallback && d.snapshot){ answer = cpAnswerLocal(q, d.snapshot); }
+    else if (d && d.error){ answer = cpEsc(d.error); }
+    else { answer = 'I could not reach the data just now. Try again in a moment.'; }
+    thinking.innerHTML = answer;
+    $('cpLog').scrollTop = $('cpLog').scrollHeight;
+  }catch(e){ thinking.innerHTML = 'Something went wrong reaching the Copilot service.'; }
+  $('cpSend').disabled=false;
+}
+
+// Tiny markdown: bold, line breaks, bullet dashes.
+function mdLite(t){
+  return cpEsc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n\s*[-•]\s+/g,'<br>• ').replace(/\n/g,'<br>');
+}
+
+// Deterministic fallback when no LLM key is configured — answers from the snapshot, invents nothing.
+function cpAnswerLocal(q, s){
+  const ql=q.toLowerCase(); const f=s.finance||{}, v=s.vendors||{}, o=s.onboarding||{}, vol=s.volunteers||{}, t=s.tickets||{}, dn=s.donors||{};
+  const L=[];
+  const wants = k => ql.includes(k);
+  if (wants('rais')||wants('money')||wants('fund')||wants('financ')||wants('donat')||wants('balance')){
+    L.push(`<b>Raised:</b> ${cpMoney(f.totalRaised)} · <b>Disbursed:</b> ${cpMoney(f.totalDisbursed)} · <b>Held:</b> ${cpMoney(f.balance)}.`);
+    if (f.restrictedRaised) L.push(`${cpMoney(f.restrictedRaised)} of that is restricted to a specific purpose.`);
+    L.push(`${dn.uniqueDonors||0} donors across ${dn.gifts||0} gifts.`);
+  }
+  if (wants('approv')||wants('waiting')||wants('pending')||wants('state')||wants('mission')||wants('everything')){
+    L.push(`<b>On your desk:</b> ${v.pending||0} vendors to review, ${o.open||0} onboarding cases open, ${vol.pendingCount||0} volunteer time logs to approve (${vol.hoursPendingApproval||0} hrs), ${t.open||0} open tickets, ${f.pendingSignatureEntries||0} ledger entries awaiting a second signature.`);
+  }
+  if (wants('vendor')){ L.push(`<b>Vendors:</b> ${v.pending||0} pending of ${v.total||0} total.`); }
+  if (wants('onboard')){ L.push(`<b>Onboarding:</b> ${o.open||0} open, averaging ${o.avgProgress||0}% complete.`); }
+  if (wants('volunteer')||wants('hours')){ L.push(`<b>Volunteers:</b> ${vol.people||0} people, ${vol.pendingCount||0} time logs awaiting approval (${vol.hoursPendingApproval||0} hrs); ${vol.hoursApprovedTotal||0} hrs approved to date.`); }
+  if (wants('ticket')){ L.push(`<b>Tickets:</b> ${t.open||0} open.`); }
+  if (!L.length){
+    L.push(`Here's the picture: ${cpMoney(f.totalRaised)} raised, ${cpMoney(f.balance)} held. ${v.pending||0} vendors and ${o.open||0} onboarding cases open, ${vol.pendingCount||0} volunteer logs and ${f.pendingSignatureEntries||0} ledger entries awaiting sign-off, ${t.open||0} open tickets.`);
+    L.push(`<span style="color:#9a9384;font-size:12px">Tip: connect an AI key in Vercel (ANTHROPIC_API_KEY) and I'll answer free-form questions in full sentences.</span>`);
+  }
+  return L.join('<br><br>');
+}
 async function loadSocialAccounts(){
   try { const r = await fetch('/api/social-accounts'); const d = await r.json();
     SOCIAL_ACCTS = d.accounts || []; SOCIAL_CONFIGURED = !!d.configured; }
