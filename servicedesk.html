@@ -1013,18 +1013,28 @@ async function openVol(id){
   modal(`
     <div class="flex items-start justify-between mb-3"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(v.name)}</h2>
     <button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
-    <div class="text-sm text-gray-500 mb-4">${esc(v.email)} · ${esc(v.phone||'')} · ${esc(v.country||'')} · ${esc((v.languages||[]).join(', '))}</div>
+    <div class="text-sm text-gray-500 mb-4">${esc(v.email)} · ${esc(v.phone||'')} · ${esc((v.languages||[]).join(', '))}</div>
     <div class="grid md:grid-cols-2 gap-3 mb-4">
       <div><label>Status</label><select id="vStatus">${['applied','screening','cleared','active','inactive'].map(s=>`<option ${v.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
       <div><label>Background check</label><select id="vBg">${['not_started','pending','clear','flagged'].map(s=>`<option ${v.background_check===s?'selected':''}>${s}</option>`).join('')}</select></div>
+      <div><label>Country</label><input id="vCountry" value="${esc(v.country||'')}"></div>
+      <div><label>Time zone</label><input id="vTz" value="${esc(v.timezone||'')}" placeholder="e.g. America/New_York"></div>
       <div class="flex items-center gap-2 pt-2"><input type="checkbox" id="vNda" style="width:auto" ${v.nda_signed?'checked':''}><span class="text-sm">NDA signed</span></div>
       <div class="flex items-center gap-2 pt-2"><input type="checkbox" id="vCoc" style="width:auto" ${v.coc_signed?'checked':''}><span class="text-sm">Code of conduct signed</span></div>
-      <div class="md:col-span-2"><label>Notes</label><textarea id="vNotes" rows="3">${esc(v.notes||'')}</textarea></div>
+      <div class="md:col-span-2"><label>Profile / bio</label><textarea id="vBio" rows="2">${esc(v.bio||'')}</textarea></div>
+      <div class="md:col-span-2"><label>Notes</label><textarea id="vNotes" rows="2">${esc(v.notes||'')}</textarea></div>
     </div>
-    <div class="text-right"><button class="btn btn-gold" onclick="saveVol('${v.id}')">Save</button></div>`);
+    <div class="cc-section-label">Service hours</div>
+    <div id="volHours" class="mb-3"><div class="text-xs text-gray-400">Loading…</div></div>
+    <div class="flex items-center justify-between">
+      <div class="flex gap-2"><button class="btn btn-ghost" onclick="genVolDoc('${v.id}','cert')">Certificate of service</button><button class="btn btn-ghost" onclick="genVolDoc('${v.id}','tax')">Tax letter</button></div>
+      <button class="btn btn-gold" onclick="saveVol('${v.id}')">Save</button>
+    </div>`);
+  loadVolHours(id);
 }
 async function saveVol(id){
   const { error } = await sb.from('volunteers').update({status:$('vStatus').value, background_check:$('vBg').value,
+    country:$('vCountry').value||null, timezone:$('vTz').value||null, bio:$('vBio').value||null,
     nda_signed:$('vNda').checked, coc_signed:$('vCoc').checked, notes:$('vNotes').value}).eq('id', id);
   if (error) return toast(error.message, true);
   toast('Saved'); closeModal(); loadVols();
@@ -1033,13 +1043,15 @@ function openNewVolunteer(){
   modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">Add volunteer</h2>
     <div class="grid md:grid-cols-2 gap-3 mb-3">
       <div><label>Name</label><input id="nvName"></div><div><label>Email</label><input id="nvEmail"></div>
-      <div><label>Country</label><input id="nvCountry"></div><div><label>Languages (comma-sep)</label><input id="nvLangs" placeholder="en, fr, ht"></div>
+      <div><label>Country</label><input id="nvCountry"></div><div><label>Time zone</label><input id="nvTz" placeholder="America/New_York"></div>
+      <div><label>Languages (comma-sep)</label><input id="nvLangs" placeholder="en, fr, ht"></div>
       <div class="md:col-span-2"><label>Skills</label><textarea id="nvSkills" rows="2"></textarea></div>
     </div>
     <div class="text-right"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="createVol()">Add</button></div>`);
 }
 async function createVol(){
   const row = { name:$('nvName').value.trim(), email:$('nvEmail').value.trim(), country:$('nvCountry').value.trim(),
+    timezone: $('nvTz').value.trim()||null,
     languages: $('nvLangs').value.split(',').map(s=>s.trim()).filter(Boolean), skills:$('nvSkills').value.trim() };
   if (!row.name || !row.email) return toast('Name and email required', true);
   const { error } = await sb.from('volunteers').insert(row);
@@ -2573,6 +2585,50 @@ async function publishSocialNow(id){
     if(!r.ok){ return toast(d.error||'Publish failed',true); }
     toast(d.queued?'Approved & queued for the Social Agent':'Published'); closeModal(); loadSocial();
   }catch(e){ toast('Publishing endpoint unavailable — check /api deploy and Blotato key',true); }
+}
+
+/* ===================== Volunteer hours + certificates ===================== */
+async function loadVolHours(id){
+  const { data } = await sb.from('volunteer_hours').select('*').eq('volunteer_id',id).order('work_date',{ascending:false});
+  const rows=data||[];
+  const total=rows.filter(r=>r.status==='approved').reduce((a,r)=>a+Number(r.hours||0),0);
+  const pend=rows.filter(r=>r.status==='submitted').length;
+  const body=rows.length?rows.map(r=>`<tr>
+     <td>${fmtD(r.work_date)}</td><td>${Number(r.hours)}</td><td>${esc(r.activity||'—')}</td><td>${esc(r.site||r.country||'—')}</td><td>${badge(r.status)}</td>
+     <td style="white-space:nowrap">${r.status!=='approved'?`<a href="#" onclick="approveHours('${r.id}','${id}');return false" style="color:var(--gold)">approve</a> · `:''}<a href="#" onclick="deleteHours('${r.id}','${id}');return false" style="color:#c0392b">delete</a></td></tr>`).join(''):'<tr><td colspan="6" style="padding:10px;color:#9a938a;font-size:12px">No hours logged yet.</td></tr>';
+  $('volHours').innerHTML=`
+    <div class="flex gap-4 mb-2 text-sm"><span><b style="color:var(--navy)">${total}</b> approved hours</span>${pend?`<span class="text-gray-400">${pend} pending</span>`:''}</div>
+    <div class="table-wrap" style="margin-bottom:10px"><table class="grid"><thead><tr><th>Date</th><th>Hours</th><th>Activity</th><th>Where</th><th>Status</th><th></th></tr></thead><tbody>${body}</tbody></table></div>
+    <div class="grid md:grid-cols-4 gap-2">
+      <input id="vhDate" type="date" value="${new Date().toISOString().slice(0,10)}">
+      <input id="vhHours" type="number" step="0.5" placeholder="Hours">
+      <input id="vhActivity" placeholder="Activity">
+      <input id="vhSite" placeholder="Site / country">
+    </div>
+    <div class="text-right mt-2"><button class="btn btn-ghost" onclick="logHours('${id}')">+ Log hours</button></div>`;
+}
+async function logHours(id){
+  const h=parseFloat($('vhHours').value); if(!h||h<=0) return toast('Enter hours',true);
+  const { error }=await sb.from('volunteer_hours').insert({volunteer_id:id, work_date:$('vhDate').value||null, hours:h, activity:$('vhActivity').value||null, site:$('vhSite').value||null, status:'approved', approved_by:ME.id, approved_at:new Date().toISOString()});
+  if(error) return toast(error.message,true); toast('Hours logged'); loadVolHours(id);
+}
+async function approveHours(hid,id){ const { error }=await sb.from('volunteer_hours').update({status:'approved',approved_by:ME.id,approved_at:new Date().toISOString()}).eq('id',hid); if(error) return toast(error.message,true); loadVolHours(id); }
+async function deleteHours(hid,id){ const { error }=await sb.from('volunteer_hours').delete().eq('id',hid); if(error) return toast(error.message,true); loadVolHours(id); }
+async function genVolDoc(id, kind){
+  const { data:v }=await sb.from('volunteers').select('*').eq('id',id).single();
+  const { data:hrs }=await sb.from('volunteer_hours').select('hours,status').eq('volunteer_id',id);
+  const total=(hrs||[]).filter(r=>r.status==='approved').reduce((a,r)=>a+Number(r.hours||0),0);
+  const yr=new Date().getFullYear();
+  const tplName=kind==='cert'?'Certificate of Service':'Volunteer Tax Letter';
+  const { data:tpls }=await sb.from('doc_templates').select('*').eq('name',tplName).limit(1);
+  if(!tpls||!tpls.length) return toast('Template not found',true);
+  const t=tpls[0];
+  const vals={volunteer_name:v.name, hours_total:total, period:String(yr), role:(v.skills||'Volunteer').slice(0,60), issue_date:new Date().toISOString().slice(0,10)};
+  const html=mdToHtml(renderTemplate(t.body_md, vals));
+  const { data, error }=await sb.from('signature_requests').insert({title:tplName+' — '+v.name, body_html:html, signer_name:v.name, signer_email:v.email, signer_role:'Volunteer', status:'sent', created_by:ME.id}).select('token').single();
+  if(error) return toast(error.message,true);
+  const url=location.origin+'/sign?t='+data.token;
+  modal(`<h2 class="serif text-2xl font-semibold mb-2" style="color:var(--navy)">${esc(tplName)} ready</h2><p class="text-sm text-gray-500 mb-3">Generated for ${esc(v.name)} — ${total} approved hours. Send the link for acknowledgment, or find it in Documents → Signature requests.</p><input value="${url}" readonly onclick="this.select()"><div class="text-right mt-3"><button class="btn btn-ghost mr-2" onclick="navigator.clipboard.writeText('${url}').then(()=>toast('Copied'))">Copy link</button><button class="btn btn-gold" onclick="closeModal();loadVols()">Done</button></div>`);
 }
 
 </script>
