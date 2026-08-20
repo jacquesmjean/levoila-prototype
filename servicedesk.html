@@ -713,7 +713,7 @@ sb.auth.onAuthStateChange(async (_e, session) => {
   const { data } = await sb.from('staff').select('*').eq('id', session.user.id).maybeSingle();
   if (!data) { $('authView').classList.add('hidden'); $('deniedView').classList.remove('hidden'); return; }
   ME = data;
-  try { const { data:ts } = await sb.from('tenant_settings').select('*').limit(1).maybeSingle(); if(ts){ TSET=ts; applyTenant(ts); } } catch(e){}
+  try { const { data:ts } = await sb.from('tenant_settings').select('*').limit(1).maybeSingle(); if(ts){ TSET=ts; applyTenantSettings(ts); } } catch(e){}
   $('authView').classList.add('hidden'); $('deniedView').classList.add('hidden'); $('appView').classList.remove('hidden');
   $('whoami').textContent = `${ME.email} · ${ME.role}`;
   buildNav(); show('overview');
@@ -725,7 +725,7 @@ function tierAllows(k){
   if(k==='social'||k==='blog') return TSET.social_enabled!==false;
   return true;
 }
-function applyTenant(ts){
+function applyTenantSettings(ts){
   if(ts.org_name){ const w=$('wm'); if(w) w.textContent=ts.org_name; document.title=ts.org_name+' · '+(ts.product_name||'Mission Control'); }
   if(ts.product_name){ const p=$('wmProduct'); if(p) p.textContent=ts.product_name; }
   const r=document.documentElement.style;
@@ -2317,7 +2317,7 @@ async function saveSettings(){
   const { error }=await sb.rpc('save_tenant_settings',{p:payload});
   if(error) return toast(error.message,true);
   const { data:ts }=await sb.from('tenant_settings').select('*').limit(1).maybeSingle();
-  if(ts){ TSET=ts; applyTenant(ts); buildNav(); }
+  if(ts){ TSET=ts; applyTenantSettings(ts); buildNav(); }
   toast('Settings saved — branding and entitlements updated');
 }
 
