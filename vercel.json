@@ -7,7 +7,10 @@
     { "source": "/join-onboarding", "destination": "/join-onboarding.html" },
     { "source": "/sign", "destination": "/sign.html" },
     { "source": "/transparency", "destination": "/transparency.html" },
-    { "source": "/portal", "destination": "/portal.html" }
+    { "source": "/portal", "destination": "/portal.html" },
+    { "source": "/dispatches", "destination": "/dispatches.html" },
+    { "source": "/dispatches/:slug*", "destination": "/dispatches.html" },
+    { "source": "/blog", "destination": "/dispatches.html" }
   ],
   "headers": [
     { "source": "/servicedesk", "headers": [

@@ -672,7 +672,7 @@ function applyTenant(){
     }
   } catch(e){ /* branding is best-effort; never block the app */ }
 }
-applyTenant();
+try { applyTenant(); } catch(e){ console.warn('branding init failed (non-blocking)', e); }
 let ME = null;           // staff row
 let ticketFilter = 'active', grantFilter = 'all';
 
@@ -708,16 +708,29 @@ async function magicLink(){ const email=$('authEmail').value.trim(); if(!email) 
   if (error) authMsg(error.message); else authMsg('Link sent. Check your inbox.', true); }
 async function signOut(){ await sb.auth.signOut(); location.reload(); }
 
-sb.auth.onAuthStateChange(async (_e, session) => {
-  if (!session) { $('authView').classList.remove('hidden'); $('appView').classList.add('hidden'); $('deniedView').classList.add('hidden'); return; }
-  const { data } = await sb.from('staff').select('*').eq('id', session.user.id).maybeSingle();
-  if (!data) { $('authView').classList.add('hidden'); $('deniedView').classList.remove('hidden'); return; }
-  ME = data;
-  try { const { data:ts } = await sb.from('tenant_settings').select('*').limit(1).maybeSingle(); if(ts){ TSET=ts; applyTenantSettings(ts); } } catch(e){}
-  $('authView').classList.add('hidden'); $('deniedView').classList.add('hidden'); $('appView').classList.remove('hidden');
-  $('whoami').textContent = `${ME.email} · ${ME.role}`;
-  buildNav(); show('overview');
-});
+// Single gate for every auth path. Wrapped so a stray error can never
+// black-hole the login: on failure we fail safe to the sign-in screen.
+async function applyAuth(session){
+  try {
+    if (!session) { $('authView').classList.remove('hidden'); $('appView').classList.add('hidden'); $('deniedView').classList.add('hidden'); return; }
+    const { data } = await sb.from('staff').select('*').eq('id', session.user.id).maybeSingle();
+    if (!data) { $('authView').classList.add('hidden'); $('deniedView').classList.remove('hidden'); return; }
+    ME = data;
+    try { const { data:ts } = await sb.from('tenant_settings').select('*').limit(1).maybeSingle(); if(ts){ TSET=ts; applyTenantSettings(ts); } } catch(e){}
+    $('authView').classList.add('hidden'); $('deniedView').classList.add('hidden'); $('appView').classList.remove('hidden');
+    $('whoami').textContent = `${ME.email} · ${ME.role}`;
+    buildNav(); show('overview');
+  } catch (e) {
+    console.error('auth gate failed', e);
+    try { $('authView').classList.remove('hidden'); $('appView').classList.add('hidden'); $('deniedView').classList.add('hidden'); } catch(_){}
+    try { authMsg('Something went wrong signing you in. Please try again.'); } catch(_){}
+  }
+}
+// React to sign-in / sign-out.
+sb.auth.onAuthStateChange((_e, session) => { applyAuth(session); });
+// Safety net: pick up an already-valid session on load even if the
+// INITIAL_SESSION event does not fire, so a returning user goes straight in.
+sb.auth.getSession().then(({ data }) => applyAuth(data.session)).catch((e)=>{ console.error('getSession failed', e); });
 let TSET = null;
 function tierAllows(k){
   if(!TSET) return true;

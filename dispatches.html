@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dispatches · Levoila, The Global Heritage Trust</title>
+<meta name="description" content="Field notes, history, and stories from Levoila, The Global Heritage Trust — heritage, memory, and the work of protecting what the world must not forget.">
+<link rel="canonical" href="https://www.levoila.org/dispatches">
+<meta property="og:title" content="Dispatches · Levoila">
+<meta property="og:description" content="Field notes, history, and stories from Levoila, The Global Heritage Trust.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.levoila.org/dispatches">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="tenant.config.js"></script>
+<style>
+  :root { --navy:#0B2545; --gold:#B6862C; --stone:#4A4A4A; --limestone:#F4F1EA; --cream:#FAF7F0; --deep:#062744; --soft-gold:#D4A857; }
+  body { font-family: Inter, system-ui, sans-serif; color: var(--stone); background: var(--cream); }
+  .serif { font-family: "EB Garamond", Garamond, Georgia, serif; }
+  .nav-link { position:relative; white-space:nowrap; font-weight:500; color:var(--limestone); transition:color .2s; }
+  .nav-link:hover { color:var(--gold); }
+  .prose-body p { margin: 0 0 1.25rem; font-size: 1.075rem; line-height: 1.85; color:#3a3a3a; }
+  .prose-body p:first-of-type { font-size: 1.2rem; color: var(--navy); }
+  .cat-chip { font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; color:var(--gold); }
+  .card { transition: transform .2s ease, box-shadow .2s ease; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 22px 50px -24px rgba(11,37,69,.45); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="sticky top-0 z-50 bg-[var(--navy)] text-[var(--limestone)] border-b border-[var(--gold)]/30 shadow-[0_2px_14px_-6px_rgba(0,0,0,0.55)]">
+  <div class="max-w-6xl mx-auto px-5 h-[68px] flex items-center justify-between">
+    <a href="https://www.levoila.org/#home" class="flex items-center gap-3 shrink-0">
+      <span class="serif text-2xl font-semibold tracking-wide" style="color:var(--limestone)">LEVOILA</span>
+      <span class="hidden sm:inline text-[10px] tracking-[0.3em] uppercase text-[var(--soft-gold)]">The Global Heritage Trust</span>
+    </a>
+    <div class="hidden md:flex items-center gap-x-8 text-[13.5px]">
+      <a href="https://www.levoila.org/#about" class="nav-link">About</a>
+      <a href="https://www.levoila.org/#phase-one" class="nav-link">Phase One</a>
+      <a href="https://www.levoila.org/#where-we-work" class="nav-link">Where We Work</a>
+      <a href="/dispatches" class="nav-link" style="color:var(--gold)">Dispatches</a>
+      <a href="https://www.levoila.org/#involved" class="px-4 py-2 rounded bg-[var(--gold)] text-[var(--navy)] font-semibold hover:opacity-90 transition">Get Involved</a>
+    </div>
+    <a href="/dispatches" class="md:hidden text-[var(--gold)] font-semibold text-sm">Dispatches</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="bg-[var(--navy)] text-[var(--limestone)]">
+  <div class="max-w-4xl mx-auto px-5 pt-16 pb-14 text-center">
+    <div class="cat-chip text-[var(--soft-gold)]">Dispatches</div>
+    <h1 class="serif text-4xl sm:text-5xl font-semibold mt-3" style="color:var(--limestone)">Field notes from the work of memory.</h1>
+    <p class="mt-4 text-[var(--limestone)]/75 max-w-2xl mx-auto">Stories, history, and updates from Levoila, The Global Heritage Trust — as we protect what the world must not forget.</p>
+  </div>
+</header>
+
+<main id="app" class="max-w-6xl mx-auto px-5 py-14">
+  <div id="loading" class="text-center text-[var(--stone)]/60 py-20">Loading dispatches…</div>
+  <div id="list" class="hidden grid gap-7 sm:grid-cols-2 lg:grid-cols-3"></div>
+  <article id="post" class="hidden max-w-2xl mx-auto"></article>
+  <div id="empty" class="hidden text-center text-[var(--stone)]/60 py-20">No dispatches published yet. Check back soon.</div>
+</main>
+
+<footer class="bg-[var(--navy)] text-[var(--limestone)] mt-10 py-12">
+  <div class="max-w-6xl mx-auto px-5 text-sm text-[var(--limestone)]/70 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <span>© 2026 Levoila Foundation, Inc., d/b/a Levoila, The Global Heritage Trust.</span>
+    <a href="https://www.levoila.org/#home" class="hover:text-[var(--gold)]">levoila.org</a>
+  </div>
+</footer>
+
+<script>
+const CFG = window.TENANT_CONFIG || window.LEVOILA_SD_CONFIG || {};
+const sb = supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey);
+const $ = id => document.getElementById(id);
+const esc = s => (s==null?'':String(s)).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtDate = d => d ? new Date(d).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '';
+
+function slugFromUrl(){
+  const p = location.pathname.replace(/\/+$/,'');
+  const m = p.match(/\/dispatches\/(.+)$/);
+  if (m) return decodeURIComponent(m[1]);
+  return new URLSearchParams(location.search).get('slug');
+}
+
+function paragraphs(body){
+  return (body||'').split(/\n{2,}/).map(p => p.trim()).filter(Boolean)
+    .map(p => `<p>${esc(p).replace(/\n/g,'<br>')}</p>`).join('');
+}
+
+function meta(c){
+  const bits = [c.author, fmtDate(c.published_at), c.read_minutes ? c.read_minutes+' min read' : null].filter(Boolean);
+  return bits.join(' · ');
+}
+
+async function renderList(){
+  const { data, error } = await sb.from('content_calendar')
+    .select('title,slug,excerpt,category,author,published_at,read_minutes')
+    .eq('status','published').eq('platform','dispatch')
+    .order('published_at',{ascending:false, nullsFirst:false});
+  $('loading').classList.add('hidden');
+  if (error){ $('empty').textContent = 'Dispatches are temporarily unavailable.'; $('empty').classList.remove('hidden'); return; }
+  if (!data || !data.length){ $('empty').classList.remove('hidden'); return; }
+  $('list').innerHTML = data.map(c => `
+    <a href="/dispatches/${encodeURIComponent(c.slug)}" class="card block bg-white rounded-xl border border-[#E7E1D4] p-6 no-underline">
+      <div class="cat-chip">${esc(c.category||'Dispatch')}</div>
+      <h2 class="serif text-2xl font-semibold mt-2 leading-snug" style="color:var(--navy)">${esc(c.title||'Untitled')}</h2>
+      <p class="mt-3 text-[15px] leading-relaxed text-[var(--stone)]">${esc(c.excerpt||'')}</p>
+      <div class="mt-5 text-xs text-[var(--stone)]/60">${esc(meta(c))}</div>
+    </a>`).join('');
+  $('list').classList.remove('hidden');
+  document.title = 'Dispatches · Levoila, The Global Heritage Trust';
+}
+
+async function renderPost(slug){
+  const { data, error } = await sb.from('content_calendar')
+    .select('title,slug,excerpt,body,category,author,published_at,read_minutes')
+    .eq('status','published').eq('platform','dispatch').eq('slug', slug).maybeSingle();
+  $('loading').classList.add('hidden');
+  if (error || !data){ // fall back to the list if the slug isn't found
+    renderList(); history.replaceState({}, '', '/dispatches'); return;
+  }
+  const c = data;
+  $('post').innerHTML = `
+    <a href="/dispatches" class="text-sm text-[var(--gold)] font-semibold">← All dispatches</a>
+    <div class="cat-chip mt-6">${esc(c.category||'Dispatch')}</div>
+    <h1 class="serif text-4xl font-semibold mt-2 leading-tight" style="color:var(--navy)">${esc(c.title||'Untitled')}</h1>
+    <div class="mt-4 text-sm text-[var(--stone)]/70">${esc(meta(c))}</div>
+    <div class="mt-8 prose-body">${paragraphs(c.body)}</div>
+    <div class="mt-12 pt-8 border-t border-[#E7E1D4]">
+      <a href="/dispatches" class="text-sm text-[var(--gold)] font-semibold">← Back to all dispatches</a>
+    </div>`;
+  $('post').classList.remove('hidden');
+  document.title = (c.title||'Dispatch') + ' · Levoila';
+}
+
+(function init(){
+  if (!CFG.supabaseUrl){ $('loading').textContent = 'Configuration missing.'; return; }
+  const slug = slugFromUrl();
+  if (slug) renderPost(slug); else renderList();
+})();
+</script>
+</body>
+</html>
