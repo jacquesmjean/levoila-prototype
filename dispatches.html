@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dispatches · Levoila, The Global Heritage Trust</title>
+<title>Blog · Levoila, The Global Heritage Trust</title>
 <meta name="description" content="Field notes, history, and stories from Levoila, The Global Heritage Trust — heritage, memory, and the work of protecting what the world must not forget.">
 <link rel="canonical" href="https://www.levoila.org/dispatches">
-<meta property="og:title" content="Dispatches · Levoila">
+<meta property="og:title" content="Blog · Levoila">
 <meta property="og:description" content="Field notes, history, and stories from Levoila, The Global Heritage Trust.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.levoila.org/dispatches">
@@ -27,6 +27,13 @@
   .cat-chip { font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; color:var(--gold); }
   .card { transition: transform .2s ease, box-shadow .2s ease; }
   .card:hover { transform: translateY(-3px); box-shadow: 0 22px 50px -24px rgba(11,37,69,.45); }
+  .lang-btn { font-size:12px; font-weight:600; letter-spacing:.04em; padding:2px 8px; border-radius:6px; color:var(--limestone); opacity:.65; transition:opacity .15s, background .15s; }
+  .lang-btn:hover { opacity:1; }
+  .lang-btn.active { opacity:1; background:var(--gold); color:var(--navy); }
+  .pill { font-size:12px; font-weight:600; padding:4px 12px; border-radius:999px; border:1px solid #D9D2C2; color:var(--navy); transition:all .15s; }
+  .pill:hover { border-color:var(--gold); color:var(--gold); }
+  .pill.active { background:var(--navy); color:var(--limestone); border-color:var(--navy); }
+  .badge-lang { font-size:10px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; color:var(--stone); background:#EDE7D9; padding:2px 7px; border-radius:5px; }
 </style>
 </head>
 <body>
@@ -36,25 +43,26 @@
   <div class="max-w-6xl mx-auto px-5 h-[68px] flex items-center justify-between">
     <a href="https://www.levoila.org/#home" class="flex items-center gap-3 shrink-0">
       <span class="serif text-2xl font-semibold tracking-wide" style="color:var(--limestone)">LEVOILA</span>
-      <span class="hidden sm:inline text-[10px] tracking-[0.3em] uppercase text-[var(--soft-gold)]">The Global Heritage Trust</span>
+      <span class="hidden sm:inline text-[10px] tracking-[0.3em] uppercase text-[var(--soft-gold)]" data-s="brandTag">The Global Heritage Trust</span>
     </a>
-    <div class="hidden md:flex items-center gap-x-8 text-[13.5px]">
-      <a href="https://www.levoila.org/#about" class="nav-link">About</a>
-      <a href="https://www.levoila.org/#phase-one" class="nav-link">Phase One</a>
-      <a href="https://www.levoila.org/#where-we-work" class="nav-link">Where We Work</a>
-      <a href="/dispatches" class="nav-link" style="color:var(--gold)">Dispatches</a>
-      <a href="https://www.levoila.org/#involved" class="px-4 py-2 rounded bg-[var(--gold)] text-[var(--navy)] font-semibold hover:opacity-90 transition">Get Involved</a>
+    <div class="hidden md:flex items-center gap-x-7 text-[13.5px]">
+      <a href="https://www.levoila.org/#about" class="nav-link" data-s="navAbout">About</a>
+      <a href="https://www.levoila.org/#phase-one" class="nav-link" data-s="navPhase">Phase One</a>
+      <a href="https://www.levoila.org/#where-we-work" class="nav-link" data-s="navWhere">Where We Work</a>
+      <a href="/dispatches" class="nav-link" style="color:var(--gold)" data-s="navDispatches">Dispatches</a>
+      <a href="https://www.levoila.org/#involved" class="px-4 py-2 rounded bg-[var(--gold)] text-[var(--navy)] font-semibold hover:opacity-90 transition" data-s="navInvolved">Get Involved</a>
+      <span class="flex items-center gap-1 pl-3 ml-1 border-l border-[var(--limestone)]/20" id="langbar"></span>
     </div>
-    <a href="/dispatches" class="md:hidden text-[var(--gold)] font-semibold text-sm">Dispatches</a>
+    <div class="md:hidden flex items-center gap-1" id="langbar-m"></div>
   </div>
 </nav>
 
 <!-- HERO -->
 <header class="bg-[var(--navy)] text-[var(--limestone)]">
   <div class="max-w-4xl mx-auto px-5 pt-16 pb-14 text-center">
-    <div class="cat-chip text-[var(--soft-gold)]">Dispatches</div>
-    <h1 class="serif text-4xl sm:text-5xl font-semibold mt-3" style="color:var(--limestone)">Field notes from the work of memory.</h1>
-    <p class="mt-4 text-[var(--limestone)]/75 max-w-2xl mx-auto">Stories, history, and updates from Levoila, The Global Heritage Trust — as we protect what the world must not forget.</p>
+    <div class="cat-chip text-[var(--soft-gold)]" data-s="heroKicker">Dispatches</div>
+    <h1 class="serif text-4xl sm:text-5xl font-semibold mt-3" style="color:var(--limestone)" data-s="heroTitle">Field notes from the work of memory.</h1>
+    <p class="mt-4 text-[var(--limestone)]/75 max-w-2xl mx-auto" data-s="heroSub">Stories, history, and updates from Levoila, The Global Heritage Trust — as we protect what the world must not forget.</p>
   </div>
 </header>
 
@@ -62,7 +70,7 @@
   <div id="loading" class="text-center text-[var(--stone)]/60 py-20">Loading dispatches…</div>
   <div id="list" class="hidden grid gap-7 sm:grid-cols-2 lg:grid-cols-3"></div>
   <article id="post" class="hidden max-w-2xl mx-auto"></article>
-  <div id="empty" class="hidden text-center text-[var(--stone)]/60 py-20">No dispatches published yet. Check back soon.</div>
+  <div id="empty" class="hidden text-center text-[var(--stone)]/60 py-20"></div>
 </main>
 
 <footer class="bg-[var(--navy)] text-[var(--limestone)] mt-10 py-12">
@@ -77,7 +85,184 @@ const CFG = window.TENANT_CONFIG || window.LEVOILA_SD_CONFIG || {};
 const sb = supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey);
 const $ = id => document.getElementById(id);
 const esc = s => (s==null?'':String(s)).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const fmtDate = d => d ? new Date(d).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '';
+
+const LANGS = ['en','fr','es','ht'];
+const LANGNAME = { en:'English', fr:'Français', es:'Español', ht:'Kreyòl' };
+const LOCALE  = { en:'en-US', fr:'fr-FR', es:'es-ES', ht:'fr-FR' };
+
+const STR = {
+  en: {
+    brandTag:'The Global Heritage Trust', navAbout:'About', navPhase:'Phase One', navWhere:'Where We Work',
+    navDispatches:'Blog', navInvolved:'Get Involved',
+    heroKicker:'Blog', heroTitle:'Field notes from the work of memory.',
+    heroSub:'Stories, history, and updates from Levoila, The Global Heritage Trust — as we protect what the world must not forget.',
+    loading:'Loading dispatches…', empty:'No dispatches published yet. Check back soon.',
+    unavailable:'Dispatches are temporarily unavailable.',
+    minRead:'min read', all:'All dispatches', back:'← Back to all dispatches',
+    onlyIn:'In English', alsoIn:'Also available in', readIn:'Read in'
+  },
+  fr: {
+    brandTag:'La Fiducie du Patrimoine Mondial', navAbout:'À propos', navPhase:'Phase Un', navWhere:'Où nous travaillons',
+    navDispatches:'Blog', navInvolved:"S'impliquer",
+    heroKicker:'Blog', heroTitle:'Notes de terrain sur le travail de mémoire.',
+    heroSub:'Récits, histoire et nouvelles de Levoila, The Global Heritage Trust — pendant que nous protégeons ce que le monde ne doit pas oublier.',
+    loading:'Chargement des dépêches…', empty:'Aucune dépêche publiée pour le moment. Revenez bientôt.',
+    unavailable:'Les dépêches sont momentanément indisponibles.',
+    minRead:'min de lecture', all:'Toutes les dépêches', back:'← Retour à toutes les dépêches',
+    onlyIn:'En anglais', alsoIn:'Aussi disponible en', readIn:'Lire en'
+  },
+  es: {
+    brandTag:'El Fideicomiso del Patrimonio Mundial', navAbout:'Acerca de', navPhase:'Fase Uno', navWhere:'Dónde trabajamos',
+    navDispatches:'Blog', navInvolved:'Participar',
+    heroKicker:'Blog', heroTitle:'Apuntes desde el trabajo de la memoria.',
+    heroSub:'Relatos, historia y novedades de Levoila, The Global Heritage Trust — mientras protegemos lo que el mundo no debe olvidar.',
+    loading:'Cargando crónicas…', empty:'Aún no hay crónicas publicadas. Vuelve pronto.',
+    unavailable:'Las crónicas no están disponibles por el momento.',
+    minRead:'min de lectura', all:'Todas las crónicas', back:'← Volver a todas las crónicas',
+    onlyIn:'En inglés', alsoIn:'También disponible en', readIn:'Leer en'
+  },
+  ht: {
+    brandTag:'Fidisi Eritaj Mondyal la', navAbout:'Konsènan', navPhase:'Faz En', navWhere:'Kote n ap travay',
+    navDispatches:'Blog', navInvolved:'Patisipe',
+    heroKicker:'Blog', heroTitle:'Nòt sou travay memwa a.',
+    heroSub:'Istwa, listwa, ak nouvèl Levoila, The Global Heritage Trust — pandan n ap pwoteje sa monn nan pa dwe bliye.',
+    loading:'Chajman depèch yo…', empty:'Poko gen depèch ki pibliye. Tounen talè.',
+    unavailable:'Depèch yo pa disponib pou kounye a.',
+    minRead:'min lekti', all:'Tout depèch yo', back:'← Retounen nan tout depèch yo',
+    onlyIn:'An angle', alsoIn:'Disponib tou an', readIn:'Li an'
+  }
+};
+
+let LANG = (new URLSearchParams(location.search).get('lang')||'en').toLowerCase();
+if (!LANGS.includes(LANG)) LANG = 'en';
+const T = k => (STR[LANG] && STR[LANG][k]) || STR.en[k] || k;
+
+const fmtDate = d => d ? new Date(d).toLocaleDateString(LOCALE[LANG]||'en-US',{month:'long',day:'numeric',year:'numeric'}) : '';
+
+function applyStatic(){
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-s]').forEach(el => {
+    const k = el.getAttribute('data-s');
+    if (STR[LANG] && STR[LANG][k] != null) el.textContent = STR[LANG][k];
+  });
+  $('loading').textContent = T('loading');
+  renderLangbars();
+}
+
+function renderLangbars(){
+  const html = LANGS.map(l =>
+    `<button class="lang-btn ${l===LANG?'active':''}" data-lang="${l}" onclick="setLang('${l}')" aria-label="${LANGNAME[l]}">${l.toUpperCase()}</button>`
+  ).join('');
+  $('langbar').innerHTML = html;
+  $('langbar-m').innerHTML = html;
+}
+
+let ALL = [];       // all published dispatch rows (every language)
+let VIEW = 'list';  // 'list' | 'post'
+let CURRENT = null;  // current post row when VIEW==='post'
+
+function groupsInOrder(){
+  const m = new Map();
+  for (const c of ALL){
+    const g = c.translation_group || c.slug || c.title || String(Math.random());
+    if (!m.has(g)) m.set(g, []);
+    m.get(g).push(c);
+  }
+  return m;
+}
+function pickVariant(variants, lang){
+  return variants.find(v => v.language === lang)
+      || variants.find(v => v.language === 'en')
+      || variants[0];
+}
+function variantsFor(row){
+  const g = row.translation_group || row.slug;
+  return ALL.filter(c => (c.translation_group || c.slug) === g);
+}
+
+function paragraphs(body){
+  return (body||'').split(/\n{2,}/).map(p => p.trim()).filter(Boolean)
+    .map(p => `<p>${esc(p).replace(/\n/g,'<br>')}</p>`).join('');
+}
+function meta(c){
+  const bits = [c.author, fmtDate(c.published_at), c.read_minutes ? c.read_minutes+' '+T('minRead') : null].filter(Boolean);
+  return bits.join(' · ');
+}
+
+function renderList(){
+  VIEW = 'list'; CURRENT = null;
+  $('post').classList.add('hidden'); $('post').innerHTML = '';
+  $('loading').classList.add('hidden');
+  const gs = [...groupsInOrder().values()];
+  if (!gs.length){ $('empty').textContent = T('empty'); $('empty').classList.remove('hidden'); $('list').classList.add('hidden'); return; }
+  $('empty').classList.add('hidden');
+  $('list').innerHTML = gs.map(vs => {
+    const c = pickVariant(vs, LANG);
+    const inLang = c.language === LANG;
+    const badge = inLang ? '' :
+      `<span class="badge-lang ml-2">${esc(T('onlyIn'))}</span>`;
+    return `
+    <a href="/dispatches/${encodeURIComponent(c.slug)}?lang=${LANG}" class="card block bg-white rounded-xl border border-[#E7E1D4] p-6 no-underline">
+      <div class="cat-chip">${esc(c.category||'Dispatch')}${badge}</div>
+      <h2 class="serif text-2xl font-semibold mt-2 leading-snug" style="color:var(--navy)">${esc(c.title||'Untitled')}</h2>
+      <p class="mt-3 text-[15px] leading-relaxed text-[var(--stone)]">${esc(c.excerpt||'')}</p>
+      <div class="mt-5 text-xs text-[var(--stone)]/60">${esc(meta(c))}</div>
+    </a>`;
+  }).join('');
+  $('list').classList.remove('hidden');
+  document.title = T('navDispatches') + ' · Levoila, The Global Heritage Trust';
+}
+
+function renderPost(slug){
+  const c = ALL.find(r => r.slug === slug);
+  $('loading').classList.add('hidden');
+  if (!c){ history.replaceState({}, '', '/dispatches?lang='+LANG); renderList(); return; }
+  VIEW = 'post'; CURRENT = c;
+  $('list').classList.add('hidden'); $('empty').classList.add('hidden');
+  // sibling translations of this story
+  const sibs = variantsFor(c).filter(v => v.slug !== c.slug);
+  let langRow = '';
+  if (sibs.length){
+    const pills = sibs.map(v =>
+      `<a href="/dispatches/${encodeURIComponent(v.slug)}?lang=${v.language}" class="pill">${LANGNAME[v.language]||v.language}</a>`
+    ).join(' ');
+    langRow = `<div class="mt-6 flex flex-wrap items-center gap-2 text-sm text-[var(--stone)]/70"><span>${esc(T('alsoIn'))}:</span>${pills}</div>`;
+  }
+  $('post').innerHTML = `
+    <a href="/dispatches?lang=${LANG}" class="text-sm text-[var(--gold)] font-semibold">${esc(T('all'))}</a>
+    <div class="cat-chip mt-6">${esc(c.category||'Dispatch')}</div>
+    <h1 class="serif text-4xl font-semibold mt-2 leading-tight" style="color:var(--navy)">${esc(c.title||'Untitled')}</h1>
+    <div class="mt-4 text-sm text-[var(--stone)]/70">${esc(meta(c))}</div>
+    ${langRow}
+    <div class="mt-8 prose-body">${paragraphs(c.body)}</div>
+    <div class="mt-12 pt-8 border-t border-[#E7E1D4]">
+      <a href="/dispatches?lang=${LANG}" class="text-sm text-[var(--gold)] font-semibold">${esc(T('back'))}</a>
+    </div>`;
+  $('post').classList.remove('hidden');
+  // reflect the article's own language in the page + toggle highlight
+  document.title = (c.title||'Dispatch') + ' · Levoila';
+}
+
+// Language toggle behavior — context aware.
+function setLang(l){
+  if (!LANGS.includes(l)) return;
+  LANG = l;
+  applyStatic();
+  if (VIEW === 'post' && CURRENT){
+    // jump to this story's variant in the chosen language if it exists
+    const match = variantsFor(CURRENT).find(v => v.language === l);
+    if (match){
+      history.replaceState({}, '', '/dispatches/'+encodeURIComponent(match.slug)+'?lang='+l);
+      renderPost(match.slug);
+    } else {
+      history.replaceState({}, '', '/dispatches?lang='+l);
+      renderList();
+    }
+  } else {
+    history.replaceState({}, '', '/dispatches?lang='+l);
+    renderList();
+  }
+}
 
 function slugFromUrl(){
   const p = location.pathname.replace(/\/+$/,'');
@@ -86,59 +271,15 @@ function slugFromUrl(){
   return new URLSearchParams(location.search).get('slug');
 }
 
-function paragraphs(body){
-  return (body||'').split(/\n{2,}/).map(p => p.trim()).filter(Boolean)
-    .map(p => `<p>${esc(p).replace(/\n/g,'<br>')}</p>`).join('');
-}
-
-function meta(c){
-  const bits = [c.author, fmtDate(c.published_at), c.read_minutes ? c.read_minutes+' min read' : null].filter(Boolean);
-  return bits.join(' · ');
-}
-
-async function renderList(){
+(async function init(){
+  applyStatic();
+  if (!CFG.supabaseUrl){ $('loading').textContent = 'Configuration missing.'; return; }
   const { data, error } = await sb.from('content_calendar')
-    .select('title,slug,excerpt,category,author,published_at,read_minutes')
+    .select('title,slug,excerpt,body,category,author,published_at,read_minutes,language,translation_group')
     .eq('status','published').eq('platform','dispatch')
     .order('published_at',{ascending:false, nullsFirst:false});
-  $('loading').classList.add('hidden');
-  if (error){ $('empty').textContent = 'Dispatches are temporarily unavailable.'; $('empty').classList.remove('hidden'); return; }
-  if (!data || !data.length){ $('empty').classList.remove('hidden'); return; }
-  $('list').innerHTML = data.map(c => `
-    <a href="/dispatches/${encodeURIComponent(c.slug)}" class="card block bg-white rounded-xl border border-[#E7E1D4] p-6 no-underline">
-      <div class="cat-chip">${esc(c.category||'Dispatch')}</div>
-      <h2 class="serif text-2xl font-semibold mt-2 leading-snug" style="color:var(--navy)">${esc(c.title||'Untitled')}</h2>
-      <p class="mt-3 text-[15px] leading-relaxed text-[var(--stone)]">${esc(c.excerpt||'')}</p>
-      <div class="mt-5 text-xs text-[var(--stone)]/60">${esc(meta(c))}</div>
-    </a>`).join('');
-  $('list').classList.remove('hidden');
-  document.title = 'Dispatches · Levoila, The Global Heritage Trust';
-}
-
-async function renderPost(slug){
-  const { data, error } = await sb.from('content_calendar')
-    .select('title,slug,excerpt,body,category,author,published_at,read_minutes')
-    .eq('status','published').eq('platform','dispatch').eq('slug', slug).maybeSingle();
-  $('loading').classList.add('hidden');
-  if (error || !data){ // fall back to the list if the slug isn't found
-    renderList(); history.replaceState({}, '', '/dispatches'); return;
-  }
-  const c = data;
-  $('post').innerHTML = `
-    <a href="/dispatches" class="text-sm text-[var(--gold)] font-semibold">← All dispatches</a>
-    <div class="cat-chip mt-6">${esc(c.category||'Dispatch')}</div>
-    <h1 class="serif text-4xl font-semibold mt-2 leading-tight" style="color:var(--navy)">${esc(c.title||'Untitled')}</h1>
-    <div class="mt-4 text-sm text-[var(--stone)]/70">${esc(meta(c))}</div>
-    <div class="mt-8 prose-body">${paragraphs(c.body)}</div>
-    <div class="mt-12 pt-8 border-t border-[#E7E1D4]">
-      <a href="/dispatches" class="text-sm text-[var(--gold)] font-semibold">← Back to all dispatches</a>
-    </div>`;
-  $('post').classList.remove('hidden');
-  document.title = (c.title||'Dispatch') + ' · Levoila';
-}
-
-(function init(){
-  if (!CFG.supabaseUrl){ $('loading').textContent = 'Configuration missing.'; return; }
+  if (error){ $('loading').classList.add('hidden'); $('empty').textContent = T('unavailable'); $('empty').classList.remove('hidden'); return; }
+  ALL = data || [];
   const slug = slugFromUrl();
   if (slug) renderPost(slug); else renderList();
 })();

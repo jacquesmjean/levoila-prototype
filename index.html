@@ -904,38 +904,36 @@ img, video { max-width: 100%; height: auto; }
         <div class="text-[10px] tracking-[3px] text-[var(--gold)] font-bold mt-1" data-i18n="brand-tagline">THE GLOBAL HERITAGE TRUST</div>
       </div>
     </a>
-    <div class="hidden lg:flex items-center gap-x-[clamp(1rem,1.9vw,2rem)] text-[13.5px]">
+    <div class="hidden lg:flex items-center gap-x-[clamp(1.25rem,2.2vw,2.25rem)] text-[13.5px]">
       <a href="https://www.levoila.org/#about" class="nav-link nav-trigger" data-page="about" data-i18n="nav-about">About</a>
-      <a href="https://www.levoila.org/#phase-one" class="nav-link nav-trigger" data-page="phase-one" data-i18n="nav-phase-one">Phase One</a>
-      <a href="https://www.levoila.org/#where-we-work" class="nav-link nav-trigger" data-page="where-we-work" data-i18n="nav-where">Where We Work</a>
-      <a href="https://www.levoila.org/#roadmap" class="nav-link nav-trigger" data-page="roadmap" data-i18n="nav-roadmap">The Path</a>
-      <a href="/dispatches" class="nav-link" data-i18n="nav-dispatches">Dispatches</a>
 
-      <!-- Who It's For dropdown -->
+      <!-- Our Work dropdown -->
       <div class="relative" id="audienceMenu">
         <button class="nav-link flex items-center gap-1">
-          <span data-i18n="nav-audience">Who It's For</span>
+          <span data-i18n="nav-ourwork">Our Work</span>
           <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
         </button>
-        <div id="audienceDD" class="hidden absolute top-full left-0 mt-3 bg-white text-[var(--navy)] rounded-md shadow-xl border border-[#E5E0D5] min-w-[210px] overflow-hidden">
-          <a href="https://www.levoila.org/#governments" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="governments" data-i18n="nav-governments">For Governments</a>
+        <div id="audienceDD" class="hidden absolute top-full left-0 mt-3 bg-white text-[var(--navy)] rounded-md shadow-xl border border-[#E5E0D5] min-w-[220px] overflow-hidden">
+          <a href="https://www.levoila.org/#phase-one" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="phase-one" data-i18n="nav-phase-one">Phase One</a>
+          <a href="https://www.levoila.org/#where-we-work" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="where-we-work" data-i18n="nav-where">Where We Work</a>
+          <a href="https://www.levoila.org/#roadmap" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="roadmap" data-i18n="nav-roadmap">The Path</a>
+          <a href="https://www.levoila.org/#governments" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)] border-t border-[#E5E0D5]" data-page="governments" data-i18n="nav-governments">For Governments</a>
           <a href="https://www.levoila.org/#communities" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="communities" data-i18n="nav-communities">For Communities</a>
         </div>
       </div>
 
-      <!-- Participate dropdown -->
+      <!-- Get Involved dropdown -->
       <div class="relative" id="participateMenu">
         <button class="nav-link flex items-center gap-1">
-          <span data-i18n="nav-participate">Participate</span>
+          <span data-i18n="participate-involved">Get Involved</span>
           <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
         </button>
-        <div id="participateDD" class="hidden absolute top-full right-0 mt-3 bg-white text-[var(--navy)] rounded-md shadow-xl border border-[#E5E0D5] min-w-[200px] overflow-hidden">
-          <a href="https://www.levoila.org/#involved" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="involved" data-i18n="participate-involved">Get Involved</a>
-          <a href="https://www.levoila.org/#careers" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="careers" data-i18n="participate-careers">Careers &amp; Volunteering</a>
+        <div id="participateDD" class="hidden absolute top-full right-0 mt-3 bg-white text-[var(--navy)] rounded-md shadow-xl border border-[#E5E0D5] min-w-[210px] overflow-hidden">
+          <a href="https://www.levoila.org/#steward" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)] font-semibold text-[var(--gold)]" data-page="steward" data-i18n="participate-steward">Become a Steward</a>
           <a href="https://www.levoila.org/#nominate" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="nominate" data-i18n="participate-nominate">Nominate a Site</a>
           <a href="https://www.levoila.org/#vote" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="vote" data-i18n="participate-vote">Vote on the Slate</a>
           <a href="https://www.levoila.org/#crypto" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="crypto" data-i18n="participate-crypto">Donate Crypto</a>
-          <a href="https://www.levoila.org/#steward" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)] border-t border-[#E5E0D5] font-semibold text-[var(--gold)]" data-page="steward" data-i18n="participate-steward">Become a Steward</a>
+          <a href="https://www.levoila.org/#careers" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)] border-t border-[#E5E0D5]" data-page="careers" data-i18n="participate-careers">Careers &amp; Volunteering</a>
         </div>
       </div>
 
@@ -946,11 +944,12 @@ img, video { max-width: 100%; height: auto; }
           <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
         </button>
         <div id="transparencyDD" class="hidden absolute top-full right-0 mt-3 bg-white text-[var(--navy)] rounded-md shadow-xl border border-[#E5E0D5] min-w-[200px] overflow-hidden">
-          <a href="https://www.levoila.org/#dispatches" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="dispatches" data-i18n="nav-dispatches">Dispatches</a>
-          <a href="https://www.levoila.org/podcast" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="podcast" data-route="path" data-i18n="nav-podcast">Podcast, Le Voilà</a>
           <a href="https://www.levoila.org/#ledger" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="ledger" data-i18n="nav-ledger">Live Ledger</a>
+          <a href="https://www.levoila.org/podcast" class="nav-trigger block px-5 py-3 text-sm hover:bg-[var(--limestone)]" data-page="podcast" data-route="path" data-i18n="nav-podcast">Podcast, Le Voilà</a>
         </div>
       </div>
+
+      <a href="/dispatches" class="nav-link" data-i18n="nav-dispatches">Blog</a>
     </div>
 
     <div class="flex items-center gap-2 lg:gap-3 shrink-0">
@@ -984,45 +983,45 @@ img, video { max-width: 100%; height: auto; }
   <!-- Mobile menu panel -->
   <div id="mobileMenu" class="hidden lg:hidden bg-[var(--navy)] border-t border-[var(--gold)]/20 px-6 pt-2 pb-6 max-h-[calc(100vh-72px)] overflow-y-auto">
     <a href="https://www.levoila.org/#about" class="mobile-nav-link nav-trigger" data-page="about" data-i18n="nav-about">About</a>
-    <a href="https://www.levoila.org/#phase-one" class="mobile-nav-link nav-trigger" data-page="phase-one" data-i18n="nav-phase-one">Phase One</a>
-    <a href="https://www.levoila.org/#where-we-work" class="mobile-nav-link nav-trigger" data-page="where-we-work" data-i18n="nav-where">Where We Work</a>
-    <a href="https://www.levoila.org/#roadmap" class="mobile-nav-link nav-trigger" data-page="roadmap" data-i18n="nav-roadmap">The Path</a>
-    <a href="/dispatches" class="mobile-nav-link" data-i18n="nav-dispatches">Dispatches</a>
 
-    <!-- Who It's For -->
+    <!-- Our Work -->
     <button class="mobile-nav-section">
-      <span data-i18n="nav-audience">Who It's For</span>
-      <svg id="audienceMobileChevron" class="mobile-chevron w-4 h-4" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      <span data-i18n="nav-ourwork">Our Work</span>
+      <svg class="mobile-chevron w-4 h-4" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
     </button>
-    <div id="audienceMobile" class="hidden">
+    <div class="hidden">
+      <a href="https://www.levoila.org/#phase-one" class="mobile-subnav-link nav-trigger" data-page="phase-one" data-i18n="nav-phase-one">Phase One</a>
+      <a href="https://www.levoila.org/#where-we-work" class="mobile-subnav-link nav-trigger" data-page="where-we-work" data-i18n="nav-where">Where We Work</a>
+      <a href="https://www.levoila.org/#roadmap" class="mobile-subnav-link nav-trigger" data-page="roadmap" data-i18n="nav-roadmap">The Path</a>
       <a href="https://www.levoila.org/#governments" class="mobile-subnav-link nav-trigger" data-page="governments" data-i18n="nav-governments">For Governments</a>
       <a href="https://www.levoila.org/#communities" class="mobile-subnav-link nav-trigger" data-page="communities" data-i18n="nav-communities">For Communities</a>
     </div>
 
-    <!-- Participate -->
+    <!-- Get Involved -->
     <button class="mobile-nav-section">
-      <span data-i18n="nav-participate">Participate</span>
-      <svg id="participateMobileChevron" class="mobile-chevron w-4 h-4" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      <span data-i18n="participate-involved">Get Involved</span>
+      <svg class="mobile-chevron w-4 h-4" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
     </button>
-    <div id="participateMobile" class="hidden">
-      <a href="https://www.levoila.org/#involved" class="mobile-subnav-link nav-trigger" data-page="involved" data-i18n="participate-involved">Get Involved</a>
-      <a href="https://www.levoila.org/#careers" class="mobile-subnav-link nav-trigger" data-page="careers" data-i18n="participate-careers">Careers &amp; Volunteering</a>
+    <div class="hidden">
+      <a href="https://www.levoila.org/#steward" class="mobile-subnav-link nav-trigger text-[var(--gold)] font-semibold" data-page="steward" data-i18n="participate-steward">Become a Steward</a>
       <a href="https://www.levoila.org/#nominate" class="mobile-subnav-link nav-trigger" data-page="nominate" data-i18n="participate-nominate">Nominate a Site</a>
       <a href="https://www.levoila.org/#vote" class="mobile-subnav-link nav-trigger" data-page="vote" data-i18n="participate-vote">Vote on the Slate</a>
       <a href="https://www.levoila.org/#crypto" class="mobile-subnav-link nav-trigger" data-page="crypto" data-i18n="participate-crypto">Donate Crypto</a>
-      <a href="https://www.levoila.org/#steward" class="mobile-subnav-link nav-trigger text-[var(--gold)] font-semibold" data-page="steward" data-i18n="participate-steward">Become a Steward</a>
+      <a href="https://www.levoila.org/#careers" class="mobile-subnav-link nav-trigger" data-page="careers" data-i18n="participate-careers">Careers &amp; Volunteering</a>
     </div>
 
     <!-- Transparency -->
     <button class="mobile-nav-section">
       <span data-i18n="nav-transparency">Transparency</span>
-      <svg id="transparencyMobileChevron" class="mobile-chevron w-4 h-4" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+      <svg class="mobile-chevron w-4 h-4" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
     </button>
-    <div id="transparencyMobile" class="hidden">
-      <a href="https://www.levoila.org/#dispatches" class="mobile-subnav-link nav-trigger" data-page="dispatches" data-i18n="nav-dispatches">Dispatches</a>
-      <a href="https://www.levoila.org/podcast" class="mobile-subnav-link nav-trigger" data-page="podcast" data-route="path" data-i18n="nav-podcast">Podcast, Le Voilà</a>
+    <div class="hidden">
       <a href="https://www.levoila.org/#ledger" class="mobile-subnav-link nav-trigger" data-page="ledger" data-i18n="nav-ledger">Live Ledger</a>
+      <a href="https://www.levoila.org/podcast" class="mobile-subnav-link nav-trigger" data-page="podcast" data-route="path" data-i18n="nav-podcast">Podcast, Le Voilà</a>
     </div>
+
+    <!-- Blog -->
+    <a href="/dispatches" class="mobile-nav-link" data-i18n="nav-dispatches">Blog</a>
 
     <!-- Language pills -->
     <div class="pt-5 pb-2">
@@ -4330,7 +4329,7 @@ img, video { max-width: 100%; height: auto; }
         <p class="text-sm text-[var(--stone)] leading-relaxed" data-i18n="haiti-dispatch3-p">Our first act on the Citadelle is a permanent memorial to the children lost on April 11, 2026, designed with their families.</p>
       </div>
     </div>
-    <a href="https://www.levoila.org/#dispatches" data-page="dispatches" class="nav-trigger inline-block mt-6 text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="haiti-dispatch-more">All dispatches →</a>
+    <a href="/dispatches" class="inline-block mt-6 text-sm font-semibold text-[var(--gold)] border-b border-[var(--gold)] pb-0.5" data-i18n="haiti-dispatch-more">All dispatches →</a>
   </div>
 
   <!-- Activities & programs -->
@@ -4698,6 +4697,17 @@ img, video { max-width: 100%; height: auto; }
     }
     var mb = document.getElementById('mobileMenuBtn');
     if (mb) mb.addEventListener('click', function(e){ toggleMobileMenu(e); });
+    // Mobile accordion sections: toggle the panel that immediately follows each
+    // section button. (The original inline handlers were stripped during capture.)
+    document.querySelectorAll('#mobileMenu .mobile-nav-section').forEach(function(sbtn){
+      sbtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var panel = sbtn.nextElementSibling;
+        if (panel) panel.classList.toggle('hidden');
+        var chev = sbtn.querySelector('.mobile-chevron');
+        if (chev) chev.classList.toggle('open');
+      });
+    });
   })();
 
   // Country portals live at clean paths (e.g. /haiti). Add a slug here AND a
