@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Levoila · Mission Control</title>
+<title>Mission Control</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
@@ -226,7 +226,7 @@
 <div id="authView" class="auth-bg min-h-screen flex items-center justify-center px-4 py-10">
   <div class="w-full max-w-md auth-card p-9 relative z-10">
     <div class="text-center mb-8">
-      <div class="wordmark text-2xl" style="color:var(--navy);">Levoila</div>
+      <div class="wordmark text-2xl" style="color:var(--navy);">Mission Control</div>
       <div class="flex items-center justify-center gap-3 mt-3 mb-3">
         <div class="h-px w-10" style="background:var(--gold-hairline);"></div>
         <div class="overline-label tenant-product" style="color:var(--gold);">Mission Control</div>
@@ -236,21 +236,21 @@
     </div>
     <div id="authMsg" class="hidden text-sm rounded-sm p-3 mb-4"></div>
     <div class="space-y-4">
-      <div><label>Email</label><input id="authEmail" type="email" placeholder="you@levoila.org" autocomplete="username"></div>
+      <div><label>Email</label><input id="authEmail" type="email" placeholder="you@example.org" autocomplete="username"></div>
       <div><label>Password</label><input id="authPass" type="password" autocomplete="current-password"></div>
       <button class="btn btn-gold w-full justify-center" onclick="signIn()">Enter</button>
       <div class="flex items-center gap-3 text-[10px] uppercase tracking-widest text-gray-400 py-1"><div class="flex-1 h-px" style="background:var(--hairline);"></div>or<div class="flex-1 h-px" style="background:var(--hairline);"></div></div>
       <button class="btn btn-ghost w-full justify-center" onclick="magicLink()">Email me a sign-in link</button>
       <button class="btn btn-ghost w-full justify-center" onclick="signUp()">First time? Create account</button>
     </div>
-    <p class="text-[10.5px] mt-8 leading-relaxed text-center" style="color:#b0a99e;"><span class="tenant-staffnote">Authorized Levoila staff only. Every action is recorded.</span><br><span class="tenant-confnote">Beneficiary data is held in confidence under the trust's data-stewardship policy.</span></p>
+    <p class="text-[10.5px] mt-8 leading-relaxed text-center" style="color:#b0a99e;"><span class="tenant-staffnote">Authorized staff only. Every action is recorded.</span><br><span class="tenant-confnote">Beneficiary data is held in confidence under the trust's data-stewardship policy.</span></p>
   </div>
 </div>
 
 <!-- ============ DENIED ============ -->
 <div id="deniedView" class="auth-bg hidden min-h-screen flex items-center justify-center px-4">
   <div class="w-full max-w-md auth-card p-9 text-center relative z-10">
-    <div class="wordmark text-xl mb-4" style="color:var(--navy);">Levoila</div>
+    <div class="wordmark text-xl mb-4" style="color:var(--navy);">Mission Control</div>
     <div class="serif text-2xl font-semibold mb-2" style="color:var(--navy);">Account not authorized</div>
     <p class="text-sm text-gray-500 mb-7 leading-relaxed">You're signed in, but this account isn't on the staff register. Ask an administrator to add your email, then sign in again.</p>
     <button class="btn btn-navy justify-center" onclick="signOut()">Sign out</button>
@@ -261,7 +261,7 @@
 <div id="appView" class="hidden min-h-screen flex">
   <aside id="sidebar" class="w-64 shrink-0 flex flex-col" style="min-height:100vh;">
     <div class="px-6 pt-8 pb-5">
-      <div id="wm" class="wordmark text-lg" style="color:var(--limestone);">Levoila</div>
+      <div id="wm" class="wordmark text-lg" style="color:var(--limestone);">Mission Control</div>
       <div class="flex items-center gap-2 mt-2">
         <div class="h-px w-6" style="background:rgba(212,168,87,.5);"></div>
         <div id="wmProduct" class="overline-label tenant-product" style="color:var(--soft-gold);">Mission Control</div>
@@ -358,7 +358,7 @@
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Service Desk</h1>
           <button class="btn btn-gold" onclick="openNewTicket()">+ New ticket</button>
         </div>
-        <p class="text-sm text-gray-500 mb-6">Every request that reaches Levoila lands here as a ticket — from the website concierge, the phone line, email, or entered by hand. Each one carries a priority clock (P1 = 2 hours, P2 = 8, P3 = 48) so nothing is forgotten: answer it, assign it, resolve it.</p>
+        <p class="text-sm text-gray-500 mb-6">Every request that reaches <span class="tenant-org">this organization</span> lands here as a ticket — from the website concierge, the phone line, email, or entered by hand. Each one carries a priority clock (P1 = 2 hours, P2 = 8, P3 = 48) so nothing is forgotten: answer it, assign it, resolve it.</p>
         <div class="flex gap-2 mb-4 flex-wrap" id="ticketFilters"></div>
         <div id="ticketTable"></div>
       </div>
@@ -368,7 +368,7 @@
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Beneficiary Onboarding</h1>
           <button class="btn btn-gold" onclick="openNewBeneficiary()">+ New intake</button>
         </div>
-        <p class="text-sm text-gray-500 mb-6">The people and partner organizations Levoila serves — communities near our sites, program applicants, and local agencies requesting services, partnership, funding, or employment. Each intake moves through validation and review to approval, with documents and decisions kept in one confidential record.</p>
+        <p class="text-sm text-gray-500 mb-6">The people and partner organizations <span class="tenant-org">this organization</span> serves — communities near our sites, program applicants, and local agencies requesting services, partnership, funding, or employment. Each intake moves through validation and review to approval, with documents and decisions kept in one confidential record.</p>
         <div id="benefTable"></div>
       </div>
 
@@ -377,7 +377,7 @@
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Volunteers & Mentors</h1>
           <button class="btn btn-gold" onclick="openNewVolunteer()">+ Add volunteer</button>
         </div>
-        <p class="text-sm text-gray-500 mb-6">Everyone who gives Levoila their time. Before anyone works with our communities they clear a background check and sign the NDA and code of conduct — tracked here from application through screening to active service.</p>
+        <p class="text-sm text-gray-500 mb-6">Everyone who gives <span class="tenant-org">this organization</span> their time. Before anyone works with our communities they clear a background check and sign the NDA and code of conduct — tracked here from application through screening to active service.</p>
         <div id="volTable"></div>
       </div>
 
@@ -461,7 +461,7 @@
 
       <div id="view-applications" class="view">
         <h1 class="page-head serif text-3xl font-semibold mb-1" style="color:var(--navy);">Careers — Hiring & Onboarding</h1>
-        <p class="text-sm text-gray-500 mb-5">Every application from the careers page on levoila.org lands here and moves through one pipeline: <b>new → screening → interview → offer → accepted → onboarding → active</b>. When you accept someone, one click starts their onboarding — it adds them to the People & HR roster and auto-assigns the required training (code of conduct, data stewardship, safeguarding, site safety). They're "active" when training is complete.</p>
+        <p class="text-sm text-gray-500 mb-5">Every application from the careers page on <span class="tenant-domain">the public site</span> lands here and moves through one pipeline: <b>new → screening → interview → offer → accepted → onboarding → active</b>. When you accept someone, one click starts their onboarding — it adds them to the People & HR roster and auto-assigns the required training (code of conduct, data stewardship, safeguarding, site safety). They're "active" when training is complete.</p>
         <div class="grid grid-cols-3 md:grid-cols-7 gap-3 mb-6" id="appPipeline" style="display:grid;"></div>
         <div id="appTable"></div>
       </div>
@@ -614,7 +614,7 @@
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Blog</h1>
           <button class="btn btn-gold" onclick="openNewPost()">+ New post</button>
         </div>
-        <p class="text-sm text-gray-500 mb-6">Write and publish posts to the public site. Published posts appear under Dispatches on levoila.org.</p>
+        <p class="text-sm text-gray-500 mb-6">Write and publish posts to the public site. Published posts appear under Dispatches on <span class="tenant-domain">the public site</span>.</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="blogKpis"></div>
         <div id="blogTable"></div>
       </div>
@@ -637,6 +637,9 @@
 <script>
 const CFG = window.TENANT_CONFIG || window.LEVOILA_SD_CONFIG;
 const ORG = (CFG && CFG.org) || {};
+// Tenant identity used for every row this app WRITES. Never a literal.
+const TENANT_ID = ORG.tenantId || null;  // null -> DB default public.current_tenant()
+const ORG_LEGAL = ORG.legalName || ORG.name || '';
 const sb = supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey);
 
 // ---------- tenant branding (config-driven; hardcoded HTML is the fallback) ----------
@@ -652,6 +655,8 @@ function applyTenant(){
     if (ORG.motto) document.querySelectorAll('.tenant-motto').forEach(el => el.textContent = ORG.motto);
     if (ORG.staffOnlyNote) document.querySelectorAll('.tenant-staffnote').forEach(el => el.textContent = ORG.staffOnlyNote);
     if (ORG.confidentialityNote) document.querySelectorAll('.tenant-confnote').forEach(el => el.textContent = ORG.confidentialityNote);
+    if (name) document.querySelectorAll('.tenant-org').forEach(el => el.textContent = name);
+    if (ORG.domain) document.querySelectorAll('.tenant-domain').forEach(el => el.textContent = ORG.domain);
     if (ORG.domain){ const ae = document.getElementById('authEmail'); if (ae) ae.placeholder = 'you@' + ORG.domain; }
     if (CFG.tagline || ORG.tagline){ const m = document.getElementById('ccMission'); if (m) m.textContent = ORG.tagline || CFG.tagline; }
     // Ledger picklists
@@ -818,7 +823,7 @@ function agentCards(demo){
       desc: demo ? 'Last scan: 4 opportunities scored, 1 qualified. Next run Thursday.' : 'Scans funders, scores fit, drafts LOIs into the Grant Engine queue.' },
     { name:'Social & Influencer Agent', dot:'live', meta:'Runs daily · 9:00 AM CT',
       desc: demo ? '12 influencer targets in pipeline · 2 outreach drafts awaiting you.' : 'Hunts fundraising influencers, drafts the ask, schedules approved posts.' },
-    { name:'AI Concierge', dot:'live', meta:'Live on levoila.org · 5 languages',
+    { name:'AI Concierge', dot:'live', meta:'Live on '+(ORG.domain||'the public site')+' · 5 languages',
       desc: demo ? 'Fielded 9 inquiries today · 3 routed into the service desk.' : 'Multilingual intake on the public site; routes qualified inquiries to the desk.' },
     { name:'Voice Front Desk', dot:'standby', meta:'Standby · awaiting number',
       desc:'24/7 phone agent, crisis-aware. Paste-ready the day the line goes live.' }
@@ -1752,7 +1757,7 @@ async function loadContent(){
       const chan = isD ? '<b style="color:var(--gold)">Dispatch</b>' : esc(c.platform);
       const when = isD ? (c.published_at?fmtD(c.published_at):'draft') : (c.scheduled_at?fmtDt(c.scheduled_at):'—');
       const title = isD ? `<b style="color:var(--navy)">${esc(c.title||'(untitled)')}</b>` : `<div class="text-xs" style="max-width:360px">${esc((c.body||'').slice(0,120))}${(c.body||'').length>120?'…':''}</div>`;
-      const link = isD ? '<span class="text-gray-400">levoila.org/dispatches</span>' : acctLabel(c.platform);
+      const link = isD ? '<span class=\'text-gray-400\'>'+(ORG.domain||'site')+'/dispatches</span>' : acctLabel(c.platform);
       return [ when, chan, title, link, badge(c.status) ];
     }),
     i => `openContent('${rows[i].id}')`, 'No content yet. Draft a dispatch or a social post — the agent also writes here weekly.');
@@ -1769,7 +1774,7 @@ function openDispatchModal(c){
   modal(`
     <div class="flex items-start justify-between mb-1"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">Dispatch</h2>
     <button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
-    <p class="text-xs text-gray-400 mb-4">${published?'<span class="sig-done">● Live at levoila.org/dispatches</span>':'Draft — not yet on the site.'}</p>
+    <p class="text-xs text-gray-400 mb-4">${published?'<span class="sig-done">● Live at '+(ORG.domain||'site')+'/dispatches</span>':'Draft — not yet on the site.'}</p>
     <div class="grid md:grid-cols-2 gap-3 mb-3">
       <div class="md:col-span-2"><label>Headline</label><input id="dTitle" value="${esc(c.title||'')}"></div>
       <div><label>Category</label><select id="dCat">${DISPATCH_CATS.map(k=>`<option ${c.category===k?'selected':''}>${k}</option>`).join('')}</select></div>
@@ -1853,7 +1858,7 @@ function openNewContent(){
   modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">New content</h2>
     <div class="mb-4"><label>Channel</label>
       <select id="ncChannel" onchange="toggleNewContent()">
-        <option value="dispatch">Dispatch — publishes to the levoila.org blog</option>
+        <option value="dispatch">Dispatch — publishes to the ${ORG.domain||'public'} blog</option>
         <option value="social">Social post — links to its platform account</option>
       </select></div>
     <div id="ncDispatch">
@@ -1908,7 +1913,7 @@ async function loadApps(){
     ['Applicant','Role','Location','Language','Status','Applied'],
     (data||[]).map(a => [ `<b style="color:var(--navy)">${esc(a.name)}</b><div class="text-xs text-gray-400">${esc(a.email)}</div>`,
       esc(a.role||'—'), esc(a.location||'—'), esc(a.language||'—'), badge(a.status), fmtD(a.created_at)]),
-    i => `openApp('${data[i].id}')`, 'No applications yet — they arrive from the careers page on levoila.org.');
+    i => `openApp('${data[i].id}')`, 'No applications yet — they arrive from the careers page on the public site.');
 }
 async function openApp(id){
   const { data: a } = await sb.from('applications').select('*').eq('id', id).single();
@@ -2417,7 +2422,7 @@ async function revokeGrant(id){
 }
 // --- Access roles, assignment, country/doc-group scoping ---
 const DOC_GROUPS = ['board','governance','legal','finance','hr','program','vendor','marketing','general'];
-const ACCESS_COUNTRIES = Array.from(new Set([...(CFG&&CFG.countries?CFG.countries:['Haiti'])]));
+const ACCESS_COUNTRIES = Array.from(new Set([...(CFG&&Array.isArray(CFG.countries)?CFG.countries:[])]));
 let ROLE_CACHE = [];
 
 async function loadRoles(){
@@ -2467,7 +2472,7 @@ async function saveRole(){
   const sections = secs.length===VIEWS.length ? null : secs;
   const doc_groups = grps.length===DOC_GROUPS.length ? null : grps;
   const countries = $('roAllCtry').checked ? ['*'] : [...document.querySelectorAll('.rCtry:checked')].map(b=>b.value);
-  const row = { tenant_id:'levoila', key, name, description:$('roDesc').value||null, sections, doc_groups, countries: countries.length?countries:['*'] };
+  const row = { tenant_id: TENANT_ID, key, name, description:$('roDesc').value||null, sections, doc_groups, countries: countries.length?countries:['*'] };
   const { error } = await sb.from('access_roles').upsert(row, { onConflict:'tenant_id,key' });
   if (error) return toast(error.message, true);
   sb.rpc('log_audit',{p_event:'ACCESS_ROLE_UPDATED',p_resource:'access_roles',p_action:'upsert',p_subject:key}).then(undefined,()=>{});
@@ -2581,11 +2586,11 @@ async function exportAudit(){
   const { data: logs, error } = await sb.from('audit_trail').select('*').order('seq');
   if (error) return toast('Admin only — cannot export', true);
   const { data: v } = await sb.rpc('verify_audit_chain');
-  const bundle = { generated_at:new Date().toISOString(), tenant:'levoila', organization:'Levoila Foundation, Inc.',
+  const bundle = { generated_at:new Date().toISOString(), tenant:TENANT_ID, organization:ORG_LEGAL,
     chain:{ entries:v?v.entries:logs.length, intact:v?v.intact:null, tip_hash:v?v.tip_hash:null }, records:logs };
   const blob = new Blob([JSON.stringify(bundle,null,2)], {type:'application/json'});
   const a = document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download = 'levoila-audit-bundle-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
+  a.download = TENANT_ID+'-audit-bundle-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
   sb.rpc('log_audit', { p_event:'COMPLIANCE_EXPORT', p_resource:'audit_trail', p_action:'export', p_details:'Compliance bundle exported ('+logs.length+' records)' }).then(undefined,()=>{});
   toast('Compliance bundle downloaded'); setTimeout(loadSecurity, 600);
 }

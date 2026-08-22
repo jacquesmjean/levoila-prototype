@@ -10,44 +10,53 @@
  * NOTHING unless the signed-in user is on the staff allowlist, and every
  * SECURITY DEFINER RPC re-checks the caller's role server-side.
  *
- * TO PROVISION A NEW TENANT: copy this file, replace the values below with the
- * client's own Supabase project + brand, deploy. Nothing else changes.
- * (See PROVISIONING_RUNBOOK.md.)
+ * TENANT 001 — EnnobleRise Global Trust. Provisioned 22 Aug 2026.
  * ========================================================================== */
 window.TENANT_CONFIG = {
   /* ---- Backend (this tenant's OWN Supabase project — database-per-tenant) ---- */
-  supabaseUrl: "https://igkvhqdljfjjkudeisbs.supabase.co",
-  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlna3ZocWRsamZqamt1ZGVpc2JzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5MTcyNzAsImV4cCI6MjA5OTQ5MzI3MH0.hsQCo-THdMXt0AyUoyJgdYwyzjn6rye0Gwz33DwuhCg",
+  supabaseUrl: "https://knsuzpcaatwfevulphhw.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtuc3V6cGNhYXR3ZmV2dWxwaGh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MTkyNTksImV4cCI6MjEwMjk5NTI1OX0.KFszTEu_kCvNNLBLnCvtkzyfSPOdZT0AsHG79buXtBA",
 
   /* ---- Identity / branding ---- */
   org: {
-    name: "Levoila",                 // wordmark, shown top-left everywhere
-    product: "Mission Control",      // overline label under the wordmark
-    domain: "levoila.org",           // staff email domain (auth placeholder)
-    tagline: "Phase One · Haiti — three heritage sites in the 24-month window.",
-    motto: "When the governments forget, the world remembers.",
-    // Shown on the sign-in card + denied card:
-    staffOnlyNote: "Authorized Levoila staff only. Every action is recorded.",
+    name: "EnnobleRise",
+    legalName: "EnnobleRise Global Trust",   // used by the audit bundle export
+    product: "Mission Control",
+    domain: "ennoblerise.org",
+    tenantId: "ennoblerise",                 // must match tenant_settings.tenant_id
+    tagline: "Youth, educators and women — programs across eight countries.",
+    motto: "Every person carries innate worth. Our work is to awaken it.",
+    staffOnlyNote: "Authorized EnnobleRise staff only. Every action is recorded.",
     confidentialityNote: "Beneficiary data is held in confidence under the trust's data-stewardship policy."
   },
 
   /* ---- Finance ---- */
-  fundGoal: 1000000,                 // campaign / annual goal used by the command-center gauge
+  fundGoal: 150000,                  // their published two-year target
   currency: "USD",
 
   /* ---- Program taxonomy (drives the ledger "Project" picklist) ---- */
-  projects: ["Phase One", "Citadelle", "Sans-Souci", "Fort Liberte", "Headquarters"],
+  projects: [
+    "Youth Ennoblement",
+    "Educator Leadership",
+    "Women's Financial Resilience",
+    "Michael G. Henry Legacy Scholarship",
+    "Headquarters"
+  ],
 
-  /* ---- Countries in scope (drives the ledger "Country" picklist; HQ is always first) ---- */
-  countries: ["Haiti"],
+  /* ---- Countries in scope (drives the ledger "Country" picklist) ----
+     PLACEHOLDER. EnnobleRise runs programs in 8+ countries; only the ones that
+     actually STORE records belong here. Confirm before go-live. */
+  countries: ["United States"],
 
-  /* ---- Brand palette (optional; falls back to the app's default navy/gold) ---- */
+  /* ---- Brand palette — read off ennoblerise.org's own stylesheet 22 Aug 2026:
+     --navy-deep #13255E · --navy #1E3A8A · --gold #D9A514
+     --gold-bright #FBBF24 · --ink #1F2937 · --ivory #FFFFFF          ---- */
   brand: {
-    navy: "#0B2545",
-    gold: "#B6862C",
-    softGold: "#D4A857",
-    limestone: "#F4F1EA",
-    cream: "#FAF7F0"
+    navy: "#13255E",
+    gold: "#D9A514",
+    softGold: "#FBBF24",
+    limestone: "#F1F4F9",   // cool neutral to match their navy; confirm with client
+    cream: "#FAFBFD"
   }
 };
 

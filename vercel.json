@@ -1,25 +1,23 @@
 {
+  "//": "Tenant deployment. The service desk is the whole site here — Levoila's public marketing pages (index.html, dispatches) are not shipped. See .vercelignore.",
   "rewrites": [
-    { "source": "/haiti", "destination": "/index.html" },
-    { "source": "/podcast", "destination": "/index.html" },
+    { "source": "/", "destination": "/servicedesk.html" },
     { "source": "/servicedesk", "destination": "/servicedesk.html" },
     { "source": "/vendor-onboarding", "destination": "/vendor-onboarding.html" },
     { "source": "/join-onboarding", "destination": "/join-onboarding.html" },
     { "source": "/sign", "destination": "/sign.html" },
     { "source": "/transparency", "destination": "/transparency.html" },
-    { "source": "/portal", "destination": "/portal.html" },
-    { "source": "/dispatches", "destination": "/dispatches.html" },
-    { "source": "/dispatches/:slug*", "destination": "/dispatches.html" },
-    { "source": "/blog", "destination": "/dispatches.html" }
+    { "source": "/portal", "destination": "/portal.html" }
   ],
   "headers": [
+    { "source": "/(.*)", "headers": [
+      { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+    ]},
     { "source": "/servicedesk", "headers": [
-      { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
       { "key": "X-Frame-Options", "value": "DENY" }
     ]},
-    { "source": "/vendor-onboarding", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]},
-    { "source": "/join-onboarding", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]},
-    { "source": "/sign", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]},
-    { "source": "/portal", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ]}
+    { "source": "/", "headers": [
+      { "key": "X-Frame-Options", "value": "DENY" }
+    ]}
   ]
 }
