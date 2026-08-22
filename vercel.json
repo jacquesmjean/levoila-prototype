@@ -1,5 +1,4 @@
 {
-  "//": "Tenant deployment. The service desk is the whole site here — Levoila's public marketing pages (index.html, dispatches) are not shipped. See .vercelignore.",
   "rewrites": [
     { "source": "/", "destination": "/servicedesk.html" },
     { "source": "/servicedesk", "destination": "/servicedesk.html" },
