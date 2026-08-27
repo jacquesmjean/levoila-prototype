@@ -1364,7 +1364,7 @@ async function openInfluencer(id){
     ${locked?'<div class="kpi mb-4" style="padding:14px 16px;border-color:var(--red)"><b style="color:var(--red)">DO NOT APPROACH.</b> <span class="text-sm">This person is on the avoid list by standing decision.</span></div>':`
     <div class="grid md:grid-cols-2 gap-3 mb-4">
       <div><label>Status</label><select id="fStatus">${['identified','vetted','approved','approached','responded','committed','declined','avoid'].map(s=>`<option ${f.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
-      <div><label>Contact</label><input id="fContact" value="${esc(f.contact||'')}"></div>
+      <div><label>Contact <a href="${inflFindEmailUrl(f)}" target="_blank" rel="noopener" style="color:var(--gold);font-size:11px;margin-left:6px;font-weight:600">Find email →</a></label><input id="fContact" placeholder="paste their business email" value="${esc(f.contact||'')}"></div>
       <div><label>Campaign</label><input id="fCampaign" value="${esc(f.campaign||'')}"></div>
       <div><label>Handle</label><input id="fHandle" value="${esc(f.handle||'')}"></div>
     </div>
@@ -1376,6 +1376,16 @@ async function openInfluencer(id){
     <div class="text-xs text-gray-400 mb-4">One click copies the message and opens their DM — you paste and send. After sending, set the status to “approached”.</div>
     <div class="mb-4"><label>Notes</label><textarea id="fNotes" rows="2">${esc(f.notes||'')}</textarea></div>
     <div class="text-right"><button class="btn btn-gold" onclick="saveInfluencer('${f.id}')">Save</button></div>`}`);
+}
+// "Find email" jumps to where a creator actually publishes their business contact:
+// YouTube's About page (creators list a business email there), else a targeted search.
+function inflFindEmailUrl(f){
+  const name=(f.name||'').trim();
+  const h=(f.handle||'').replace(/^@/,'').trim();
+  const p=(f.platform||'').toLowerCase();
+  if(p.includes('youtube') && h) return 'https://www.youtube.com/@'+encodeURIComponent(h)+'/about';
+  const q='"'+name+'" (business OR booking OR management OR press OR partnerships) email';
+  return 'https://www.google.com/search?q='+encodeURIComponent(q);
 }
 // Build the "open where they are" link from platform + handle (no auto-send — she sends).
 function inflDmUrl(platform, handle){
