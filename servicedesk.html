@@ -624,7 +624,8 @@
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Social</h1>
           <button class="btn btn-gold" onclick="openNewSocial()">+ Compose</button>
         </div>
-        <p class="text-sm text-gray-500 mb-6">Compose, schedule, and publish across platforms. Approved posts publish via the social agent; performance flows back here.</p>
+        <p class="text-sm text-gray-500 mb-4">Compose, schedule, and publish across platforms. Publishing goes out through the Levoila accounts connected in Blotato; performance flows back here.</p>
+        <div id="socialConnBanner" class="mb-6"></div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="socialKpis"></div>
         <div id="socialTable"></div>
       </div>
@@ -3077,7 +3078,25 @@ async function unpublishPost(id){
 
 /* ===================== Social ===================== */
 const SM_PLATFORMS2=['twitter','linkedin','instagram','facebook','tiktok','youtube','threads'];
+let SOCIAL_CONNECTED = false;
+async function loadSocialStatus(){
+  const el=$('socialConnBanner'); if(!el) return;
+  try{
+    const acc=await fetch('/api/social-accounts',{cache:'no-store'}).then(r=>r.json());
+    const list=(acc&&acc.accounts)||[];
+    SOCIAL_CONNECTED = !!(acc&&acc.configured&&list.length);
+    if(SOCIAL_CONNECTED){
+      el.innerHTML=`<div style="background:#EAF4EE;border:1px solid #BFDCC9;color:#2E6E4E;border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.5">
+        <b>● Live.</b> Connected to Blotato — when you press <b>Publish</b>, a post goes out to:
+        ${list.map(a=>`<span style="display:inline-block;background:#fff;border:1px solid #BFDCC9;border-radius:6px;padding:1px 8px;margin:2px 3px 0 0">${esc(a.platform)}${a.username?' @'+esc(a.username):''}</span>`).join('')}</div>`;
+    } else {
+      el.innerHTML=`<div style="background:#FBF3E6;border:1px solid #E4C98B;color:#8A5A00;border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.5">
+        <b>Not connected yet.</b> You can compose and schedule now, but a post won't actually go out until Levoila's social accounts are connected in Blotato and the key is set on the site. Publishing today only marks a post <b>approved</b>.</div>`;
+    }
+  }catch(e){ SOCIAL_CONNECTED=false; el.innerHTML=''; }
+}
 async function loadSocial(){
+  loadSocialStatus();
   const { data, error }=await sb.from('content_calendar').select('*').neq('platform','dispatch').order('scheduled_at',{ascending:false,nullsFirst:false}).limit(300);
   if(error) return toast(error.message,true);
   const rows=data||[]; const c=x=>rows.filter(r=>r.status===x).length;
@@ -3112,10 +3131,18 @@ async function openSocialPost(id){
       <div class="grid md:grid-cols-2 gap-3"><div><label>Media URL</label><input id="spMedia" value="${esc(p.media_url||'')}"></div><div><label>Scheduled</label><input id="spWhen" type="datetime-local" value="${p.scheduled_at?new Date(p.scheduled_at).toISOString().slice(0,16):''}"></div></div>
       ${Object.keys(perf).length?`<div class="text-xs text-gray-400">Performance: ${esc(JSON.stringify(perf))}</div>`:''}
     </div>
-    <div class="flex items-center justify-between">
-      <button class="btn btn-ghost" onclick="publishSocialNow('${p.id}')">Publish now</button>
-      <button class="btn btn-gold" onclick="saveSocialPost('${p.id}')">Save</button>
+    <div class="flex items-center justify-between gap-3">
+      <button class="btn btn-ghost" onclick="saveSocialPost('${p.id}')">Save draft</button>
+      <button class="btn btn-gold" id="pubBtn" onclick="armPublish('${p.id}', this)">Publish now →</button>
     </div>`);
+}
+// Two-step confirm: first click arms the button, second click actually sends.
+function armPublish(id, btn){
+  const platform=($('spPlatform')&&$('spPlatform').value)||'this platform';
+  btn.textContent = SOCIAL_CONNECTED ? ('Confirm — post to '+platform+' now') : ('Confirm — approve for '+platform);
+  btn.style.background='#B23A48'; btn.style.borderColor='#B23A48'; btn.style.color='#fff';
+  btn.setAttribute('onclick', "publishSocialNow('"+id+"')");
+  toast(SOCIAL_CONNECTED ? ('Click again to publish live to '+platform) : 'Not connected — click again to mark this approved');
 }
 async function saveSocialPost(id){
   const when=$('spWhen').value?new Date($('spWhen').value).toISOString():null;
@@ -3128,7 +3155,7 @@ async function publishSocialNow(id){
     const r=await fetch('/api/social-publish',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({id})});
     const d=await r.json().catch(()=>({}));
     if(!r.ok){ return toast(d.error||'Publish failed',true); }
-    toast(d.queued?'Approved & queued for the Social Agent':'Published'); closeModal(); loadSocial();
+    toast(d.posted?'Published live':(d.message||'Approved — it will post once Blotato is connected')); closeModal(); loadSocial();
   }catch(e){ toast('Publishing endpoint unavailable — check /api deploy and Blotato key',true); }
 }
 
