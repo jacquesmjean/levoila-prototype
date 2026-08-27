@@ -3162,9 +3162,24 @@ async function openSocialPost(id){
       ${Object.keys(perf).length?`<div class="text-xs text-gray-400">Performance: ${esc(JSON.stringify(perf))}</div>`:''}
     </div>
     <div class="flex items-center justify-between gap-3">
-      <button class="btn btn-ghost" onclick="saveSocialPost('${p.id}')">Save draft</button>
+      <div class="flex gap-2">
+        <button class="btn btn-ghost" onclick="saveSocialPost('${p.id}')">Save draft</button>
+        <button class="btn btn-ghost" id="delBtn" onclick="armDeleteSocial('${p.id}', this)">Delete</button>
+      </div>
       <button class="btn btn-gold" id="pubBtn" onclick="armPublish('${p.id}', this)">Publish now →</button>
     </div>`);
+}
+// Two-step confirm: first click arms the delete, second click removes it.
+function armDeleteSocial(id, btn){
+  btn.textContent='Confirm delete';
+  btn.style.background='#B23A48'; btn.style.borderColor='#B23A48'; btn.style.color='#fff';
+  btn.setAttribute('onclick', "deleteSocialPost('"+id+"')");
+  toast('Click again to permanently delete this post');
+}
+async function deleteSocialPost(id){
+  const { error }=await sb.from('content_calendar').delete().eq('id',id);
+  if(error) return toast(error.message||'Could not delete',true);
+  toast('Post deleted'); closeModal(); loadSocial();
 }
 // Two-step confirm: first click arms the button, second click actually sends.
 function armPublish(id, btn){
