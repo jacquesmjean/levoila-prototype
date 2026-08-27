@@ -1369,8 +1369,38 @@ async function openInfluencer(id){
       <div><label>Handle</label><input id="fHandle" value="${esc(f.handle||'')}"></div>
     </div>
     <div class="mb-3"><label>Outreach draft (you send this personally — the agent never sends)</label><textarea id="fDraft" rows="8">${esc(f.outreach_draft||'')}</textarea></div>
+    <div class="flex flex-wrap gap-2 mb-4 items-center">
+      <button type="button" class="btn btn-gold" onclick="copyOutreach()">Copy message</button>
+      ${inflSendTarget(f)}
+      <span class="text-xs text-gray-400">Copy the message, open their profile, paste and send — then set the status to “approached”.</span>
+    </div>
     <div class="mb-4"><label>Notes</label><textarea id="fNotes" rows="2">${esc(f.notes||'')}</textarea></div>
     <div class="text-right"><button class="btn btn-gold" onclick="saveInfluencer('${f.id}')">Save</button></div>`}`);
+}
+// Build the "open where they are" link from platform + handle (no auto-send — she sends).
+function inflDmUrl(platform, handle){
+  const h=(handle||'').replace(/^@/,'').trim(); if(!h) return '';
+  const p=(platform||'').toLowerCase();
+  if(p.includes('instagram')) return 'https://ig.me/m/'+encodeURIComponent(h);
+  if(p.includes('facebook'))  return 'https://m.me/'+encodeURIComponent(h);
+  if(p.includes('twitter')||p==='x') return 'https://x.com/'+encodeURIComponent(h);
+  if(p.includes('tiktok'))    return 'https://www.tiktok.com/@'+encodeURIComponent(h);
+  if(p.includes('linkedin'))  return 'https://www.linkedin.com/in/'+encodeURIComponent(h);
+  if(p.includes('youtube'))   return 'https://www.youtube.com/@'+encodeURIComponent(h);
+  return 'https://www.google.com/search?q='+encodeURIComponent('@'+h+' '+p);
+}
+function inflSendTarget(f){
+  const url=inflDmUrl(f.platform, f.handle);
+  if(url) return `<a class="btn btn-ghost" target="_blank" rel="noopener" href="${url}">Open ${esc(f.platform||'profile')} to send →</a>`;
+  if(f.contact && /@.+\./.test(f.contact)) return `<a class="btn btn-ghost" href="mailto:${esc(f.contact)}">Email ${esc(f.contact)} →</a>`;
+  return `<span class="text-xs text-gray-400">Add a handle or contact to enable one-click open.</span>`;
+}
+function copyOutreach(){
+  const t=$('fDraft'); if(!t) return;
+  const val=t.value||'';
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(val).then(()=>toast('Message copied — paste it in the DM')).catch(()=>{ t.focus(); t.select(); try{document.execCommand('copy');toast('Message copied');}catch(e){toast('Select the text and copy',true);} });
+  } else { t.focus(); t.select(); try{document.execCommand('copy');toast('Message copied');}catch(e){toast('Select the text and copy',true);} }
 }
 async function saveInfluencer(id){
   const { error } = await sb.from('influencer_targets').update({
