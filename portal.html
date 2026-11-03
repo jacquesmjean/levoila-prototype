@@ -71,7 +71,7 @@ tr:last-child td{border-bottom:0}
 const CFG = window.TENANT_CONFIG || {};
 const sb = supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey);
 const ORGO = CFG.org || {}, ORGN = ORGO.name || 'Mission Control', ORGLINE = ORGO.footerLine || '';
-const ORGMAIL = ORGO.contactEmail || (ORGO.domain ? 'hello@' + ORGO.domain : '');
+const ORGMAIL = ORGO.contactEmail || '';
 (function(){
   document.getElementById('brandName').textContent = ORGN;
   document.title = 'Your ' + ORGN + ' — Donor & Funder Portal';
@@ -171,7 +171,7 @@ async function dashboard(){
       <p class="foot" style="text-align:left;margin-top:12px"><span class="orgName"></span> is <span class="orgDesc">a registered charity</span>. Retain your statement for your records. Consult your tax advisor on deductibility in your country.</p>
     </div>
 
-    <p class="foot">Questions about your giving? Write to <a href="mailto:${ORGMAIL}">${ORGMAIL}</a>.</p>
+    ${ORGMAIL?`<p class="foot">Questions about your giving? Write to <a href="mailto:${ORGMAIL}">${ORGMAIL}</a>.</p>`:``}
   </div>`;
   window._donor = d;
 }
