@@ -27,7 +27,25 @@ window.TENANT_CONFIG = {
     tagline: "Youth, educators and women — programs across eight countries.",
     motto: "Every person carries innate worth. Our work is to awaken it.",
     staffOnlyNote: "Authorized EnnobleRise staff only. Every action is recorded.",
-    confidentialityNote: "Beneficiary data is held in confidence under the trust's data-stewardship policy."
+    confidentialityNote: "Beneficiary data is held in confidence under the trust's data-stewardship policy.",
+    // The mark as it appears on ennoblerise.org
+    wordmark: "EnnobleRise™",
+    wordmarkSub: "GLOBAL TRUST",
+    logoUrl: "https://ennoblerise.org/images/emblem.png",
+    // Accounts are provisioned by an administrator; nobody self-registers.
+    allowSelfSignup: false
+  },
+
+  /* ---- Navigation labels in the organization's own vocabulary ---- */
+  labels: {
+    overview: "Command Center",
+    tickets: "Front Desk",
+    beneficiaries: "Participants",
+    donors: "Donors & Stewards",
+    content: "Content Calendar",
+    blog: "Insights",
+    board: "Advisory Board",
+    people: "People & Resources"
   },
 
   /* ---- Finance ---- */
@@ -53,11 +71,17 @@ window.TENANT_CONFIG = {
      --navy-deep #13255E · --navy #1E3A8A · --gold #D9A514
      --gold-bright #FBBF24 · --ink #1F2937 · --ivory #FFFFFF          ---- */
   brand: {
-    navy: "#13255E",
+    navy: "#1E3A8A",        // --navy on the site: primary
+    deep: "#13255E",        // --navy-deep: sidebar, hero, sign-in
+    deeper: "#0B1640",      // the darkest stop in those gradients
     gold: "#D9A514",
-    softGold: "#FBBF24",
-    limestone: "#F1F4F9",   // cool neutral to match their navy; confirm with client
-    cream: "#FAFBFD"
+    softGold: "#FBBF24",    // --gold-bright
+    ink: "#1F2937",
+    limestone: "#F1F4F9",   // cool neutral to sit with their navy
+    cream: "#FAFBFD",
+    // Typography follows lib/fonts.ts on the public site.
+    displayFont: "Fraunces",
+    bodyFont: "Karla"
   }
 };
 
