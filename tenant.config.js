@@ -32,6 +32,7 @@ window.TENANT_CONFIG = {
     wordmark: "EnnobleRise™",
     wordmarkSub: "GLOBAL TRUST",
     logoUrl: "https://ennoblerise.org/images/emblem.png",
+    blogLabel: "Insights",
     // Accounts are provisioned by an administrator; nobody self-registers.
     allowSelfSignup: false,
     /* ---- Public pages (transparency ledger, donor portal, signing) ---- */
@@ -46,6 +47,11 @@ window.TENANT_CONFIG = {
     pendingNote: "The first programme dollars move in FY2027. The moment they do, every gift and every payment will appear here, line by line. This page is the promise, published before there is anything to hide.",
     donateUrl: "https://ennoblerise.org/en/donate"
   },
+
+  /* ---- Insights (the blog) and social ---- */
+  blogUrl: "https://ennoblerise.org/en/blog",
+  blogCategories: ["Foundational Wealth", "Insights", "Youth", "Educators", "Women", "Announcement"],
+  languages: ["en", "fr", "es"],
 
   /* ---- Navigation labels in the organization's own vocabulary ---- */
   labels: {

@@ -643,7 +643,7 @@
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Blog</h1>
           <button class="btn btn-gold" onclick="openNewPost()">+ New post</button>
         </div>
-        <p class="text-sm text-gray-500 mb-6">Write and publish posts to the public site. Published posts appear under Dispatches on <span class="tenant-domain">the public site</span>.</p>
+        <p class="text-sm text-gray-500 mb-6">Write and publish posts to the public site. Published posts appear under <span class="tenant-bloglabel">Dispatches</span> on <span class="tenant-domain">the public site</span> within a few minutes, with no deploy.</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="blogKpis"></div>
         <div id="blogTable"></div>
       </div>
@@ -655,7 +655,19 @@
         </div>
         <p class="text-sm text-gray-500 mb-4">Compose, schedule, and publish across platforms. Publishing goes out through the accounts <span class="tenant-org">this organization</span> has connected in Blotato; performance flows back here.</p>
         <div id="socialConnBanner" class="mb-6"></div>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="socialKpis"></div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-7" id="socialKpis"></div>
+
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <div class="cc-section-label" style="margin-bottom:0">The weekly rhythm · what goes out, and when</div>
+          <button class="btn btn-ghost" onclick="planSocialWeeks()">Plan the next 4 weeks</button>
+        </div>
+        <div id="socialCadence" class="grid md:grid-cols-3 gap-4 mb-7"></div>
+
+        <div class="cc-section-label">Accounts of record</div>
+        <div id="socialAccounts" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9"></div>
+
+        <div class="cc-section-label">Calendar</div>
+        <div class="flex gap-2 mb-4 flex-wrap" id="socialFilters"></div>
         <div id="socialTable"></div>
       </div>
 
@@ -687,6 +699,7 @@ function applyTenant(){
     if (ORG.confidentialityNote) document.querySelectorAll('.tenant-confnote').forEach(el => el.textContent = ORG.confidentialityNote);
     if (name) document.querySelectorAll('.tenant-org').forEach(el => el.textContent = name);
     if (ORG.domain) document.querySelectorAll('.tenant-domain').forEach(el => el.textContent = ORG.domain);
+    if (ORG.blogLabel) document.querySelectorAll('.tenant-bloglabel').forEach(el => el.textContent = ORG.blogLabel);
     if (ORG.domain){ const ae = document.getElementById('authEmail'); if (ae) ae.placeholder = 'you@' + ORG.domain; }
     if (CFG.tagline || ORG.tagline){ const m = document.getElementById('ccMission'); if (m) m.textContent = ORG.tagline || CFG.tagline; }
     // Ledger picklists
@@ -3549,7 +3562,9 @@ async function voidSignature(id){ const { error }=await sb.from('signature_reque
 function loadDocsView(){ loadDocuments(); loadSignatures(); }
 
 /* ===================== Blog (dispatches) ===================== */
-const BLOG_CATS=['story','update','field-note','announcement','press'];
+const BLOG_CATS=(CFG&&Array.isArray(CFG.blogCategories)&&CFG.blogCategories.length)?CFG.blogCategories:['story','update','field-note','announcement','press'];
+const BLOG_URL=(ORG.blogUrl)||(ORG.domain?'https://'+ORG.domain+'/dispatches':'/dispatches');
+const BLOG_LANGS=(CFG&&Array.isArray(CFG.languages)&&CFG.languages.length)?CFG.languages:['en'];
 function blogSlugify(s){ return (s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
 async function loadBlog(){
   const { data, error }=await sb.from('content_calendar').select('*').eq('platform','dispatch').order('created_at',{ascending:false}).limit(300);
@@ -3584,15 +3599,19 @@ async function openPost(id){
       <div class="grid md:grid-cols-3 gap-3"><div><label>Slug</label><input id="bpSlug" value="${esc(p.slug||'')}"></div><div><label>Category</label><select id="bpCat">${BLOG_CATS.map(c=>`<option ${p.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div><label>Author</label><input id="bpAuthor" value="${esc(p.author||'')}"></div></div>
       <div><label>Excerpt</label><textarea id="bpExcerpt" rows="2">${esc(p.excerpt||'')}</textarea></div>
       <div><label>Body</label><textarea id="bpBody" rows="10">${esc(p.body||'')}</textarea></div>
+      <div class="grid md:grid-cols-3 gap-3">
+        <div class="md:col-span-2"><label>Hero image URL</label><input id="bpHero" value="${esc(p.media_url||'')}" placeholder="/images/blog/… or https://…"></div>
+        <div><label>Language</label><select id="bpLang">${BLOG_LANGS.map(l=>`<option value="${l}" ${(p.language||'en')===l?'selected':''}>${l.toUpperCase()}</option>`).join('')}</select></div>
+      </div>
       <div><label>Read minutes</label><input id="bpRead" type="number" style="max-width:120px" value="${p.read_minutes||''}"></div>
     </div>
     <div class="flex items-center justify-between">
-      <div>${p.status==='published'?`<button class="btn btn-ghost" onclick="unpublishPost('${p.id}')">Unpublish</button> <span class="text-xs text-gray-400">Live at /dispatches</span>`:`<button class="btn btn-ghost" onclick="publishPost('${p.id}')">Publish to site</button>`}</div>
+      <div>${p.status==='published'?`<button class="btn btn-ghost" onclick="unpublishPost('${p.id}')">Unpublish</button> <a class="text-xs" style="color:var(--gold)" href="${BLOG_URL}/${esc(p.slug||'')}" target="_blank" rel="noopener">View on the site ↗</a>`:`<button class="btn btn-ghost" onclick="publishPost('${p.id}')">Publish to site</button>`}</div>
       <button class="btn btn-gold" onclick="savePost('${p.id}')">Save</button>
     </div>`);
 }
 async function savePost(id){
-  const { error }=await sb.from('content_calendar').update({title:$('bpTitle').value,slug:$('bpSlug').value||null,category:$('bpCat').value,author:$('bpAuthor').value||null,excerpt:$('bpExcerpt').value||null,body:$('bpBody').value||null,read_minutes:$('bpRead').value?parseInt($('bpRead').value):null}).eq('id',id);
+  const { error }=await sb.from('content_calendar').update({title:$('bpTitle').value,slug:$('bpSlug').value||null,category:$('bpCat').value,author:$('bpAuthor').value||null,excerpt:$('bpExcerpt').value||null,body:$('bpBody').value||null,read_minutes:$('bpRead').value?parseInt($('bpRead').value):null,media_url:$('bpHero').value.trim()||null,language:$('bpLang').value||'en'}).eq('id',id);
   if(error) return toast(error.message,true); toast('Saved'); closeModal(); loadBlog();
 }
 async function publishPost(id){
@@ -3625,16 +3644,58 @@ async function loadSocialStatus(){
     }
   }catch(e){ SOCIAL_CONNECTED=false; el.innerHTML=''; }
 }
+// ---------- the weekly rhythm ----------
+const DOW = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+async function loadSocialCadence(){
+  const el = $('socialCadence'); if (!el) return;
+  const { data, error } = await sb.from('social_cadence').select('*').order('sort');
+  if (error) { el.innerHTML = ''; return; }
+  const rows = data || [];
+  if (!rows.length){ el.innerHTML = '<div class="empty-elegant md:col-span-3"><div class="e-t">No rhythm set</div><div class="e-s">Decide which days belong to which pillar and the calendar fills itself.</div></div>'; return; }
+  el.innerHTML = rows.map(c => `<div class="fin-card" style="padding:14px 16px;${c.active?'':'opacity:.5'}">
+      <div class="text-[10px]" style="letter-spacing:.14em;text-transform:uppercase;color:var(--gold)">${DOW[c.dow]} · ${String(c.local_time).slice(0,5)}</div>
+      <div class="serif font-semibold" style="color:var(--navy);font-size:16px;margin-top:3px">${esc(c.campaign)}</div>
+      <div class="text-xs text-gray-500" style="margin-top:6px;line-height:1.5">${esc(c.opener)}</div>
+      <div class="text-xs text-gray-400" style="margin-top:8px">Every post carries the giving link and the QR.</div>
+    </div>`).join('');
+}
+async function loadSocialAccounts(){
+  const el = $('socialAccounts'); if (!el) return;
+  const { data, error } = await sb.from('social_accounts').select('*').order('platform');
+  if (error) { el.innerHTML = ''; return; }
+  const rows = data || [];
+  el.innerHTML = rows.length ? rows.map(a => `<a class="kpi" href="${esc(a.url)}" target="_blank" rel="noopener" style="display:block;text-decoration:none">
+      <div class="l" style="margin-bottom:4px">${esc(a.platform)}</div>
+      <div class="serif" style="color:var(--navy);font-size:15px">${esc(a.handle||a.url.replace(/^https?:\/\/(www\.)?/,'').slice(0,28))}</div>
+      <div class="text-xs text-gray-400" style="margin-top:6px">${a.blotato_account_id?'<span style="color:var(--green)">● connected to the publisher</span>':'○ not yet connected to the publisher'}${a.owner?' · '+esc(a.owner):''}</div>
+    </a>`).join('') : '<div class="empty-elegant col-span-4"><div class="e-t">No accounts recorded</div></div>';
+}
+async function planSocialWeeks(){
+  const { data, error } = await sb.rpc('social_plan_weeks', { p_weeks: 4 });
+  if (error) return toast(error.message, true);
+  toast(data ? data + ' draft' + (data===1?'':'s') + ' planned for the next four weeks' : 'The next four weeks were already planned');
+  sb.rpc('log_audit',{p_event:'SOCIAL_PLANNED',p_resource:'content_calendar',p_action:'plan',p_details:(data||0)+' slots'}).then(undefined,()=>{});
+  loadSocial();
+}
+
 async function loadSocial(){
   loadSocialStatus();
+  loadSocialCadence();
+  loadSocialAccounts();
   const { data, error }=await sb.from('content_calendar').select('*').neq('platform','dispatch').order('scheduled_at',{ascending:false,nullsFirst:false}).limit(300);
   if(error) return toast(error.message,true);
   const rows=data||[]; const c=x=>rows.filter(r=>r.status===x).length;
   $('socialKpis').innerHTML=[['Posts',rows.length],['Scheduled',c('scheduled')+c('approved')],['Published',c('published')+c('posted')],['Drafts',c('draft')]]
     .map(([l,n])=>`<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('');
+  window.SOCIAL_ROWS = rows; window.SOCIAL_FILTER = window.SOCIAL_FILTER || 'upcoming';
+  const F = { upcoming:['Upcoming', r=>r.scheduled_at && new Date(r.scheduled_at) >= new Date() && !['posted','published','failed'].includes(r.status)],
+              draft:['Drafts', r=>r.status==='draft'], approved:['Approved', r=>r.status==='approved'],
+              posted:['Posted', r=>['posted','published'].includes(r.status)], failed:['Failed', r=>r.status==='failed'], all:['All', ()=>true] };
+  $('socialFilters').innerHTML = Object.entries(F).map(([k,[l,f]]) => `<button class="pill-tab ${SOCIAL_FILTER===k?'active':''}" onclick="SOCIAL_FILTER='${k}';loadSocial()">${l} <span style="opacity:.6">${rows.filter(f).length}</span></button>`).join('');
+  const shown = rows.filter(F[SOCIAL_FILTER][1]).sort((a,b)=> SOCIAL_FILTER==='upcoming' ? (a.scheduled_at||'').localeCompare(b.scheduled_at||'') : 0);
   $('socialTable').innerHTML=tableHtml(['Platform','Post','Campaign','Scheduled','Status'],
-    rows.map(p=>[esc(p.platform||'—'), `<div style="max-width:360px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--navy)">${esc((p.body||'').slice(0,120))}</div>`, esc(p.campaign||'—'), p.scheduled_at?fmtDt(p.scheduled_at):'—', badge(p.status)]),
-    i=>`openSocialPost('${rows[i].id}')`, 'No social posts yet. Click “Compose”.');
+    shown.map(p=>[esc(p.platform||'—'), `<div style="max-width:360px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--navy)">${esc((p.body||'').slice(0,120))}</div>`, esc(p.campaign||'—'), p.scheduled_at?fmtDt(p.scheduled_at):'—', badge(p.status)]),
+    i=>`openSocialPost('${shown[i].id}')`, SOCIAL_FILTER==='upcoming' ? 'Nothing scheduled ahead. Plan the next four weeks and the calendar fills with drafts to approve.' : 'Nothing here.');
 }
 function openNewSocial(){
   modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">Compose post</h2>

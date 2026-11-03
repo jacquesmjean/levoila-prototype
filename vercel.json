@@ -1,22 +1,67 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/servicedesk.html" },
-    { "source": "/servicedesk", "destination": "/servicedesk.html" },
-    { "source": "/vendor-onboarding", "destination": "/vendor-onboarding.html" },
-    { "source": "/join-onboarding", "destination": "/join-onboarding.html" },
-    { "source": "/sign", "destination": "/sign.html" },
-    { "source": "/transparency", "destination": "/transparency.html" },
-    { "source": "/portal", "destination": "/portal.html" }
+    {
+      "source": "/",
+      "destination": "/servicedesk.html"
+    },
+    {
+      "source": "/servicedesk",
+      "destination": "/servicedesk.html"
+    },
+    {
+      "source": "/vendor-onboarding",
+      "destination": "/vendor-onboarding.html"
+    },
+    {
+      "source": "/join-onboarding",
+      "destination": "/join-onboarding.html"
+    },
+    {
+      "source": "/sign",
+      "destination": "/sign.html"
+    },
+    {
+      "source": "/transparency",
+      "destination": "/transparency.html"
+    },
+    {
+      "source": "/portal",
+      "destination": "/portal.html"
+    }
   ],
   "headers": [
-    { "source": "/(.*)", "headers": [
-      { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
-    ]},
-    { "source": "/servicedesk", "headers": [
-      { "key": "X-Frame-Options", "value": "DENY" }
-    ]},
-    { "source": "/", "headers": [
-      { "key": "X-Frame-Options", "value": "DENY" }
-    ]}
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/servicedesk",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/social-run",
+      "schedule": "10 14 * * *"
+    }
   ]
 }
