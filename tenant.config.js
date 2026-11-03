@@ -28,7 +28,18 @@ window.TENANT_CONFIG = {
     motto: "When the governments forget, the world remembers.",
     // Shown on the sign-in card + denied card:
     staffOnlyNote: "Authorized Levoila staff only. Every action is recorded.",
-    confidentialityNote: "Beneficiary data is held in confidence under the trust's data-stewardship policy."
+    confidentialityNote: "Beneficiary data is held in confidence under the trust's data-stewardship policy.",
+    /* ---- Public pages (transparency ledger, donor portal, signing) speak in the tenant's voice ---- */
+    footerLine: "A heritage trust for Haiti",
+    description: "a heritage trust",
+    contactEmail: "hello@levoila.org",
+    programsUrl: "https://www.levoila.org/#phase-one",
+    programsLabel: "The Sites",
+    publicIntro: "Heritage work only survives on trust. So we show the books. Every dollar raised and every dollar spent, sorted by site and by purpose, updated as the money moves. No summaries you have to take on faith, no numbers behind a login.",
+    publicLocalNoteTitle: "Local hands, local records",
+    publicLocalNote: "Work on the ground is done and logged by Haitian teams at each site. Restricted gifts are tracked separately and spent only on what they were given for.",
+    pendingNote: "We are about to sign with Haiti's heritage authority and begin work at Fort-Liberté. The moment funds start flowing, every gift and every payment will appear here, line by line. This page is the promise, published before there is anything to hide.",
+    donateUrl: "https://helpbnk.com/@jacquesmjean"
   },
 
   /* ---- Finance ---- */
