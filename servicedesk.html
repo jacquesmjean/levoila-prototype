@@ -805,6 +805,15 @@ async function loadScoreboard(){
 
 function applyTenantSettings(ts){
   renderSampleBanner(ts);
+
+  // tenant_settings.countries is editable by an admin; tenant.config.js needs a
+  // deploy. Prefer the database so the list can be corrected without shipping.
+  if (Array.isArray(ts.countries) && ts.countries.length){
+    ACCESS_COUNTRIES = Array.from(new Set(ts.countries));
+    const ctry = document.getElementById('lCountry');
+    if (ctry) ctry.innerHTML = '<option value="">Headquarters (global)</option>' +
+      ACCESS_COUNTRIES.map(c => `<option>${esc(c)}</option>`).join('');
+  }
   if(ts.org_name){ const w=$('wm'); if(w) w.textContent=ts.org_name; document.title=ts.org_name+' · '+(ts.product_name||'Mission Control'); }
   if(ts.product_name){ const p=$('wmProduct'); if(p) p.textContent=ts.product_name; }
   const r=document.documentElement.style;
@@ -2720,7 +2729,7 @@ async function revokeGrant(id){
 }
 // --- Access roles, assignment, country/doc-group scoping ---
 const DOC_GROUPS = ['board','governance','legal','finance','hr','program','vendor','marketing','general'];
-const ACCESS_COUNTRIES = Array.from(new Set([...(CFG&&Array.isArray(CFG.countries)?CFG.countries:[])]));
+let ACCESS_COUNTRIES = Array.from(new Set([...(CFG&&Array.isArray(CFG.countries)?CFG.countries:[])]));
 let ROLE_CACHE = [];
 
 async function loadRoles(){
