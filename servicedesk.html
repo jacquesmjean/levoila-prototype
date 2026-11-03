@@ -17,19 +17,21 @@
     --limestone:#F4F1EA; --cream:#FAF7F0; --deep:#062744;
     --soft-gold:#D4A857; --red:#B23A48; --green:#2E6E4E;
     --ink:#1E2B3A; --hairline:rgba(11,37,69,.10); --gold-hairline:rgba(182,134,44,.35);
-    --paper:#FDFBF6;
+    --paper:#FDFBF6; --deeper:#04182B;
+    --font-display:'EB Garamond','Garamond',Georgia,serif;
+    --font-body:'Inter',system-ui,sans-serif;
   }
   html{scroll-behavior:smooth;}
-  body{font-family:'Inter',system-ui,sans-serif;color:var(--stone);background:var(--cream);
+  body{font-family:var(--font-body);color:var(--stone);background:var(--cream);
        -webkit-font-smoothing:antialiased;}
-  .serif{font-family:'EB Garamond','Garamond',Georgia,serif;}
+  .serif{font-family:var(--font-display);}
   ::selection{background:rgba(212,168,87,.35);}
   *{scrollbar-width:thin;scrollbar-color:rgba(182,134,44,.4) transparent;}
   ::-webkit-scrollbar{width:8px;height:8px;} ::-webkit-scrollbar-track{background:transparent;}
   ::-webkit-scrollbar-thumb{background:rgba(182,134,44,.35);border-radius:4px;}
 
   /* ---- wordmark & rules ---- */
-  .wordmark{font-family:'EB Garamond',Georgia,serif;letter-spacing:.22em;text-transform:uppercase;font-weight:600;}
+  .wordmark{font-family:var(--font-display);letter-spacing:.22em;text-transform:uppercase;font-weight:600;}
   .overline-label{font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:600;}
   .gold-rule{height:1px;background:linear-gradient(90deg,var(--gold),rgba(182,134,44,0));width:64px;}
   .page-head h1{color:var(--navy);}
@@ -39,7 +41,7 @@
   /* ---- auth backdrop: quiet monument geometry ---- */
   .auth-bg{background:
     radial-gradient(1100px 550px at 50% -10%, rgba(182,134,44,.16), rgba(182,134,44,0) 60%),
-    linear-gradient(168deg, #04182B 0%, var(--deep) 45%, var(--navy) 100%);position:relative;overflow:hidden;}
+    linear-gradient(168deg, var(--deeper) 0%, var(--deep) 45%, var(--navy) 100%);position:relative;overflow:hidden;}
   .auth-bg::before{content:"";position:absolute;inset:0;opacity:.05;pointer-events:none;
     background-image:repeating-linear-gradient(90deg, var(--limestone) 0 1px, transparent 1px 120px),
                      repeating-linear-gradient(0deg, var(--limestone) 0 1px, transparent 1px 120px);}
@@ -54,7 +56,7 @@
   @keyframes rise{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
 
   /* ---- sidebar ---- */
-  #sidebar{background:linear-gradient(178deg,#04182B, var(--deep) 55%, #0A2140);
+  #sidebar{background:linear-gradient(178deg,var(--deeper), var(--deep) 55%, var(--deep));
     border-right:1px solid rgba(212,168,87,.22);}
   .nav-group{margin-top:18px;}
   .nav-group-label{padding:0 18px 7px;color:rgba(212,168,87,.55);font-size:9.5px;
@@ -73,7 +75,7 @@
     background:linear-gradient(90deg,var(--gold),rgba(182,134,44,0) 70%);opacity:0;transition:opacity .2s;}
   .kpi:hover{border-color:var(--gold-hairline);box-shadow:0 10px 30px rgba(11,37,69,.08);transform:translateY(-1px);}
   .kpi:hover::before{opacity:1;}
-  .kpi .n{font-family:'EB Garamond',Georgia,serif;font-size:32px;font-weight:600;color:var(--navy);line-height:1.05;font-variant-numeric:oldstyle-nums;}
+  .kpi .n{font-family:var(--font-display);font-size:32px;font-weight:600;color:var(--navy);line-height:1.05;font-variant-numeric:oldstyle-nums;}
   .kpi .l{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#9a938a;margin-top:6px;font-weight:600;}
 
   /* ---- badges: engraved hairline chips ---- */
@@ -155,7 +157,7 @@
   .fin-card{background:var(--paper);border:1px solid var(--hairline);border-top:2px solid var(--gold);border-radius:2px;padding:18px 20px;}
   .fin-card-h{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#9a938a;font-weight:600;margin-bottom:14px;}
   .goal-card{background:var(--paper);border:1px solid var(--hairline);border-radius:2px;padding:18px 20px;position:relative;}
-  .goal-card .gt{font-family:'EB Garamond',Georgia,serif;font-size:17px;font-weight:600;color:var(--navy);line-height:1.25;}
+  .goal-card .gt{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--navy);line-height:1.25;}
   .progress-track{height:9px;border-radius:999px;background:var(--hairline);overflow:hidden;margin:12px 0 10px;}
   .progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#B6862C,#D4A857);transition:width 1s cubic-bezier(.22,1,.36,1);}
   .pace-chip{display:inline-flex;align-items:center;gap:5px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:2px 8px;border-radius:2px;border:1px solid;}
@@ -173,7 +175,7 @@
   @media(min-width:1024px){ #agentGrid{grid-template-columns:repeat(4,1fr);} }
   .cc-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
   .cc-hero{position:relative;overflow:hidden;border-radius:2px;border:1px solid rgba(212,168,87,.28);
-    background:linear-gradient(160deg,#04182B,#062744 55%,#0B2545);color:var(--limestone);
+    background:linear-gradient(160deg,var(--deeper),var(--deep) 55%,var(--navy));color:var(--limestone);
     padding:26px 30px;margin-bottom:22px;box-shadow:0 20px 50px rgba(2,16,30,.28);}
   .cc-hero::before{content:"";position:absolute;inset:0;opacity:.05;pointer-events:none;
     background-image:repeating-linear-gradient(90deg,var(--limestone) 0 1px,transparent 1px 90px),
@@ -194,7 +196,7 @@
   .agent-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:middle;}
   .dot-live{background:#2E6E4E;box-shadow:0 0 0 3px rgba(46,110,78,.15);}
   .dot-standby{background:#B6862C;box-shadow:0 0 0 3px rgba(182,134,44,.15);}
-  .agent-name{font-family:'EB Garamond',Georgia,serif;font-size:17px;font-weight:600;color:var(--navy);}
+  .agent-name{font-family:var(--font-display);font-size:17px;font-weight:600;color:var(--navy);}
   .agent-meta{font-size:11px;letter-spacing:.03em;color:#9a938a;margin-top:2px;}
   .agent-desc{font-size:12.5px;color:var(--stone);margin-top:9px;line-height:1.5;}
   .cc-section-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#9a938a;font-weight:600;
@@ -202,7 +204,7 @@
   .cc-section-label::after{content:"";flex:1;height:1px;background:var(--hairline);}
   .empty-elegant{border:1px dashed var(--gold-hairline);border-radius:2px;padding:22px;text-align:center;
     background:rgba(182,134,44,.03);}
-  .empty-elegant .e-t{font-family:'EB Garamond',Georgia,serif;font-size:15px;color:var(--navy);}
+  .empty-elegant .e-t{font-family:var(--font-display);font-size:15px;color:var(--navy);}
   .empty-elegant .e-s{font-size:12px;color:#9a938a;margin-top:3px;}
   .feed-row{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--hairline);}
   .feed-row:last-child{border-bottom:none;}
@@ -232,7 +234,7 @@
         <div class="overline-label tenant-product" style="color:var(--gold);">Mission Control</div>
         <div class="h-px w-10" style="background:var(--gold-hairline);"></div>
       </div>
-      <div class="serif italic text-[13.5px] tenant-motto" style="color:#9a938a;">When the governments forget, the world remembers.</div>
+      <div class="serif italic text-[13.5px] tenant-motto" style="color:#9a938a;text-wrap:balance;">When the governments forget, the world remembers.</div>
     </div>
     <div id="authMsg" class="hidden text-sm rounded-sm p-3 mb-4"></div>
     <div class="space-y-4">
@@ -285,7 +287,7 @@
 
       <div id="view-copilot" class="view">
         <div style="max-width:860px">
-          <h1 style="font-family:'EB Garamond',Georgia,serif;font-size:30px;font-weight:700;color:var(--navy,#0B2545);margin:0 0 4px">Executive Copilot</h1>
+          <h1 style="font-family:var(--font-display);font-size:30px;font-weight:700;color:var(--navy,#0B2545);margin:0 0 4px">Executive Copilot</h1>
           <p style="color:#6b6355;margin:0 0 18px;font-size:14px">Ask about anything running through Mission Control — money, donors, vendors, onboarding, volunteers, tickets, content. Answers come only from your live data.</p>
           <div id="cpBrief" style="margin-bottom:18px"></div>
           <div id="cpChat" style="background:#fff;border:1px solid #E5E0D5;border-radius:16px;overflow:hidden">
@@ -664,7 +666,7 @@ function applyTenant(){
     const escv = s => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const name = ORG.name;
     if (name){
-      document.querySelectorAll('.wordmark').forEach(el => el.textContent = name);
+      // wordmark is rendered by applyWordmark()
       document.title = name + (ORG.product ? ' · ' + ORG.product : '');
     }
     if (ORG.product) document.querySelectorAll('.tenant-product').forEach(el => el.textContent = ORG.product);
@@ -685,13 +687,67 @@ function applyTenant(){
       ctry.innerHTML = '<option value="">Headquarters (global)</option>' + CFG.countries.map(c => `<option>${escv(c)}</option>`).join('');
     }
     // Optional brand palette override
-    if (CFG.brand){ const r = document.documentElement;
-      if (CFG.brand.navy) r.style.setProperty('--navy', CFG.brand.navy);
-      if (CFG.brand.gold) r.style.setProperty('--gold', CFG.brand.gold);
-      if (CFG.brand.limestone) r.style.setProperty('--limestone', CFG.brand.limestone);
-      if (CFG.brand.cream) r.style.setProperty('--cream', CFG.brand.cream);
+    if (CFG.brand) applyBrand(CFG.brand);
+    applyWordmark(ORG.wordmark || ORG.name, ORG.wordmarkSub || null, ORG.logoUrl || null);
+    if (ORG.allowSelfSignup === false){
+      document.querySelectorAll('[onclick="signUp()"]').forEach(el => el.remove());
     }
   } catch(e){ /* branding is best-effort; never block the app */ }
+}
+// One brand applier for both sources. tenant.config.js runs first (so the
+// sign-in screen is already in the tenant's colours), then tenant_settings from
+// the database overrides whatever an administrator has set in Settings.
+function applyBrand(b){
+  if (!b) return;
+  const r = document.documentElement;
+  if (b.navy)      r.style.setProperty('--navy', b.navy);
+  if (b.deep)      r.style.setProperty('--deep', b.deep);
+  if (b.deeper)    r.style.setProperty('--deeper', b.deeper);
+  if (b.gold)      r.style.setProperty('--gold', b.gold);
+  if (b.softGold)  r.style.setProperty('--soft-gold', b.softGold);
+  if (b.ink)       r.style.setProperty('--ink', b.ink);
+  if (b.limestone) r.style.setProperty('--limestone', b.limestone);
+  if (b.cream)     r.style.setProperty('--cream', b.cream);
+  if (b.displayFont || b.bodyFont){
+    const fams = [];
+    if (b.displayFont) fams.push('family=' + encodeURIComponent(b.displayFont) + ':wght@400;500;600;700');
+    if (b.bodyFont)    fams.push('family=' + encodeURIComponent(b.bodyFont)    + ':wght@400;500;600;700');
+    const id = 'tenant-fonts-' + fams.join('|').replace(/[^a-z0-9]/gi,'');
+    if (!document.getElementById(id)){
+      const l = document.createElement('link'); l.id = id; l.rel = 'stylesheet';
+      l.href = 'https://fonts.googleapis.com/css2?' + fams.join('&') + '&display=swap';
+      document.head.appendChild(l);
+    }
+    if (b.displayFont) r.style.setProperty('--font-display', "'" + b.displayFont + "',Georgia,serif");
+    if (b.bodyFont)    r.style.setProperty('--font-body',    "'" + b.bodyFont    + "',system-ui,sans-serif");
+  }
+}
+// Renders the organization's mark wherever the app shows one: the sidebar and
+// the sign-in / denied cards. Emblem (if any) above or beside the wordmark,
+// with the sub-line ("GLOBAL TRUST") under it, exactly as on the public site.
+function applyWordmark(mark, sub, logo){
+  if (!mark) return;
+  document.querySelectorAll('.wordmark').forEach(el => {
+    const inAside = !!el.closest('aside');
+    el.innerHTML = '';
+    el.style.letterSpacing = '.08em'; el.style.textTransform = 'none';
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:10px;' + (inAside ? '' : 'justify-content:center;flex-direction:column;gap:12px;');
+    if (logo){
+      const img = document.createElement('img'); img.src = logo; img.alt = '';
+      img.style.cssText = inAside ? 'width:30px;height:30px;object-fit:contain;border-radius:6px;background:rgba(255,255,255,.92);padding:2px'
+                                  : 'width:64px;height:64px;object-fit:contain';
+      row.appendChild(img);
+    }
+    const txt = document.createElement('div'); txt.style.textAlign = inAside ? 'left' : 'center';
+    const m = document.createElement('div'); m.textContent = mark;
+    m.style.cssText = 'font-family:var(--font-display);font-weight:600;line-height:1.05;' + (inAside ? 'font-size:18px' : 'font-size:26px');
+    txt.appendChild(m);
+    if (sub){ const sb_ = document.createElement('div'); sb_.textContent = sub;
+      sb_.style.cssText = 'font-family:var(--font-body);font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;margin-top:3px;opacity:.75';
+      txt.appendChild(sb_); }
+    row.appendChild(txt); el.appendChild(row);
+  });
 }
 try { applyTenant(); } catch(e){ console.warn('branding init failed (non-blocking)', e); }
 let ME = null;           // staff row
@@ -805,6 +861,10 @@ async function loadScoreboard(){
 
 function applyTenantSettings(ts){
   renderSampleBanner(ts);
+  applyWordmark(ts.wordmark || ts.short_name || ts.org_name, ts.wordmark_sub || null, ts.logo_url || null);
+  applyBrand({ navy:ts.brand_navy, deep:ts.brand_deep, deeper:ts.brand_deeper, gold:ts.brand_gold,
+               softGold:ts.brand_soft_gold, ink:ts.brand_ink, displayFont:ts.font_display, bodyFont:ts.font_body });
+  if (ts.allow_self_signup === false) document.querySelectorAll('[onclick="signUp()"]').forEach(el => el.remove());
 
   // tenant_settings.countries is editable by an admin; tenant.config.js needs a
   // deploy. Prefer the database so the list can be corrected without shipping.
@@ -814,11 +874,9 @@ function applyTenantSettings(ts){
     if (ctry) ctry.innerHTML = '<option value="">Headquarters (global)</option>' +
       ACCESS_COUNTRIES.map(c => `<option>${esc(c)}</option>`).join('');
   }
-  if(ts.org_name){ const w=$('wm'); if(w) w.textContent=ts.org_name; document.title=ts.org_name+' · '+(ts.product_name||'Mission Control'); }
+  if(ts.org_name){ document.title=ts.org_name+' · '+(ts.product_name||'Mission Control'); }
   if(ts.product_name){ const p=$('wmProduct'); if(p) p.textContent=ts.product_name; }
-  const r=document.documentElement.style;
-  if(ts.brand_navy) r.setProperty('--navy', ts.brand_navy);
-  if(ts.brand_gold){ r.setProperty('--gold', ts.brand_gold); r.setProperty('--soft-gold', ts.brand_gold); }
+
 }
 
 // ---------- nav ----------
@@ -845,13 +903,15 @@ function canSee(k){
   return !ME || !Array.isArray(ME.functions) || ME.functions.includes(k);
 }
 function buildNav(){
+  const L = (CFG && CFG.labels) || {};
+  const lab = (k, l) => L[k] || l;
   $('navLinks').innerHTML = NAV_GROUPS.map(([g, items]) => {
     const vis = items.filter(([k]) => canSee(k));
     if (!vis.length) return '';
     return `<div class="nav-group"><div class="nav-group-label">${g}</div>` +
-      vis.map(([k,l]) => `<div class="side-link" id="nav-${k}" onclick="show('${k}')">${l}</div>`).join('') + `</div>`;
+      vis.map(([k,l]) => `<div class="side-link" id="nav-${k}" onclick="show('${k}')">${lab(k,l)}</div>`).join('') + `</div>`;
   }).join('');
-  $('mobileNav').innerHTML = VIEWS.filter(([k])=>canSee(k)).map(([k,l]) => `<button class="pill-tab" style="white-space:nowrap;color:rgba(244,241,234,.7);border-color:rgba(244,241,234,.25)" onclick="show('${k}')">${l}</button>`).join('');
+  $('mobileNav').innerHTML = VIEWS.filter(([k])=>canSee(k)).map(([k,l]) => `<button class="pill-tab" style="white-space:nowrap;color:rgba(244,241,234,.7);border-color:rgba(244,241,234,.25)" onclick="show('${k}')">${lab(k,l)}</button>`).join('');
 }
 function show(k){
   if (!canSee(k)) { toast('Your account does not have access to this section', true); return; }
@@ -1798,7 +1858,7 @@ function renderBrief(s){
   $('cpBrief').innerHTML = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">` +
     tiles.map(([k,val,sub])=>`<div style="background:#fff;border:1px solid #E5E0D5;border-radius:12px;padding:14px">
       <div style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#6b6355;font-weight:700">${cpEsc(k)}</div>
-      <div style="font-family:'EB Garamond',Georgia,serif;font-size:24px;font-weight:700;color:#0B2545;margin-top:4px;line-height:1">${cpEsc(val)}</div>
+      <div style="font-family:var(--font-display);font-size:24px;font-weight:700;color:#0B2545;margin-top:4px;line-height:1">${cpEsc(val)}</div>
       <div style="font-size:11px;color:#9a9384;margin-top:4px">${cpEsc(sub)}</div></div>`).join('') + `</div>`;
 }
 
