@@ -33,7 +33,18 @@ window.TENANT_CONFIG = {
     wordmarkSub: "GLOBAL TRUST",
     logoUrl: "https://ennoblerise.org/images/emblem.png",
     // Accounts are provisioned by an administrator; nobody self-registers.
-    allowSelfSignup: false
+    allowSelfSignup: false,
+    /* ---- Public pages (transparency ledger, donor portal, signing) ---- */
+    footerLine: "Ennobling youth, educators and women across eight countries",
+    description: "a 501(c)(3) public charity",
+    // contactEmail: set the mailbox donors should write to before the portal goes live
+    programsUrl: "https://ennoblerise.org/en/programs",
+    programsLabel: "Programs",
+    publicIntro: "Trust is the only currency a charity really has. So we show the books. Every dollar raised and every dollar spent, sorted by country and by pillar, updated as the money moves. No summaries you have to take on faith, no numbers behind a login.",
+    publicLocalNoteTitle: "Every country, its own record",
+    publicLocalNote: "Programme spending in each of the eight countries is logged by the team doing the work. Restricted gifts, scholarship funds among them, are tracked separately and spent only on what they were given for.",
+    pendingNote: "The first programme dollars move in FY2027. The moment they do, every gift and every payment will appear here, line by line. This page is the promise, published before there is anything to hide.",
+    donateUrl: "https://ennoblerise.org/en/donate"
   },
 
   /* ---- Navigation labels in the organization's own vocabulary ---- */

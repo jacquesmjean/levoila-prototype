@@ -1,11 +1,11 @@
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Where Every Dollar Goes — Levoila Public Ledger</title>
-<meta name="description" content="Levoila's live public ledger. Every dollar raised and every dollar spent, by site and by category, updated as funds move. Two signatures on every disbursement. Nothing hidden.">
-<meta property="og:title" content="Where Every Dollar Goes — Levoila">
-<meta property="og:description" content="The Levoila public ledger. Every dollar in, every dollar out, updated as funds move.">
+<title>Where Every Dollar Goes — Public Ledger</title>
+<meta name="description" content="A live public ledger. Every dollar raised and every dollar spent, by site and by category, updated as funds move. Two signatures on every disbursement. Nothing hidden.">
+<meta property="og:title" content="Where Every Dollar Goes">
+<meta property="og:description" content="A public ledger. Every dollar in, every dollar out, updated as funds move.">
 <meta property="og:type" content="website">
-<link rel="canonical" href="https://www.levoila.org/transparency">
+<link rel="canonical" id="canon" href="/transparency">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -110,13 +110,13 @@ footer a{color:#c9d5e6;text-decoration:none;font-weight:600}
 </style></head><body>
 
 <header class="top"><div class="wrap topbar">
-  <a class="brand" href="https://www.levoila.org">
-    <span class="name" id="brandName">Levoila</span>
+  <a class="brand" id="brandHome" href="/">
+    <span class="name" id="brandName">Mission Control</span>
     <span class="over" id="brandOver">Public Ledger</span>
   </a>
   <nav class="topnav">
-    <a href="https://www.levoila.org" class="hideSm">Home</a>
-    <a href="https://www.levoila.org/#phase-one" class="hideSm">The Sites</a>
+    <a id="navHome" href="/" class="hideSm">Home</a>
+    <a id="navSites" href="#" class="hideSm" style="display:none">Programs</a>
     <a href="https://helpbnk.com/@jacquesmjean">Support the mission</a>
   </nav>
 </div></header>
@@ -124,7 +124,7 @@ footer a{color:#c9d5e6;text-decoration:none;font-weight:600}
 <div class="hero"><div class="wrap">
   <p class="eyebrow">The Public Ledger</p>
   <h1 class="serif">Where every dollar goes.</h1>
-  <p>Heritage work only survives on trust. So we show the books. Every dollar raised and every dollar spent, sorted by site and by purpose, updated as the money moves. No summaries you have to take on faith, no numbers behind a login.</p>
+  <p id="introCopy">Trust is the only currency a charity really has. So we show the books. Every dollar raised and every dollar spent, sorted by country and by purpose, updated as the money moves. No summaries you have to take on faith, no numbers behind a login.</p>
   <p class="updated" id="updated">Loading the ledger…</p>
 </div></div>
 
@@ -151,15 +151,15 @@ footer a{color:#c9d5e6;text-decoration:none;font-weight:600}
   <div class="cols">
     <div><b>Two signatures on every payment</b><p>No single person can move money. Each disbursement is authorized by two people before it clears, and both names are attached to the record.</p></div>
     <div><b>A tamper-evident record</b><p>Entries are hash-chained. Once a line is written it cannot be quietly edited or deleted. Any change leaves a mark.</p></div>
-    <div><b>Local hands, local records</b><p>Work on the ground is done and logged by Haitian teams at each site. Restricted gifts are tracked separately and spent only on what they were given for.</p></div>
+    <div id="localNote"><b>Restricted gifts stay restricted</b><p>Gifts given for one purpose are tracked separately and spent only on that purpose. Work in each country is logged by the people doing it.</p></div>
   </div>
 </div></div>
 
 <footer><div class="wrap">
-  <div>© <span id="yr"></span> Levoila · A heritage trust for Haiti</div>
+  <div>© <span id="yr"></span> <span id="footOrg">Mission Control</span><span id="footLine"></span></div>
   <div class="dlrow">
     <a id="dlJson" href="/api/transparency">Download data (JSON)</a>
-    <a href="https://www.levoila.org">levoila.org</a>
+    <a id="footSite" href="/"></a>
   </div>
 </div></footer>
 
@@ -167,7 +167,20 @@ footer a{color:#c9d5e6;text-decoration:none;font-weight:600}
 const CFG = window.TENANT_CONFIG || {};
 const $ = id => document.getElementById(id);
 document.getElementById('yr').textContent = new Date().getFullYear();
-if (CFG.org && CFG.org.name){ $('brandName').textContent = CFG.org.name; }
+(function(){
+  const O = CFG.org || {}; const name = O.name || 'Mission Control';
+  const site = O.domain ? 'https://' + O.domain.replace(/^https?:\/\//,'') : '/';
+  $('brandName').textContent = name; $('footOrg').textContent = O.legalName || name;
+  if (O.footerLine) $('footLine').textContent = ' · ' + O.footerLine;
+  $('brandHome').href = site; $('navHome').href = site; $('footSite').href = site; $('footSite').textContent = O.domain || '';
+  if (O.programsUrl){ const n = $('navSites'); n.href = O.programsUrl; n.textContent = O.programsLabel || 'Programs'; n.style.display = ''; }
+  if (O.domain) $('canon').href = site + '/transparency';
+  document.title = 'Where Every Dollar Goes — ' + name;
+  const intro = document.getElementById('introCopy'); if (intro && O.publicIntro) intro.textContent = O.publicIntro;
+  const local = document.getElementById('localNote'); if (local && O.publicLocalNote) local.innerHTML = '<b>' + O.publicLocalNoteTitle + '</b><p>' + O.publicLocalNote + '</p>';
+  const r = document.documentElement.style, br = CFG.brand || {};
+  if (br.navy) r.setProperty('--navy', br.navy); if (br.gold) r.setProperty('--gold', br.gold);
+})();
 
 const USD0 = n => '$' + Math.round(Number(n)||0).toLocaleString('en-US');
 const USD = n => {
@@ -262,8 +275,8 @@ function render(d){
   if (d.entriesCount === 0 && !d._failed){
     c.innerHTML = `<section><div class="empty">
       <h3 class="serif">The ledger opens the day the first dollar moves.</h3>
-      <p>We are about to sign with Haiti's heritage authority and begin work at Fort-Liberté. The moment funds start flowing, every gift and every payment will appear here, line by line. This page is the promise, published before there is anything to hide.</p>
-      <p style="margin-top:18px"><a class="btn" href="https://helpbnk.com/@jacquesmjean">Be one of the first</a></p>
+      <p>${esc((CFG.org&&CFG.org.pendingNote)||'The moment funds start flowing, every gift and every payment will appear here, line by line. This page is the promise, published before there is anything to hide.')}</p>
+      ${CFG.org&&CFG.org.donateUrl?`<p style="margin-top:18px"><a class="btn" href="${CFG.org.donateUrl}">Be one of the first</a></p>`:''}
     </div></section>`;
     return;
   }

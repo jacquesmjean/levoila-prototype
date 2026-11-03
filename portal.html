@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Your Levoila — Donor & Funder Portal</title>
+<title>Donor & Funder Portal</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="tenant.config.js"></script>
 <style>
@@ -59,8 +59,8 @@ tr:last-child td{border-bottom:0}
 </style></head><body>
 
 <header class="top"><div class="topbar">
-  <div class="brand"><span class="name" id="brandName">Levoila</span><span class="over">Donor &amp; Funder Portal</span></div>
-  <a href="https://www.levoila.org">levoila.org</a>
+  <div class="brand"><span class="name" id="brandName">Mission Control</span><span class="over">Donor &amp; Funder Portal</span></div>
+  <a id="siteLink" href="/"></a>
 </div></header>
 
 <div id="app">
@@ -70,7 +70,20 @@ tr:last-child td{border-bottom:0}
 <script>
 const CFG = window.TENANT_CONFIG || {};
 const sb = supabase.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey);
-if (CFG.org && CFG.org.name){ document.getElementById('brandName').textContent = CFG.org.name; }
+const ORGO = CFG.org || {}, ORGN = ORGO.name || 'Mission Control', ORGLINE = ORGO.footerLine || '';
+const ORGMAIL = ORGO.contactEmail || '';
+(function(){
+  document.getElementById('brandName').textContent = ORGN;
+  document.title = 'Your ' + ORGN + ' — Donor & Funder Portal';
+  const site = ORGO.domain ? 'https://' + ORGO.domain : '/';
+  const sl = document.getElementById('siteLink'); if (sl){ sl.href = site; sl.textContent = ORGO.domain || ''; }
+  document.querySelectorAll('.orgName').forEach(e => e.textContent = ORGN);
+  document.querySelectorAll('.orgDesc').forEach(e => e.textContent = ORGO.description || 'a registered charity');
+  const mail = ORGO.contactEmail || (ORGO.domain ? 'hello@' + ORGO.domain : '');
+  document.querySelectorAll('.orgMail').forEach(e => { e.href = 'mailto:' + mail; e.textContent = mail; });
+  const r = document.documentElement.style, br = CFG.brand || {};
+  if (br.navy) r.setProperty('--navy', br.navy); if (br.gold) r.setProperty('--gold', br.gold);
+})();
 const app = document.getElementById('app');
 const USD0 = n => '$' + Math.round(Number(n)||0).toLocaleString('en-US');
 const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -87,7 +100,7 @@ function signInView(prefill){
     <button id="send">Email me a sign-in link</button>
     <div class="msg" id="msg"></div>
   </div>
-  <p class="foot">Are you Levoila staff? The operations console is at <a href="/servicedesk">/servicedesk</a>.</p>
+  <p class="foot">Are you <span class="orgName">our</span> staff? The operations console is at <a href="/servicedesk">/servicedesk</a>.</p>
   </div>`;
   const btn = document.getElementById('send'), msg = document.getElementById('msg'), em = document.getElementById('email');
   const go = async ()=>{
@@ -131,7 +144,7 @@ async function dashboard(){
 
   app.innerHTML = `<div class="wrap">
     <div class="row">
-      <div><p class="eyebrow">Your Levoila</p><h1 class="big serif">${esc(d.name||'Welcome')}</h1>
+      <div><p class="eyebrow">Your ${esc(ORGN)}</p><h1 class="big serif">${esc(d.name||'Welcome')}</h1>
         <p class="sub">Signed in as ${esc(d.email)}</p></div>
       <button class="ghost" onclick="signOut()">Sign out</button>
     </div>
@@ -155,10 +168,10 @@ async function dashboard(){
     <div class="sec"><h2 class="serif">Tax statements</h2>
       <table><thead><tr><th>Year</th><th class="amt">Deductible total</th><th style="text-align:right">Statement</th></tr></thead>
       <tbody>${yearRows}</tbody></table>
-      <p class="foot" style="text-align:left;margin-top:12px">Levoila is a heritage trust. Retain your statement for your records. Consult your tax advisor on deductibility in your country.</p>
+      <p class="foot" style="text-align:left;margin-top:12px"><span class="orgName"></span> is <span class="orgDesc">a registered charity</span>. Retain your statement for your records. Consult your tax advisor on deductibility in your country.</p>
     </div>
 
-    <p class="foot">Questions about your giving? Write to <a href="mailto:hello@levoila.org">hello@levoila.org</a>.</p>
+    ${ORGMAIL?`<p class="foot">Questions about your giving? Write to <a href="mailto:${ORGMAIL}">${ORGMAIL}</a>.</p>`:``}
   </div>`;
   window._donor = d;
 }
@@ -169,14 +182,14 @@ window.statement = function(year){
   const total = gifts.reduce((s,g)=>s+(Number(g.amount)||0),0);
   const rows = gifts.map(g=>`<tr><td>${esc(g.date)}</td><td>${esc(g.site||'General fund')}</td><td style="text-align:right">${USD0(g.amount)}</td></tr>`).join('');
   const w = window.open('', '_blank');
-  w.document.write(`<html><head><title>Levoila — ${year} Giving Statement</title>
+  w.document.write(`<html><head><title>${ORGN} — ${year} Giving Statement</title>
     <style>body{font-family:Georgia,serif;color:#0B2545;max-width:700px;margin:40px auto;padding:0 24px;line-height:1.6}
     h1{font-size:24px;margin:0} .gold{color:#B6862C;letter-spacing:.2em;text-transform:uppercase;font-size:11px;font-family:Arial}
     table{width:100%;border-collapse:collapse;margin:24px 0;font-family:Arial;font-size:14px}
     th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left} th{font-size:11px;text-transform:uppercase;color:#666}
     .tot{font-size:20px;font-weight:bold} .muted{color:#666;font-size:13px;font-family:Arial}
     @media print{button{display:none}}</style></head><body>
-    <div class="gold">Levoila · Heritage Trust for Haiti</div>
+    <div class="gold">${ORGN}${ORGLINE?" · "+ORGLINE:""}</div>
     <h1>${year} Year-End Giving Statement</h1>
     <p class="muted">Prepared for ${esc(d.name||d.email)} · ${esc(d.email)}</p>
     <table><thead><tr><th>Date</th><th>Designation</th><th style="text-align:right">Amount</th></tr></thead>
