@@ -38,7 +38,8 @@ window.TENANT_CONFIG = {
     /* ---- Public pages (transparency ledger, donor portal, signing) ---- */
     footerLine: "Ennobling youth, educators and women across eight countries",
     description: "a 501(c)(3) public charity",
-    // contactEmail: set the mailbox donors should write to before the portal goes live
+    contactEmail: "engage@ennoblerise.org",
+    scholarshipUrl: "https://ennoblerise.org/en/scholarship",
     programsUrl: "https://ennoblerise.org/en/programs",
     programsLabel: "Programs",
     publicIntro: "Trust is the only currency a charity really has. So we show the books. Every dollar raised and every dollar spent, sorted by country and by pillar, updated as the money moves. No summaries you have to take on faith, no numbers behind a login.",
