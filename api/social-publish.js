@@ -1,13 +1,14 @@
 // Levoila — publish an APPROVED content_calendar post to its social platform.
 // Staff-only: verifies the caller's Supabase session token against the staff table.
-// No npm deps. Requires env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
+// No npm deps. Requires env: SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY.
 // If BLOTATO_API_KEY is set and the platform account is connected, posts immediately
 // via Blotato and marks the row 'posted'. Otherwise it QUEUES the row (status
 // 'approved', scheduled now) so the daily Social Agent posts it on its next run —
 // nothing is lost, nothing fabricated.
-const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlna3ZocWRsamZqamt1ZGVpc2JzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5MTcyNzAsImV4cCI6MjA5OTQ5MzI3MH0.hsQCo-THdMXt0AyUoyJgdYwyzjn6rye0Gwz33DwuhCg';
+const ANON = process.env.SUPABASE_ANON_KEY;
 
 async function requireStaff(req, SB, KEY) {
+  if (!ANON) { console.error('SUPABASE_ANON_KEY is not set for this deployment'); return null; }
   const auth = req.headers['authorization'] || '';
   const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
   if (!token) return null;

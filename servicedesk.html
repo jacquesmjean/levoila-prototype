@@ -281,6 +281,7 @@
   <main class="flex-1 min-w-0">
     <div id="mobileNav" class="hidden gap-2 overflow-x-auto p-3" style="background:var(--deep);"></div>
     <div class="p-6 lg:p-8 max-w-[1200px]">
+      <div id="sampleBanner" class="mb-5" style="display:none"></div>
 
       <div id="view-copilot" class="view">
         <div style="max-width:860px">
@@ -333,6 +334,10 @@
 
         <!-- KPI band -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="kpiGrid"></div>
+
+        <!-- The strategic plan, graded -->
+        <div class="cc-section-label">The scoreboard · the plan, graded</div>
+        <div id="scoreboardGrid" class="mb-9"></div>
 
         <!-- Autonomous agents -->
         <div class="cc-section-label">The 24/7 Machine</div>
@@ -497,6 +502,14 @@
         <div class="cc-section-label">Attendance · this year (3 unjustified absences = seat under review)</div>
         <div id="attendanceTable" class="mb-9"></div>
         <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <div class="cc-section-label" style="margin-bottom:0">Document compliance · every member, every required document</div>
+          <button class="btn btn-ghost" onclick="refreshCompliance()">Re-check signatures</button>
+        </div>
+        <div id="complianceSummary" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4"></div>
+        <div id="complianceGaps" class="mb-3"></div>
+        <div id="complianceTable" class="mb-9"></div>
+
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
           <div class="cc-section-label" style="margin-bottom:0">Program reports · board approval</div>
           <button class="btn btn-ghost" onclick="openNewReport()">+ Program report</button>
         </div>
@@ -626,7 +639,7 @@
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Social</h1>
           <button class="btn btn-gold" onclick="openNewSocial()">+ Compose</button>
         </div>
-        <p class="text-sm text-gray-500 mb-4">Compose, schedule, and publish across platforms. Publishing goes out through the Levoila accounts connected in Blotato; performance flows back here.</p>
+        <p class="text-sm text-gray-500 mb-4">Compose, schedule, and publish across platforms. Publishing goes out through the accounts <span class="tenant-org">this organization</span> has connected in Blotato; performance flows back here.</p>
         <div id="socialConnBanner" class="mb-6"></div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="socialKpis"></div>
         <div id="socialTable"></div>
@@ -746,7 +759,52 @@ function tierAllows(k){
   if(k==='social'||k==='blog') return TSET.social_enabled!==false;
   return true;
 }
+// A standing, honest disclosure while the database still holds seed records.
+// Driven by tenant_settings.sample_data so it disappears at go-live rather
+// than having to be hunted down in the markup.
+function renderSampleBanner(ts){
+  const el = $('sampleBanner'); if (!el) return;
+  if (!ts || ts.sample_data !== true) { el.style.display = 'none'; el.innerHTML = ''; return; }
+  el.style.display = '';
+  el.innerHTML = `<div style="background:#FBF3E6;border:1px solid #E4C98B;color:#8A5A00;border-radius:10px;padding:11px 16px;font-size:13px;line-height:1.55">
+    <b>Illustrative data.</b> Donations, beneficiaries, tickets and volunteer records in this system are
+    sample entries created to demonstrate how each screen behaves. The board roster, committees, meeting
+    schedule and compliance requirements are real. Treat no figure here as an actual result until this
+    notice is gone — an administrator clears it under Settings once every record is live.</div>`;
+}
+
+const SCORE_COLOR = { green:'#2E7D57', yellow:'#B6862C', red:'#B3261E', grey:'#9a938a' };
+async function loadScoreboard(){
+  const el = $('scoreboardGrid'); if (!el) return;
+  const { data, error } = await sb.from('scorecard_metrics').select('*');
+  if (error) { el.innerHTML = ''; return; }
+  const rows = (data||[]).slice().sort((a,b)=>
+    (b.is_north_star?1:0)-(a.is_north_star?1:0) || String(a.measure).localeCompare(String(b.measure)));
+  if (!rows.length) {
+    el.innerHTML = `<div class="empty-elegant"><div class="e-t">No measures defined yet</div>
+      <div class="e-s">The scoreboard grades the strategic plan. Add the measures that decide whether it is working.</div></div>`;
+    return;
+  }
+  el.innerHTML = '<div class="grid md:grid-cols-2 gap-4">' + rows.map(m => {
+    const c = SCORE_COLOR[m.status] || SCORE_COLOR.grey;
+    return `<div class="fin-card"${m.is_north_star?' style="border:1.5px solid var(--gold)"':''}>
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          ${m.is_north_star?'<div class="overline-label" style="color:var(--gold)">North Star</div>':''}
+          <div class="serif text-[15.5px] font-semibold" style="color:var(--navy)">${esc(m.measure)}</div>
+        </div>
+        <span title="${esc(m.status||'not graded')}" style="flex:0 0 auto;width:10px;height:10px;border-radius:50%;background:${c};margin-top:7px"></span>
+      </div>
+      <div class="serif" style="font-size:21px;color:${c};margin-top:7px">${esc(m.current_value||'not yet measured')}</div>
+      <div class="text-xs text-gray-500" style="margin-top:4px">Green means ${esc(m.green_means||'—')}</div>
+      ${m.note?`<div class="text-xs text-gray-400" style="margin-top:7px;line-height:1.5">${esc(m.note)}</div>`:''}
+      <div class="text-xs text-gray-400" style="margin-top:8px">${esc(m.owner||'unassigned')} · ${esc(m.cadence||'')} · reviewed ${m.last_reviewed?fmtD(m.last_reviewed):'not yet'}${m.next_review?' · next '+fmtD(m.next_review):''}</div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
 function applyTenantSettings(ts){
+  renderSampleBanner(ts);
   if(ts.org_name){ const w=$('wm'); if(w) w.textContent=ts.org_name; document.title=ts.org_name+' · '+(ts.product_name||'Mission Control'); }
   if(ts.product_name){ const p=$('wmProduct'); if(p) p.textContent=ts.product_name; }
   const r=document.documentElement.style;
@@ -862,20 +920,40 @@ async function loadOverview(){
   setTimeout(()=>{ $('ccTherm').style.width = pct + '%'; }, 60);
 
   // KPI band — the eight that matter most
+  // Each number says what it means. The context lines live in kpi_context so
+  // they can be reworded per tenant without touching the application.
+  let CTX = {};
+  try {
+    const { data: kctx } = await sb.from('kpi_context').select('*');
+    (kctx||[]).forEach(r => CTX[r.key] = r);
+  } catch(e) { CTX = {}; }
   const cards = [
-    ['Raised · total', fmt$(s.donations_total)], ['Stewards', s.stewards],
-    ['Open tickets', s.open_tickets], ['SLA breached', s.sla_breached, s.sla_breached>0],
-    ['Beneficiaries pending', s.beneficiaries_pending], ['Grants qualified', s.grants_qualified],
-    ['Volunteers active', s.volunteers_active], ['Posts scheduled', s.content_scheduled],
+    ['raised_total',       'Raised · total',         fmt$(s.donations_total)],
+    ['stewards',           'Stewards',               s.stewards],
+    ['open_tickets',       'Open tickets',           s.open_tickets],
+    ['sla_breached',       'SLA breached',           s.sla_breached, s.sla_breached>0],
+    ['beneficiaries',      'Beneficiaries pending',  s.beneficiaries_pending],
+    ['grants_qualified',   'Grants qualified',       s.grants_qualified],
+    ['volunteers_active',  'Volunteers active',      s.volunteers_active],
+    ['posts_scheduled',    'Posts scheduled',        s.content_scheduled],
   ];
-  $('kpiGrid').innerHTML = cards.map(([l,n,alert],i) =>
-    `<div class="kpi" style="animation:viewIn .4s cubic-bezier(.22,1,.36,1) ${i*35}ms both"><div class="n" ${alert?'style="color:var(--red)"':''}>${n}</div><div class="l">${l}</div></div>`).join('');
+  $('kpiGrid').innerHTML = cards.map(([k,l,n,alert],i) => {
+    const c = CTX[k];
+    return `<div class="kpi" style="animation:viewIn .4s cubic-bezier(.22,1,.36,1) ${i*35}ms both">
+      <div class="n" ${alert?'style="color:var(--red)"':''}>${n}</div>
+      <div class="l">${esc((c&&c.label)||l)}</div>
+      ${c&&c.context?`<div class="text-xs text-gray-400" style="margin-top:5px;line-height:1.45">${esc(c.context)}</div>`:''}
+    </div>`;
+  }).join('');
 
   // Agents
   $('agentGrid').innerHTML = agentCards(OV_DEMO);
 
   // Countries in scope (always real — this is the plan of record)
   renderCountries();
+
+  // The plan, graded
+  loadScoreboard();
 
   // SLA panel
   if (OV_DEMO) {
@@ -2107,6 +2185,173 @@ async function createPerson(){
 }
 
 // ========== Board & Administration ==========
+// ---------- document compliance ----------
+// One catalogue (compliance_gates), one source of truth (person_compliance),
+// one spine (people). Nothing here reads an entity's own boolean columns.
+const GATE_KIND_LABEL = { signature:'Signature required', attestation:'Staff attestation', document:'Document on file' };
+
+async function loadCompliance(){
+  const [{ data:standing, error:e1 }, { data:gates, error:e2 }, { data:tpls }] = await Promise.all([
+    sb.from('compliance_standing').select('*'),
+    sb.from('compliance_gates').select('*').order('sort'),
+    sb.from('doc_templates').select('name,gate_key').not('gate_key','is',null)
+  ]);
+  // Tenants provisioned before the unified compliance model do not have these
+  // relations. Hide the section instead of shouting about it.
+  const hide = () => {
+    ['complianceSummary','complianceGaps','complianceTable'].forEach(id => {
+      const n = $(id); if (n) { n.innerHTML = ''; n.style.display = 'none'; }
+    });
+    const btn = document.querySelector('[onclick="refreshCompliance()"]');
+    if (btn && btn.parentElement) btn.parentElement.style.display = 'none';
+  };
+  if (e1 || e2) { console.info('compliance model not present for this tenant'); return hide(); }
+  ['complianceSummary','complianceGaps','complianceTable'].forEach(id => {
+    const n = $(id); if (n) n.style.display = '';
+  });
+
+  const rows   = (standing||[]).filter(r => r.person_type === 'board')
+                               .sort((a,b)=> Number(b.outstanding) - Number(a.outstanding));
+  const hasTpl = new Set((tpls||[]).map(t => t.gate_key));
+  const undrafted = (gates||[]).filter(g => g.required && g.evidence_kind === 'signature' && !hasTpl.has(g.key));
+
+  const totalReq = rows.reduce((a,r)=>a+Number(r.required_total||0),0);
+  const totalMet = rows.reduce((a,r)=>a+Number(r.required_met||0),0);
+  const good     = rows.filter(r=>r.in_good_standing).length;
+  const awaiting = rows.reduce((a,r)=>a+Number(r.awaiting_signature||0),0);
+
+  $('complianceSummary').innerHTML = [
+    ['Members in good standing', good+' of '+rows.length, good < rows.length],
+    ['Required documents met',   totalMet+' of '+totalReq, totalMet < totalReq],
+    ['Awaiting signature',       awaiting, false],
+    ['Documents not yet drafted',undrafted.length, undrafted.length > 0]
+  ].map(([l,n,alert]) =>
+    `<div class="kpi"><div class="n" style="font-size:26px;${alert?'color:var(--red)':''}">${n}</div><div class="l">${l}</div></div>`
+  ).join('');
+
+  $('complianceGaps').innerHTML = undrafted.length
+    ? `<div style="background:#FBF3E6;border:1px solid #E4C98B;color:#8A5A00;border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.55">
+         <b>${undrafted.length} required document${undrafted.length>1?'s have':' has'} not been drafted yet.</b>
+         No member can reach good standing until ${undrafted.length>1?'they exist':'it exists'} —
+         ${undrafted.map(g=>esc(g.label)).join(' · ')}.
+         Draft ${undrafted.length>1?'them':'it'} under Documents, then issue from the table below.</div>`
+    : '';
+
+  $('complianceTable').innerHTML = tableHtml(
+    ['Board member','Country','Required','Met','Awaiting','Outstanding','Standing'],
+    rows.map(r=>[
+      `<b style="color:var(--navy)">${esc(r.name)}</b><div class="text-xs text-gray-400">${esc(r.email||'')}</div>`,
+      esc(r.country||'—'),
+      r.required_total,
+      r.required_met,
+      Number(r.awaiting_signature) ? `<span class="badge b-P3">${r.awaiting_signature}</span>` : '—',
+      `<b style="color:${Number(r.outstanding)>0?'var(--red)':'var(--stone)'}">${r.outstanding}</b>`,
+      r.in_good_standing ? '<span class="badge b-approved">in good standing</span>'
+                         : '<span class="badge b-breach">incomplete</span>'
+    ]),
+    i=>`openCompliance('${rows[i].person_id}')`,
+    'No board members on the roster yet. Add them under People & HR with type "board".'
+  );
+}
+
+async function openCompliance(pid){
+  const [{ data:p }, { data:gates }, { data:mine }, { data:tpls }] = await Promise.all([
+    sb.from('people').select('*').eq('id',pid).single(),
+    sb.from('compliance_gates').select('*').order('sort'),
+    sb.from('person_compliance').select('*').eq('person_id',pid),
+    sb.from('doc_templates').select('id,name,gate_key').not('gate_key','is',null)
+  ]);
+  if (!p) return toast('Person not found', true);
+
+  const byKey = {}; (mine||[]).forEach(r => byKey[r.gate_key] = r);
+  const tplFor = {}; (tpls||[]).forEach(t => tplFor[t.gate_key] = t);
+  const today = new Date().toISOString().slice(0,10);
+  const applies = (gates||[]).filter(g => (g.applies_to||[]).includes(p.type));
+
+  const rowHtml = g => {
+    const r = byKey[g.key] || {};
+    const expired = r.status === 'signed' && r.expires_on && r.expires_on < today;
+    const met = r.status === 'signed' && !expired;
+    const state = met ? '<span class="badge b-approved">complete</span>'
+      : r.status === 'sent' ? '<span class="badge b-P3">awaiting signature</span>'
+      : expired ? '<span class="badge b-breach">expired</span>'
+      : '<span class="badge b-P2">outstanding</span>';
+    let action = '<span class="text-xs text-gray-400">—</span>';
+    if (!met) {
+      if (g.evidence_kind === 'signature') {
+        action = tplFor[g.key]
+          ? `<button class="btn btn-ghost" style="padding:4px 10px;font-size:12px" onclick="issueGateDoc('${pid}','${g.key}')">Issue document</button>`
+          : `<span class="text-xs" style="color:#8A5A00">no document drafted</span>`;
+      } else {
+        action = `<button class="btn btn-ghost" style="padding:4px 10px;font-size:12px" onclick="attestGate('${pid}','${g.key}')">Mark complete</button>`;
+      }
+    }
+    const when = r.signed_at ? 'signed '+fmtD(r.signed_at) : r.sent_at ? 'issued '+fmtD(r.sent_at) : '';
+    const meta = [GATE_KIND_LABEL[g.evidence_kind]||g.evidence_kind, g.required?null:'optional', when||null]
+                   .filter(Boolean).map(esc).join(' · ');
+    return `<tr><td><b style="color:var(--navy)">${esc(g.label)}</b>
+        <div class="text-xs text-gray-400">${meta}</div>
+        ${g.remedy && !met ? `<div class="text-xs" style="color:#8A5A00;margin-top:3px">${esc(g.remedy)}</div>` : ''}</td>
+      <td>${state}</td><td style="text-align:right">${action}</td></tr>`;
+  };
+
+  modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">${esc(p.name)}</h2>
+    <p class="text-sm text-gray-500 mb-4">${esc(p.role_title||p.type)}${p.country?' · '+esc(p.country):''}${p.email?' · '+esc(p.email):''}</p>
+    <div class="table-wrap"><table class="grid">
+      <thead><tr><th>Required of a ${esc(p.type)} member</th><th>Status</th><th style="text-align:right">Action</th></tr></thead>
+      <tbody>${applies.map(rowHtml).join('')}</tbody></table></div>
+    <div class="text-right mt-4"><button class="btn btn-gold" onclick="closeModal();loadBoard()">Done</button></div>`);
+}
+
+async function issueGateDoc(pid, gateKey){
+  const [{ data:p }, { data:tpls }] = await Promise.all([
+    sb.from('people').select('*').eq('id',pid).single(),
+    sb.from('doc_templates').select('*').eq('gate_key',gateKey).limit(1)
+  ]);
+  if (!p) return toast('Person not found', true);
+  if (!tpls || !tpls.length) return toast('No document has been drafted for this requirement yet', true);
+  const t = tpls[0];
+  const today = new Date().toISOString().slice(0,10);
+  const vals = { name:p.name, full_name:p.name, volunteer_name:p.name,
+                 role:p.role_title||p.type, country:p.country||'',
+                 organization:ORG_LEGAL||ORG.name||'', issue_date:today, effective_date:today,
+                 period:String(new Date().getFullYear()) };
+  const html = mdToHtml(renderTemplate(t.body_md, vals));
+  const { data, error } = await sb.from('signature_requests').insert({
+    title: t.name+' — '+p.name, body_html: html, signer_name: p.name, signer_email: p.email,
+    signer_role: p.role_title||p.type, status:'sent', gate_key: gateKey, created_by: ME.id
+  }).select('token').single();
+  if (error) return toast(error.message, true);
+  await sb.rpc('sync_person_compliance', { p_person_id: pid });
+  const url = location.origin+'/sign?t='+data.token;
+  modal(`<h2 class="serif text-2xl font-semibold mb-2" style="color:var(--navy)">${esc(t.name)} ready for ${esc(p.name)}</h2>
+    <p class="text-sm text-gray-500 mb-3">This link opens the document and records the signature into the audit chain.
+    <b>Nothing has been emailed.</b> Send the link yourself, and the requirement will show as awaiting signature until it is signed.</p>
+    <input value="${url}" readonly onclick="this.select()">
+    <div class="text-right mt-3">
+      <button class="btn btn-ghost mr-2" onclick="navigator.clipboard.writeText('${url}').then(()=>toast('Copied'))">Copy link</button>
+      <button class="btn btn-gold" onclick="closeModal();loadBoard()">Done</button></div>`);
+}
+
+async function attestGate(pid, gateKey){
+  const { error } = await sb.from('person_compliance').upsert({
+    person_id: pid, gate_key: gateKey, status:'signed', signed_at:new Date().toISOString(),
+    note:'Recorded by '+(ME.name||ME.email)+' on '+new Date().toISOString().slice(0,10)
+  }, { onConflict:'person_id,gate_key' });
+  if (error) return toast(error.message, true);
+  sb.rpc('log_audit', { p_event:'COMPLIANCE_ATTESTED', p_resource:'person_compliance',
+    p_action:'attest', p_details:gateKey+' recorded for person '+pid }).then(undefined,()=>{});
+  toast('Recorded');
+  closeModal(); loadBoard();
+}
+
+async function refreshCompliance(){
+  const { error } = await sb.rpc('sync_person_compliance');
+  if (error) return toast('Compliance sync is not available on this instance: '+error.message, true);
+  toast('Re-checked against the signature records');
+  loadCompliance();
+}
+
 async function loadBoard(){
   const { data: g, error } = await sb.rpc('governance_stats');
   if (error) return toast(error.message, true);
@@ -2132,6 +2377,8 @@ async function loadBoard(){
       `<b style="color:${a.unjustified>=2?'var(--red)':'var(--stone)'}">${a.unjustified}</b>`,
       a.at_risk?'<span class="badge b-breach">SEAT UNDER REVIEW</span>':a.unjustified===2?'<span class="badge b-P2">1 absence from review</span>':'<span class="badge b-approved">in good standing</span>']),
     null, 'No board members on the roster yet — add them in People & HR with type "board". Attendance is recorded inside each held meeting.');
+
+  loadCompliance();
 
   // Program reports
   const { data: reps } = await sb.from('program_reports').select('*').order('created_at',{ascending:false}).limit(100);
@@ -3146,7 +3393,7 @@ async function loadSocialStatus(){
         ${list.map(a=>`<span style="display:inline-block;background:#fff;border:1px solid #BFDCC9;border-radius:6px;padding:1px 8px;margin:2px 3px 0 0">${esc(a.platform)}${a.username?' @'+esc(a.username):''}</span>`).join('')}</div>`;
     } else {
       el.innerHTML=`<div style="background:#FBF3E6;border:1px solid #E4C98B;color:#8A5A00;border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.5">
-        <b>Not connected yet.</b> You can compose and schedule now, but a post won't actually go out until Levoila's social accounts are connected in Blotato and the key is set on the site. Publishing today only marks a post <b>approved</b>.</div>`;
+        <b>Not connected yet.</b> You can compose and schedule now, but a post won't actually go out until ${esc(ORG.name||'the organization')}'s social accounts are connected in Blotato and the key is set on the site. Publishing today only marks a post <b>approved</b>.</div>`;
     }
   }catch(e){ SOCIAL_CONNECTED=false; el.innerHTML=''; }
 }
