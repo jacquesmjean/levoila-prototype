@@ -402,6 +402,41 @@
         <div id="volTable"></div>
       </div>
 
+      <div id="view-ambassadors" class="view">
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Ambassadors</h1>
+          <button class="btn btn-gold" onclick="openAmbassador(null)">+ Ambassador</button>
+        </div>
+        <p class="text-sm text-gray-500 mb-6">The people who carry the flame in their country. Each one represents a pillar; what you publish here is what the public site shows. Compliance for ambassadors follows the same gates as every other role.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-7" id="ambKpis"></div>
+        <div class="flex gap-2 mb-5 flex-wrap" id="ambFilters"></div>
+        <div id="ambGrid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4 mb-9"></div>
+        <div class="cc-section-label">Candidates · applied through the site, not yet published</div>
+        <div id="ambCandidates"></div>
+      </div>
+
+      <div id="view-partners" class="view">
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Partners & Country Chapters</h1>
+          <button class="btn btn-gold" onclick="openPartner(null)">+ Partner</button>
+        </div>
+        <p class="text-sm text-gray-500 mb-6">Schools, businesses, NGOs and funders building programmes with us, and the chapters bringing the work to a new country. Applications from the website arrive here as prospects.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-7" id="partnerKpis"></div>
+        <div id="partnerTable"></div>
+      </div>
+
+      <div id="view-countries" class="view">
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Countries</h1>
+          <button class="btn btn-gold" onclick="openEngagement(null)">+ Log engagement</button>
+        </div>
+        <p class="text-sm text-gray-500 mb-6">Every country programme in one place: who is on the ground, which partners are active, what happened in the last ninety days, and how many people it reached.</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-7" id="countryKpis"></div>
+        <div id="countryCards" class="grid md:grid-cols-2 gap-4 mb-9"></div>
+        <div class="cc-section-label">Recent engagement · all countries</div>
+        <div id="engagementTable"></div>
+      </div>
+
       <div id="view-grants" class="view">
         <h1 class="page-head serif text-3xl font-semibold mb-1" style="color:var(--navy);">Global Grant Engine</h1>
         <p class="text-sm text-gray-500 mb-5">A machine that never stops: it scans funders Mondays and Thursdays, scores every opportunity honestly, and drafts the application. The calendar below is your year at a glance — plan each quarter's submissions and keep the pipeline full. Nothing is ever submitted without your sign-off.</p>
@@ -908,7 +943,7 @@ function applyTenantSettings(ts){
 const VIEWS = [
   ['copilot','Copilot'],['plan','The Plan'],
   ['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],
-  ['volunteers','Volunteers'],['grants','Grant Engine'],['donors','Donor CRM'],
+  ['volunteers','Volunteers'],['ambassadors','Ambassadors'],['partners','Partners & Chapters'],['countries','Countries'],['grants','Grant Engine'],['donors','Donor CRM'],
   ['influencers','Influencers'],['finance','Finance'],['content','Content'],['applications','Careers'],
   ['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding'],
   ['blog','Blog'],['social','Social'],
@@ -916,7 +951,7 @@ const VIEWS = [
 ];
 const NAV_GROUPS = [
   ['Executive', [['copilot','Executive Copilot'],['plan','The Plan']]],
-  ['Operations', [['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],['volunteers','Volunteers']]],
+  ['Operations', [['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],['volunteers','Volunteers'],['ambassadors','Ambassadors'],['partners','Partners & Chapters'],['countries','Countries']]],
   ['Funding',    [['grants','Grant Engine'],['donors','Donor CRM'],['influencers','Influencers'],['finance','Finance']]],
   ['Presence',   [['content','Content'],['social','Social'],['blog','Blog'],['applications','Careers']]],
   ['Records',    [['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding']]],
@@ -945,6 +980,7 @@ function show(k){
   document.querySelectorAll('.side-link').forEach(v=>v.classList.remove('active'));
   const n=$(`nav-${k}`); if(n) n.classList.add('active');
   ({copilot:loadCopilot, plan:loadPlan, overview:loadOverview, tickets:loadTickets, beneficiaries:loadBenefs, volunteers:loadVols,
+    ambassadors:loadAmbassadors, partners:loadPartners, countries:loadCountries,
     grants:loadGrants, donors:loadDonors, influencers:loadInfluencers, finance:loadFinance, content:loadContent, applications:loadApps,
     documents:loadDocsView, vendors:loadVendors, onboarding:loadOnboarding, blog:loadBlog, social:loadSocial,
     people:loadPeople, board:loadBoard, legal:loadLegal, security:loadSecurity, settings:loadSettings})[k]();
@@ -1563,6 +1599,193 @@ function renderGrantCalendar(rows){
     + col('Rolling',buckets.open,'no fixed deadline') + col(String(yr+1)+'+',buckets.later,'next year')
     + `</div>`;
 }
+// ---------- ambassadors ----------
+const PILLAR_LABEL = { youth:'Youth', educators:'Educators', women:'Women', all:'All pillars' };
+let AMB_FILTER = 'all';
+async function loadAmbassadors(){
+  const { data, error } = await sb.from('people').select('*').or('type.eq.ambassador,public_role.eq.ambassador').order('sort').order('name');
+  if (error) return toast(error.message, true);
+  const all = data || [];
+  const published = all.filter(p => p.published && p.status === 'active');
+  const candidates = all.filter(p => !(p.published && p.status === 'active'));
+  const countries = new Set(published.map(p=>p.country).filter(Boolean));
+  $('ambKpis').innerHTML = [
+    ['Published on the site', published.length, false], ['Countries represented', countries.size, false],
+    ['Candidates waiting', candidates.length, candidates.length>0],
+    ['Pillars covered', ['youth','educators','women'].filter(k=>published.some(p=>p.pillar===k)).length + ' of 3', false]
+  ].map(([l,n,alert])=>`<div class="kpi"><div class="n" ${alert?'style="color:var(--red)"':''}>${n}</div><div class="l">${l}</div></div>`).join('');
+  $('ambFilters').innerHTML = Object.entries(PILLAR_LABEL).reverse().map(([k,l]) =>
+    `<button class="pill-tab ${AMB_FILTER===k?'active':''}" onclick="AMB_FILTER='${k}';loadAmbassadors()">${l}${k!=='all'?' <span style="opacity:.6">'+published.filter(p=>p.pillar===k).length+'</span>':''}</button>`).join('');
+  const shown = published.filter(p => AMB_FILTER==='all' || p.pillar===AMB_FILTER);
+  $('ambGrid').innerHTML = shown.length ? shown.map(p => `<div class="fin-card" style="padding:16px;cursor:pointer" onclick="openAmbassador('${p.id}')">
+      <div class="flex gap-4">
+        <div style="flex:0 0 64px;width:64px;height:64px;border-radius:50%;overflow:hidden;background:var(--limestone);border:1px solid var(--hairline)">
+          ${p.photo_url?`<img src="${esc(p.photo_url)}" alt="" style="width:100%;height:100%;object-fit:cover">`:''}</div>
+        <div class="min-w-0">
+          <div class="text-[10px]" style="letter-spacing:.14em;text-transform:uppercase;color:var(--gold)">${esc(PILLAR_LABEL[p.pillar]||'—')} · ${esc(p.country||'—')}</div>
+          <div class="serif font-semibold" style="color:var(--navy);font-size:17px;line-height:1.2;margin-top:2px">${esc(p.name)}</div>
+          <div class="text-xs text-gray-500" style="margin-top:3px">${esc(p.role_title||'')}</div>
+        </div>
+      </div>
+      ${p.bio?`<p class="text-xs text-gray-500" style="margin-top:10px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">${esc(p.bio)}</p>`:''}
+      <div class="text-xs text-gray-400" style="margin-top:10px">${p.linkedin?'LinkedIn · ':''}${p.website?'Website · ':''}<span style="color:var(--green)">● live on the site</span></div>
+    </div>`).join('') : '<div class="empty-elegant md:col-span-3"><div class="e-t">No published ambassadors'+(AMB_FILTER!=='all'?' in this pillar':'')+'</div></div>';
+  $('ambCandidates').innerHTML = tableHtml(['Name','Country','Applied','Status','Compliance'],
+    candidates.map(p=>[`<b style="color:var(--navy)">${esc(p.name)}</b><div class="text-xs text-gray-400">${esc(p.email||'')}</div>`, esc(p.country||'—'), fmtD(p.created_at), badge(p.status==='prospective'?'new':p.status), '<span class="text-xs text-gray-400">open to review</span>']),
+    i=>`openAmbassador('${candidates[i].id}')`, 'No candidates waiting. Applications from Join the Rise appear here.');
+}
+async function openAmbassador(id){
+  const p = id ? (await sb.from('people').select('*').eq('id',id).single()).data : { type:'ambassador', status:'prospective', pillar:'youth', published:false };
+  if (!p) return toast('Not found', true);
+  const opt = (list, cur) => list.map(([v,l])=>`<option value="${v}" ${v===cur?'selected':''}>${l}</option>`).join('');
+  let gates = '';
+  if (id){
+    const { data: st } = await sb.from('compliance_standing').select('*').eq('person_id', id).maybeSingle();
+    if (st) gates = `<div class="kpi" style="padding:10px 14px;margin-top:12px"><div class="text-xs text-gray-500">Compliance · ${st.required_met} of ${st.required_total} required documents · ${st.in_good_standing?'<span style="color:var(--green)">in good standing</span>':'<span style="color:var(--red)">'+st.outstanding+' outstanding</span>'} · <a href="#" onclick="closeModal();openCompliance('${id}');return false" style="color:var(--gold)">open</a></div></div>`;
+  }
+  modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">${id?esc(p.name):'New ambassador'}</h2>
+    <p class="text-sm text-gray-500 mb-4">What you save here is what the public site shows once published.</p>
+    <div class="grid md:grid-cols-2 gap-3">
+      <div><label>Name</label><input id="amName" value="${esc(p.name||'')}"></div>
+      <div><label>Email</label><input id="amEmail" value="${esc(p.email||'')}"></div>
+      <div><label>Country</label><input id="amCountry" value="${esc(p.country||'')}"></div>
+      <div><label>Pillar</label><select id="amPillar">${opt([['youth','Youth'],['educators','Educators'],['women','Women']], p.pillar)}</select></div>
+      <div class="md:col-span-2"><label>Role · as shown on the site</label><input id="amRole" value="${esc(p.role_title||'')}" placeholder="e.g. Youth Ennoblement Lead"></div>
+      <div class="md:col-span-2"><label>Photo URL</label><input id="amPhoto" value="${esc(p.photo_url||'')}"></div>
+      <div><label>LinkedIn</label><input id="amLinkedin" value="${esc(p.linkedin||'')}"></div>
+      <div><label>Website</label><input id="amWebsite" value="${esc(p.website||'')}"></div>
+      <div class="md:col-span-2"><label>Bio</label><textarea id="amBio" rows="4">${esc(p.bio||'')}</textarea></div>
+      <div><label>Status</label><select id="amStatus">${opt([['prospective','Candidate'],['active','Active'],['inactive','Inactive']], p.status)}</select></div>
+      <div><label>Published on the site</label><select id="amPub">${opt([['true','Yes — visible'],['false','No — hidden']], String(!!p.published))}</select></div>
+    </div>
+    ${gates}
+    <div class="flex items-center justify-between mt-4">
+      <div>${id?`<button class="btn btn-ghost" onclick="closeModal();openEngagement(null,'${id}')">Log engagement</button>`:''}</div>
+      <div><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="saveAmbassador(${id?`'${id}'`:'null'})">Save</button></div>
+    </div>`);
+}
+async function saveAmbassador(id){
+  const row = { name:$('amName').value.trim(), email:$('amEmail').value.trim()||null, country:$('amCountry').value.trim()||null,
+    pillar:$('amPillar').value, role_title:$('amRole').value.trim()||null, photo_url:$('amPhoto').value.trim()||null,
+    linkedin:$('amLinkedin').value.trim()||null, website:$('amWebsite').value.trim()||null, bio:$('amBio').value.trim()||null,
+    status:$('amStatus').value, published:$('amPub').value==='true', public_role:'ambassador' };
+  if (!row.name) return toast('Name is needed', true);
+  if (!id) row.type = 'ambassador';
+  const q = id ? sb.from('people').update(row).eq('id', id) : sb.from('people').insert(row);
+  const { error } = await q; if (error) return toast(error.message, true);
+  sb.rpc('log_audit',{p_event:'AMBASSADOR_SAVED',p_resource:'people',p_action:'save',p_details:row.name+(row.published?' · published':' · hidden')}).then(undefined,()=>{});
+  toast(row.published ? 'Saved — live on the site within a few minutes' : 'Saved'); closeModal(); loadAmbassadors();
+}
+
+// ---------- partners & chapters ----------
+const PARTNER_KIND = { institutional:'Institutional partner', country_chapter:'Country chapter', funder:'Funder', media:'Media' };
+const PARTNER_STATUS = { prospective:'new', in_conversation:'in_review', active:'approved', dormant:'closed', declined:'declined' };
+async function loadPartners(){
+  const { data, error } = await sb.from('partners').select('*').order('updated_at',{ascending:false});
+  if (error) return toast(error.message, true);
+  const rows = data || [];
+  const n = k => rows.filter(r=>r.status===k).length;
+  $('partnerKpis').innerHTML = [['Active', n('active'), false],['In conversation', n('in_conversation'), false],['New prospects', n('prospective'), n('prospective')>0],['Country chapters', rows.filter(r=>r.kind==='country_chapter' && r.status!=='declined').length, false]]
+    .map(([l,v,alert])=>`<div class="kpi"><div class="n" ${alert?'style="color:var(--red)"':''}>${v}</div><div class="l">${l}</div></div>`).join('');
+  $('partnerTable').innerHTML = tableHtml(['Organization','Kind','Country','Contact','Pillar','Status'],
+    rows.map(r=>[`<b style="color:var(--navy)">${esc(r.name)}</b>${r.website?`<div class="text-xs text-gray-400">${esc(r.website.replace(/^https?:\/\//,''))}</div>`:''}`,
+      esc(PARTNER_KIND[r.kind]||r.kind), esc(r.country||'—'), `${esc(r.contact_name||'—')}<div class="text-xs text-gray-400">${esc(r.contact_email||'')}</div>`, esc(PILLAR_LABEL[r.pillar]||r.pillar||'—'), badge(PARTNER_STATUS[r.status]||r.status)]),
+    i=>`openPartner('${rows[i].id}')`, 'No partners yet. Applications from Join the Rise (partner or country chapter) arrive here.');
+}
+async function openPartner(id){
+  const p = id ? (await sb.from('partners').select('*').eq('id',id).single()).data : { kind:'institutional', status:'prospective' };
+  const opt = (list, cur) => list.map(([v,l])=>`<option value="${v}" ${v===cur?'selected':''}>${l}</option>`).join('');
+  modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">${id?esc(p.name):'New partner'}</h2>
+    <div class="grid md:grid-cols-2 gap-3 mt-3">
+      <div class="md:col-span-2"><label>Organization</label><input id="ptName" value="${esc(p.name||'')}"></div>
+      <div><label>Kind</label><select id="ptKind">${opt(Object.entries(PARTNER_KIND), p.kind)}</select></div>
+      <div><label>Status</label><select id="ptStatus">${opt([['prospective','Prospect'],['in_conversation','In conversation'],['active','Active'],['dormant','Dormant'],['declined','Declined']], p.status)}</select></div>
+      <div><label>Country</label><input id="ptCountry" value="${esc(p.country||'')}"></div>
+      <div><label>Pillar</label><select id="ptPillar">${opt([['','—'],['youth','Youth'],['educators','Educators'],['women','Women'],['all','All']], p.pillar||'')}</select></div>
+      <div><label>Contact name</label><input id="ptContact" value="${esc(p.contact_name||'')}"></div>
+      <div><label>Contact email</label><input id="ptEmail" value="${esc(p.contact_email||'')}"></div>
+      <div class="md:col-span-2"><label>Website</label><input id="ptWeb" value="${esc(p.website||'')}"></div>
+      <div class="md:col-span-2"><label>Notes</label><textarea id="ptNotes" rows="4">${esc(p.notes||'')}</textarea></div>
+    </div>
+    <div class="flex items-center justify-between mt-4">
+      <div>${id?`<button class="btn btn-ghost" onclick="closeModal();openEngagement(null,null,'${id}')">Log engagement</button>`:''}</div>
+      <div><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="savePartner(${id?`'${id}'`:'null'})">Save</button></div>
+    </div>`);
+}
+async function savePartner(id){
+  const row = { name:$('ptName').value.trim(), kind:$('ptKind').value, status:$('ptStatus').value, country:$('ptCountry').value.trim()||null,
+    pillar:$('ptPillar').value||null, contact_name:$('ptContact').value.trim()||null, contact_email:$('ptEmail').value.trim()||null,
+    website:$('ptWeb').value.trim()||null, notes:$('ptNotes').value.trim()||null };
+  if (!row.name) return toast('Organization name is needed', true);
+  const q = id ? sb.from('partners').update(row).eq('id', id) : sb.from('partners').insert(row);
+  const { error } = await q; if (error) return toast(error.message, true);
+  toast('Saved'); closeModal(); loadPartners();
+}
+
+// ---------- countries & engagement ----------
+async function loadCountries(){
+  const [{ data: cs, error }, { data: eng }] = await Promise.all([
+    sb.from('country_overview').select('*').order('country'),
+    sb.from('engagements').select('*, people(name), partners(name)').order('happened_on',{ascending:false}).limit(40)
+  ]);
+  if (error) return toast(error.message, true);
+  const rows = cs || [];
+  const tot = (k) => rows.reduce((a,r)=>a+Number(r[k]||0),0);
+  $('countryKpis').innerHTML = [['Countries', rows.length],['Ambassadors on the ground', tot('ambassadors')],['Active partners', tot('partners')],['People reached', tot('people_reached').toLocaleString()]]
+    .map(([l,v])=>`<div class="kpi"><div class="n">${v}</div><div class="l">${l}</div></div>`).join('');
+  const STATUS_C = { active:'#2E7D57', green:'#2E7D57', yellow:'#B6862C', scoping:'#B6862C', planned:'#9a938a', red:'#B3261E', partner_only:'#1E3A8A', 'partner-only':'#1E3A8A' };
+  $('countryCards').innerHTML = rows.length ? rows.map(c => `<div class="fin-card" style="padding:16px">
+      <div class="flex items-start justify-between gap-3">
+        <div><div class="serif font-semibold" style="color:var(--navy);font-size:19px">${esc(c.country)}</div>
+          <div class="text-xs text-gray-500" style="margin-top:2px">${esc(c.program_lead?'Lead · '+c.program_lead:'No programme lead named')}${c.fy_target?' · FY target '+$money(c.fy_target):''}</div></div>
+        <span class="badge" style="background:${STATUS_C[(c.status||'').toLowerCase()]||'#9a938a'};color:#fff">${esc(c.status||'—')}</span>
+      </div>
+      <div class="grid grid-cols-4 gap-2" style="margin-top:12px">
+        ${[['Ambassadors',c.ambassadors],['Volunteers',c.volunteers],['Partners',c.partners],['Participants',c.participants]].map(([l,v])=>`<div><div class="serif" style="font-size:20px;color:var(--navy)">${v}</div><div class="text-[10px]" style="letter-spacing:.1em;text-transform:uppercase;color:#9a938a">${l}</div></div>`).join('')}
+      </div>
+      <div class="text-xs" style="margin-top:12px;color:${Number(c.engagements_90d)>0?'var(--stone)':'#B6862C'}">${Number(c.engagements_90d)>0 ? c.engagements_90d+' engagement'+(c.engagements_90d==1?'':'s')+' in the last 90 days · last '+fmtD(c.last_engagement) : 'No engagement logged in the last 90 days'}${c.people_reached?' · '+Number(c.people_reached).toLocaleString()+' reached in total':''}</div>
+      ${c.notes?`<div class="text-xs text-gray-400" style="margin-top:6px;line-height:1.5">${esc(c.notes)}</div>`:''}
+      <div class="mt-3"><button class="btn btn-ghost" style="padding:4px 10px;font-size:12px" onclick="openEngagement(null,null,null,'${esc(c.country)}')">Log engagement</button></div>
+    </div>`).join('') : '<div class="empty-elegant md:col-span-2"><div class="e-t">No country programmes yet</div></div>';
+  const KIND = { event:'Event', mentoring:'Mentoring', talk:'Talk', outreach:'Outreach', meeting:'Meeting', content:'Content', training:'Training', other:'Other' };
+  $('engagementTable').innerHTML = tableHtml(['When','What','Country','Who','Pillar','Reached'],
+    (eng||[]).map(e=>[fmtD(e.happened_on), `<b style="color:var(--navy)">${esc(e.title)}</b><div class="text-xs text-gray-400">${esc(KIND[e.kind]||e.kind)}${e.detail?' · '+esc(e.detail.slice(0,90)):''}</div>`,
+      esc(e.country||'—'), esc((e.people&&e.people.name)||(e.partners&&e.partners.name)||e.recorded_by||'—'), esc(PILLAR_LABEL[e.pillar]||e.pillar||'—'), e.reached?Number(e.reached).toLocaleString():'—']),
+    null, 'Nothing logged yet. Every talk, circle, visit or session an ambassador or partner runs belongs here — it is how the country cards and the north star fill in.');
+}
+async function openEngagement(id, personId, partnerId, country){
+  const [{ data: people }, { data: partners }] = await Promise.all([
+    sb.from('people').select('id,name,country').in('type',['ambassador','volunteer','staff','board']).eq('status','active').order('name'),
+    sb.from('partners').select('id,name,country').neq('status','declined').order('name')
+  ]);
+  const opt = (list, cur, blank) => (blank?`<option value="">${blank}</option>`:'') + list.map(([v,l])=>`<option value="${v}" ${v===cur?'selected':''}>${l}</option>`).join('');
+  const pre = personId ? (people||[]).find(p=>p.id===personId) : null;
+  modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">Log engagement</h2>
+    <p class="text-sm text-gray-500 mb-4">What happened, where, who did it, and how many people it touched.</p>
+    <div class="grid md:grid-cols-2 gap-3">
+      <div class="md:col-span-2"><label>What</label><input id="enTitle" placeholder="e.g. Financial resilience circle, Lagos — session 2"></div>
+      <div><label>Kind</label><select id="enKind">${opt([['event','Event'],['mentoring','Mentoring'],['talk','Talk'],['outreach','Outreach'],['meeting','Meeting'],['content','Content'],['training','Training'],['other','Other']],'event')}</select></div>
+      <div><label>Date</label><input id="enDate" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+      <div><label>Country</label><input id="enCountry" value="${esc(country||(pre&&pre.country)||'')}"></div>
+      <div><label>Pillar</label><select id="enPillar">${opt([['youth','Youth'],['educators','Educators'],['women','Women'],['all','All']], '', '—')}</select></div>
+      <div><label>Person</label><select id="enPerson">${opt((people||[]).map(p=>[p.id,p.name]), personId||'', '—')}</select></div>
+      <div><label>Partner</label><select id="enPartner">${opt((partners||[]).map(p=>[p.id,p.name]), partnerId||'', '—')}</select></div>
+      <div><label>People reached</label><input id="enReached" type="number" min="0"></div>
+      <div><label>Hours</label><input id="enHours" type="number" min="0" step="0.5"></div>
+      <div class="md:col-span-2"><label>Detail</label><textarea id="enDetail" rows="3"></textarea></div>
+    </div>
+    <div class="text-right mt-4"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="saveEngagement()">Save</button></div>`);
+}
+async function saveEngagement(){
+  const row = { title:$('enTitle').value.trim(), kind:$('enKind').value, happened_on:$('enDate').value||null, country:$('enCountry').value.trim()||null,
+    pillar:$('enPillar').value||null, person_id:$('enPerson').value||null, partner_id:$('enPartner').value||null,
+    reached:$('enReached').value?parseInt($('enReached').value):null, hours:$('enHours').value?parseFloat($('enHours').value):null,
+    detail:$('enDetail').value.trim()||null, recorded_by: ME.name||ME.email };
+  if (!row.title) return toast('Say what happened', true);
+  const { error } = await sb.from('engagements').insert(row); if (error) return toast(error.message, true);
+  toast('Logged'); closeModal(); loadCountries();
+}
+
 async function loadGrants(){
   grantFilterBar();
   const { data: allG } = await sb.from('grant_opportunities').select('id,title,deadline,status').limit(500);
