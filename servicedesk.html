@@ -402,6 +402,17 @@
         <div id="volTable"></div>
       </div>
 
+      <div id="view-scholarship" class="view">
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Scholarship</h1>
+          <a class="btn btn-ghost" id="schPublicLink" href="#" target="_blank" rel="noopener" style="display:none">Public page ↗</a>
+        </div>
+        <p class="text-sm text-gray-500 mb-6">The Michael G. Henry Legacy Scholarship™. Applications arrive from the website and move through review here: received, eligible, shortlisted, interview, awarded. Every decision is recorded with who made it and when.</p>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-7" id="schKpis"></div>
+        <div class="flex gap-2 mb-4 flex-wrap" id="schFilters"></div>
+        <div id="schTable"></div>
+      </div>
+
       <div id="view-ambassadors" class="view">
         <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Ambassadors</h1>
@@ -438,7 +449,10 @@
       </div>
 
       <div id="view-grants" class="view">
-        <h1 class="page-head serif text-3xl font-semibold mb-1" style="color:var(--navy);">Global Grant Engine</h1>
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Global Grant Engine</h1>
+          <button class="btn btn-gold" onclick="openNewGrant()">+ Opportunity</button>
+        </div>
         <p class="text-sm text-gray-500 mb-5">A machine that never stops: it scans funders Mondays and Thursdays, scores every opportunity honestly, and drafts the application. The calendar below is your year at a glance — plan each quarter's submissions and keep the pipeline full. Nothing is ever submitted without your sign-off.</p>
         <div class="cc-section-label">Planning calendar · deadlines by quarter</div>
         <div id="grantCalendar" class="mb-9"></div>
@@ -735,6 +749,7 @@ function applyTenant(){
     if (name) document.querySelectorAll('.tenant-org').forEach(el => el.textContent = name);
     if (ORG.domain) document.querySelectorAll('.tenant-domain').forEach(el => el.textContent = ORG.domain);
     if (ORG.blogLabel) document.querySelectorAll('.tenant-bloglabel').forEach(el => el.textContent = ORG.blogLabel);
+    if (ORG.scholarshipUrl){ const a = document.getElementById('schPublicLink'); if (a){ a.href = ORG.scholarshipUrl; a.style.display = ''; } }
     if (ORG.domain){ const ae = document.getElementById('authEmail'); if (ae) ae.placeholder = 'you@' + ORG.domain; }
     if (CFG.tagline || ORG.tagline){ const m = document.getElementById('ccMission'); if (m) m.textContent = ORG.tagline || CFG.tagline; }
     // Ledger picklists
@@ -943,7 +958,7 @@ function applyTenantSettings(ts){
 const VIEWS = [
   ['copilot','Copilot'],['plan','The Plan'],
   ['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],
-  ['volunteers','Volunteers'],['ambassadors','Ambassadors'],['partners','Partners & Chapters'],['countries','Countries'],['grants','Grant Engine'],['donors','Donor CRM'],
+  ['volunteers','Volunteers'],['scholarship','Scholarship'],['ambassadors','Ambassadors'],['partners','Partners & Chapters'],['countries','Countries'],['grants','Grant Engine'],['donors','Donor CRM'],
   ['influencers','Influencers'],['finance','Finance'],['content','Content'],['applications','Careers'],
   ['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding'],
   ['blog','Blog'],['social','Social'],
@@ -951,7 +966,7 @@ const VIEWS = [
 ];
 const NAV_GROUPS = [
   ['Executive', [['copilot','Executive Copilot'],['plan','The Plan']]],
-  ['Operations', [['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],['volunteers','Volunteers'],['ambassadors','Ambassadors'],['partners','Partners & Chapters'],['countries','Countries']]],
+  ['Operations', [['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],['scholarship','Scholarship'],['volunteers','Volunteers'],['ambassadors','Ambassadors'],['partners','Partners & Chapters'],['countries','Countries']]],
   ['Funding',    [['grants','Grant Engine'],['donors','Donor CRM'],['influencers','Influencers'],['finance','Finance']]],
   ['Presence',   [['content','Content'],['social','Social'],['blog','Blog'],['applications','Careers']]],
   ['Records',    [['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding']]],
@@ -980,7 +995,7 @@ function show(k){
   document.querySelectorAll('.side-link').forEach(v=>v.classList.remove('active'));
   const n=$(`nav-${k}`); if(n) n.classList.add('active');
   ({copilot:loadCopilot, plan:loadPlan, overview:loadOverview, tickets:loadTickets, beneficiaries:loadBenefs, volunteers:loadVols,
-    ambassadors:loadAmbassadors, partners:loadPartners, countries:loadCountries,
+    scholarship:loadScholarship, ambassadors:loadAmbassadors, partners:loadPartners, countries:loadCountries,
     grants:loadGrants, donors:loadDonors, influencers:loadInfluencers, finance:loadFinance, content:loadContent, applications:loadApps,
     documents:loadDocsView, vendors:loadVendors, onboarding:loadOnboarding, blog:loadBlog, social:loadSocial,
     people:loadPeople, board:loadBoard, legal:loadLegal, security:loadSecurity, settings:loadSettings})[k]();
@@ -1599,6 +1614,66 @@ function renderGrantCalendar(rows){
     + col('Rolling',buckets.open,'no fixed deadline') + col(String(yr+1)+'+',buckets.later,'next year')
     + `</div>`;
 }
+// ---------- scholarship pipeline ----------
+const SCH_STAGES = [['received','Received','new'],['eligible','Eligible','in_review'],['shortlisted','Shortlisted','in_review'],['interview','Interview','P2'],['awarded','Awarded','approved'],['declined','Declined','declined'],['spam','Spam','closed']];
+let SCH_FILTER = 'open';
+async function loadScholarship(){
+  const { data, error } = await sb.from('scholarship_applications').select('*').order('created_at',{ascending:false});
+  if (error) return toast(error.message, true);
+  const rows = (data||[]).filter(r=>r.status!=='spam');
+  const n = k => rows.filter(r=>r.status===k).length;
+  $('schKpis').innerHTML = [['Received', n('received'), n('received')>0],['Eligible', n('eligible'), false],['Shortlisted', n('shortlisted')+n('interview'), false],['Awarded', n('awarded'), false],['Awarded · total', $money(rows.filter(r=>r.status==='awarded').reduce((a,r)=>a+Number(r.award_amount||0),0)), false]]
+    .map(([l,v,alert])=>`<div class="kpi"><div class="n" style="${alert?'color:var(--red);':''}${String(v).length>7?'font-size:22px':''}">${v}</div><div class="l">${l}</div></div>`).join('');
+  const F = { open:['Open', r=>!['awarded','declined'].includes(r.status)], ...Object.fromEntries(SCH_STAGES.filter(s=>s[0]!=='spam').map(([k,l])=>[k,[l, r=>r.status===k]])), all:['All', ()=>true] };
+  $('schFilters').innerHTML = Object.entries(F).map(([k,[l,f]])=>`<button class="pill-tab ${SCH_FILTER===k?'active':''}" onclick="SCH_FILTER='${k}';loadScholarship()">${l} <span style="opacity:.6">${rows.filter(f).length}</span></button>`).join('');
+  const shown = rows.filter(F[SCH_FILTER][1]);
+  const badgeFor = st => { const x = SCH_STAGES.find(s=>s[0]===st); return badge(x?x[2]:st); };
+  $('schTable').innerHTML = tableHtml(['Applicant','Country','Institution · programme','Path','Received','Score','Stage'],
+    shown.map(r=>[`<b style="color:var(--navy)">${esc(r.name)}</b><div class="text-xs text-gray-400">${esc(r.email)}</div>`, esc(r.country||'—'),
+      `${esc(r.institution||'—')}<div class="text-xs text-gray-400">${esc(r.program||'')}</div>`, esc(r.education_path||'—'), fmtD(r.created_at), r.score==null?'—':`<b>${r.score}</b>/100`, badgeFor(r.status)]),
+    i=>`openScholarship('${shown[i].id}')`, SCH_FILTER==='open' ? 'No open applications. New ones arrive from the public scholarship page and open a ticket at the same time.' : 'Nothing here.');
+}
+async function openScholarship(id){
+  const { data: a } = await sb.from('scholarship_applications').select('*').eq('id',id).single();
+  if (!a) return toast('Not found', true);
+  const sec = (t, v) => v ? `<div class="mb-4"><div class="text-[10px]" style="letter-spacing:.14em;text-transform:uppercase;color:var(--gold)">${t}</div><div class="text-sm" style="white-space:pre-wrap;line-height:1.6;color:var(--ink)">${esc(v)}</div></div>` : '';
+  const opt = (list, cur) => list.map(([v,l])=>`<option value="${v}" ${v===cur?'selected':''}>${l}</option>`).join('');
+  modal(`<div class="flex items-start justify-between gap-4 mb-1"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(a.name)}</h2><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    <p class="text-sm text-gray-500 mb-4">${esc(a.email)}${a.phone?' · '+esc(a.phone):''}${a.country?' · '+esc(a.country):''} · received ${fmtD(a.created_at)} · cycle ${esc(a.cycle||'')}</p>
+    <div class="grid md:grid-cols-3 gap-3 mb-4">
+      <div class="kpi" style="padding:10px 14px"><div class="l">Institution</div><div class="text-sm" style="color:var(--navy)">${esc(a.institution||'—')}</div></div>
+      <div class="kpi" style="padding:10px 14px"><div class="l">Programme</div><div class="text-sm" style="color:var(--navy)">${esc(a.program||'—')}</div></div>
+      <div class="kpi" style="padding:10px 14px"><div class="l">Path</div><div class="text-sm" style="color:var(--navy)">${esc(a.education_path||'—')}</div></div>
+    </div>
+    <div style="max-height:34vh;overflow:auto;border:1px solid var(--hairline);border-radius:8px;padding:14px 16px;background:var(--paper)">
+      ${sec('Career vision', a.career_vision)}${sec('Service', a.service)}${sec('Essay', a.essay)}${sec('Financial need', a.financial_need)}
+    </div>
+    <div class="grid md:grid-cols-4 gap-3 mt-4">
+      <div><label>Stage</label><select id="scStage">${opt(SCH_STAGES.filter(s=>s[0]!=='spam').map(([k,l])=>[k,l]), a.status)}</select></div>
+      <div><label>Score · 0–100</label><input id="scScore" type="number" min="0" max="100" value="${a.score==null?'':a.score}"></div>
+      <div><label>Award (USD)</label><input id="scAward" type="number" min="0" value="${a.award_amount==null?'':a.award_amount}"></div>
+      <div><label>Decided by</label><input value="${esc(a.decided_by||'')}" readonly placeholder="recorded on award/decline"></div>
+      <div class="md:col-span-4"><label>Reviewer notes</label><textarea id="scNotes" rows="3">${esc(a.reviewer_notes||'')}</textarea></div>
+    </div>
+    <div class="flex items-center justify-between mt-4">
+      <button class="btn btn-ghost" onclick="scholarshipStage('${a.id}','spam')">Mark as spam</button>
+      <button class="btn btn-gold" onclick="saveScholarship('${a.id}')">Save</button>
+    </div>`);
+}
+async function saveScholarship(id){
+  const stage = $('scStage').value;
+  const row = { status: stage, score: $('scScore').value===''?null:parseInt($('scScore').value), award_amount: $('scAward').value===''?null:parseFloat($('scAward').value), reviewer_notes: $('scNotes').value.trim()||null };
+  if (['awarded','declined'].includes(stage)) { row.decided_by = ME.name||ME.email; row.decided_at = new Date().toISOString(); }
+  if (stage==='awarded' && !row.award_amount) return toast('Enter the award amount before marking it awarded', true);
+  const { error } = await sb.from('scholarship_applications').update(row).eq('id', id); if (error) return toast(error.message, true);
+  sb.rpc('log_audit',{p_event:'SCHOLARSHIP_'+stage.toUpperCase(),p_resource:'scholarship_applications',p_action:stage,p_details:id}).then(undefined,()=>{});
+  toast('Saved'); closeModal(); loadScholarship();
+}
+async function scholarshipStage(id, status){
+  const { error } = await sb.from('scholarship_applications').update({ status }).eq('id', id); if (error) return toast(error.message, true);
+  toast('Updated'); closeModal(); loadScholarship();
+}
+
 // ---------- ambassadors ----------
 const PILLAR_LABEL = { youth:'Youth', educators:'Educators', women:'Women', all:'All pillars' };
 let AMB_FILTER = 'all';
@@ -1817,7 +1892,11 @@ async function openGrant(id){
     <div class="flex gap-2 items-center mb-4">${badge(g.status)} <b style="font-size:18px;color:var(--navy)">Score: ${g.score==null?'—':g.score}/100</b></div>
     ${notes.rationale?`<div class="kpi mb-4" style="padding:14px 16px"><div class="text-xs uppercase tracking-wide text-gray-400 mb-1">Why this score</div><div class="text-sm">${esc(notes.rationale)}</div></div>`:''}
     ${g.summary?`<div class="draft-md mb-4">${esc(g.summary)}</div>`:''}
-    ${g.draft_md?`<h3 class="serif text-lg font-semibold mb-2" style="color:var(--navy)">AI draft (your sign-off required)</h3><div class="draft-md mb-4">${esc(g.draft_md)}</div>`:''}
+    ${g.draft_md?`<div class="flex items-center justify-between mb-2"><h3 class="serif text-lg font-semibold" style="color:var(--navy)">${esc(g.draft_title||'Draft')} · your sign-off required</h3>
+        <div class="flex gap-2"><button class="btn btn-ghost" style="padding:4px 10px;font-size:12px" onclick="editGrantDraft('${g.id}')">Edit</button><button class="btn btn-ghost" style="padding:4px 10px;font-size:12px" onclick="downloadGrantDraft('${g.id}')">Download .md</button></div></div>
+      <div class="draft-md mb-4" style="max-height:320px;overflow:auto">${mdToHtml(g.draft_md)}</div>`
+      :`<div class="kpi mb-4" style="padding:12px 16px"><div class="text-sm" style="color:var(--navy)"><b>Nothing drafted yet.</b> Compose from the programme blocks, then edit in your own words.</div>
+        <div class="flex gap-2 mt-2 flex-wrap"><button class="btn btn-navy" style="padding:5px 12px;font-size:12px" onclick="draftGrant('${g.id}','Grant · Letter of Inquiry')">Draft letter of inquiry</button><button class="btn btn-navy" style="padding:5px 12px;font-size:12px" onclick="draftGrant('${g.id}','Grant · Proposal Narrative')">Draft full narrative</button></div></div>`}
     <div class="mb-4"><label>Review notes</label><textarea id="gNotes" rows="2">${esc(g.review_notes||'')}</textarea></div>
     <div class="flex flex-wrap gap-2 justify-end">
       ${g.status!=='skipped'?`<button class="btn btn-ghost" onclick="grantStatus('${g.id}','skipped')">Skip</button>`:''}
@@ -1826,6 +1905,66 @@ async function openGrant(id){
       ${g.status==='in_review'?`<button class="btn btn-gold" onclick="grantStatus('${g.id}','submitted')">Mark submitted</button>`:''}
       ${g.status==='submitted'?`<button class="btn btn-gold" onclick="grantStatus('${g.id}','won')">Won 🎉</button><button class="btn btn-ghost" onclick="grantStatus('${g.id}','lost')">Lost</button>`:''}
     </div>`);
+}
+function openNewGrant(){
+  const opt = (list, cur) => list.map(([v,l])=>`<option value="${v}" ${v===cur?'selected':''}>${l}</option>`).join('');
+  modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">New opportunity</h2>
+    <p class="text-sm text-gray-500 mb-4">A funder you found yourself. It enters the pipeline as qualified; the engine's own finds enter as scanned.</p>
+    <div class="grid md:grid-cols-2 gap-3">
+      <div class="md:col-span-2"><label>Title</label><input id="ngTitle" placeholder="e.g. Youth leadership grant, 2027 cycle"></div>
+      <div><label>Funder</label><input id="ngFunder"></div>
+      <div><label>Source URL</label><input id="ngUrl" placeholder="https://"></div>
+      <div><label>Deadline</label><input id="ngDeadline" type="date"></div>
+      <div><label>Pillar</label><select id="ngPillar">${opt([['general','All pillars'],['youth','Youth'],['educators','Educators'],['women','Women']],'general')}</select></div>
+      <div><label>Amount · from (USD)</label><input id="ngMin" type="number" min="0"></div>
+      <div><label>Amount · to (USD)</label><input id="ngMax" type="number" min="0"></div>
+      <div class="md:col-span-2"><label>Geography</label><input id="ngGeo" placeholder="e.g. Nigeria and India"></div>
+      <div class="md:col-span-2"><label>Summary · what they fund and why we fit</label><textarea id="ngSummary" rows="3"></textarea></div>
+    </div>
+    <div class="text-right mt-4"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="saveNewGrant()">Add to pipeline</button></div>`);
+}
+async function saveNewGrant(){
+  const row = { title:$('ngTitle').value.trim(), funder:$('ngFunder').value.trim()||null, url:$('ngUrl').value.trim()||null,
+    deadline:$('ngDeadline').value||null, pillar:$('ngPillar').value, amount_min:$('ngMin').value?+$('ngMin').value:null, amount_max:$('ngMax').value?+$('ngMax').value:null,
+    geography:$('ngGeo').value.trim()||null, summary:$('ngSummary').value.trim()||null, status:'qualified', source:'manual' };
+  if (!row.title) return toast('Give it a title', true);
+  const { error } = await sb.from('grant_opportunities').insert(row); if (error) return toast(error.message, true);
+  toast('Added to the pipeline'); closeModal(); loadGrants();
+}
+async function draftGrant(id, templateName){
+  const [{ data: g }, { data: tpls }] = await Promise.all([
+    sb.from('grant_opportunities').select('*').eq('id',id).single(),
+    sb.from('doc_templates').select('*').eq('name', templateName).limit(1)
+  ]);
+  if (!tpls || !tpls.length) return toast('That grant template is not on this instance yet', true);
+  const { data: blocks } = await sb.from('grant_program_blocks').select('*');
+  const b = (blocks||[]).find(x=>x.pillar===(g.pillar||'general')) || (blocks||[]).find(x=>x.pillar==='general') || {};
+  const amount = g.amount_max ? '$'+Number(g.amount_max).toLocaleString() : (g.amount_min ? '$'+Number(g.amount_min).toLocaleString() : '[AMOUNT]');
+  const vals = { funder:g.funder||'[FUNDER]', amount, duration:'12 months', geography:g.geography||'our programme countries',
+    program_name:b.name||'[PROGRAM]', need:b.need||'', activities:b.activities||'', outcomes:b.outcomes||'' };
+  const md = renderTemplate(tpls[0].body_md, vals);
+  const title = templateName.replace('Grant · ','') + ' — ' + (g.funder||g.title);
+  const { error } = await sb.from('grant_opportunities').update({ draft_md: md, draft_title: title, status: g.status==='scanned'?'drafting':g.status }).eq('id', id);
+  if (error) return toast(error.message, true);
+  sb.rpc('log_audit',{p_event:'GRANT_DRAFTED',p_resource:'grant_opportunities',p_action:'draft',p_details:title}).then(undefined,()=>{});
+  toast('Drafted — now make it yours'); openGrant(id);
+}
+async function editGrantDraft(id){
+  const { data: g } = await sb.from('grant_opportunities').select('id,draft_md,draft_title').eq('id',id).single();
+  modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">${esc(g.draft_title||'Draft')}</h2>
+    <p class="text-sm text-gray-500 mb-3">Markdown. Nothing leaves this screen until you submit it to the funder yourself.</p>
+    <textarea id="gdBody" rows="22" style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.5">${esc(g.draft_md||'')}</textarea>
+    <div class="text-right mt-3"><button class="btn btn-ghost mr-2" onclick="openGrant('${id}')">Back</button><button class="btn btn-gold" onclick="saveGrantDraft('${id}')">Save draft</button></div>`);
+}
+async function saveGrantDraft(id){
+  const { error } = await sb.from('grant_opportunities').update({ draft_md: $('gdBody').value }).eq('id', id);
+  if (error) return toast(error.message, true);
+  toast('Draft saved'); openGrant(id);
+}
+async function downloadGrantDraft(id){
+  const { data: g } = await sb.from('grant_opportunities').select('draft_md,draft_title').eq('id',id).single();
+  const blob = new Blob([g.draft_md||''], { type:'text/markdown' }); const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = (g.draft_title||'draft').replace(/[^\w]+/g,'-').toLowerCase()+'.md'; a.click();
 }
 async function grantStatus(id, status){
   const { error } = await sb.from('grant_opportunities').update({status, review_notes: $('gNotes') ? $('gNotes').value : null}).eq('id', id);
