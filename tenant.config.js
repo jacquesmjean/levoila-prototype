@@ -44,9 +44,10 @@ window.TENANT_CONFIG = {
   ],
 
   /* ---- Countries in scope (drives the ledger "Country" picklist) ----
-     PLACEHOLDER. EnnobleRise runs programs in 8+ countries; only the ones that
-     actually STORE records belong here. Confirm before go-live. */
-  countries: ["United States"],
+     Fallback only. tenant_settings.countries is authoritative and an admin can
+     edit it from Settings without a deploy. This list mirrors country_programs
+     as of 3 Nov 2026. */
+  countries: ["Belize", "Cameroon", "Haiti", "India", "Nigeria", "South Africa", "Sri Lanka", "United Kingdom"],
 
   /* ---- Brand palette — read off ennoblerise.org's own stylesheet 22 Aug 2026:
      --navy-deep #13255E · --navy #1E3A8A · --gold #D9A514
