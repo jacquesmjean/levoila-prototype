@@ -1,13 +1,17 @@
 // Levoila — Executive Copilot. Staff-only chat grounded in a live Mission
 // Control snapshot. No npm deps.
-// Requires env: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
+// Requires env: SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY.
 // Optional env: ANTHROPIC_API_KEY (enables free-form answers). If absent, the
 // API returns { fallback:true, snapshot } and the client renders a briefing
 // from the same data — nothing breaks, no numbers are invented.
-const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlna3ZocWRsamZqamt1ZGVpc2JzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM5MTcyNzAsImV4cCI6MjA5OTQ5MzI3MH0.hsQCo-THdMXt0AyUoyJgdYwyzjn6rye0Gwz33DwuhCg';
-const ORG_NAME = process.env.TENANT_ORG_NAME || 'Levoila';
+const ANON = process.env.SUPABASE_ANON_KEY;
+const ORG_NAME = process.env.TENANT_ORG_NAME || 'this organization';
+// One line describing the organization, so the Copilot does not introduce
+// itself as somebody else's charity. Set TENANT_ORG_DESC per deployment.
+const ORG_DESC = process.env.TENANT_ORG_DESC || 'a non-profit organization';
 
 async function requireStaff(req, SB, KEY) {
+  if (!ANON) { console.error('SUPABASE_ANON_KEY is not set for this deployment'); return null; }
   const auth = req.headers['authorization'] || '';
   const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
   if (!token) return null;
@@ -35,7 +39,7 @@ async function getSnapshot(SB, token) {
   return r.json();
 }
 
-const SYSTEM = `You are the ${ORG_NAME} Executive Copilot — a sharp, trusted chief-of-staff for the leadership of ${ORG_NAME}, a heritage trust operating in Haiti.
+const SYSTEM = `You are the ${ORG_NAME} Executive Copilot — a sharp, trusted chief-of-staff for the leadership of ${ORG_NAME}, ${ORG_DESC}.
 
 You are speaking with authorized staff. Answer their questions about operations using ONLY the live SNAPSHOT provided below. Rules:
 - Never invent, estimate, or extrapolate numbers. If the snapshot does not contain the answer, say so plainly and suggest where in Mission Control to look (Records, Presence, Ledger, Tickets, Content).
