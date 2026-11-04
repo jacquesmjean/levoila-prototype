@@ -19,6 +19,7 @@ window.TENANT_CONFIG = {
 
   /* ---- Identity / branding ---- */
   org: {
+    governingBody: "the Trustee",       // EnnobleRise is a trust; the Advisory Board advises, it does not govern
     name: "EnnobleRise",
     legalName: "EnnobleRise Global Trust",   // used by the audit bundle export
     product: "Mission Control",
@@ -67,7 +68,9 @@ window.TENANT_CONFIG = {
   },
 
   /* ---- Finance ---- */
-  fundGoal: 75000,                   // FY2027: year one of the two-year $150,000 target (The Plan)
+  fundGoal: 150000,                  // Strategy 2026–2027: $120K grants + $10K micro-donations + $20K signature drives
+  fundGoalLabel: "2026–2027 Funding Target",
+  partnerKinds: { technology: "Technology partner", program: "Program partner", legacy: "Legacy partner", service: "Service partner", education: "Education partner", municipal: "Municipal partner" },
   currency: "USD",
 
   /* ---- Program taxonomy (drives the ledger "Project" picklist) ---- */
