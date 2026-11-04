@@ -3657,12 +3657,28 @@ async function openVendor(id){
       <div class="md:col-span-2"><label>Notes</label><textarea id="vNotes" rows="2">${esc(v.notes||'')}</textarea></div>
     </div>
     <div class="text-xs text-gray-400 mb-3">Linked documents: ${docs&&docs.length?docs.map(d=>`<a href="#" onclick="downloadDoc('${d.storage_path||''}');return false">${esc(d.file_name||d.title)}</a>`).join(', '):'none yet — upload in Documents and set the link to this vendor'}</div>
+    <div class="cc-section-label">Relationship · contracts, gifts and signatures with this vendor</div>
+    <div id="venRel" class="mb-4"><div class="text-xs text-gray-400">Loading…</div></div>
     <div class="cc-section-label">Approval gates · all required must clear before the vendor is activated</div>
     <div id="venGates" class="mb-3"><div class="text-xs text-gray-400">Checking gates…</div></div>
     <div class="flex items-center justify-end">
       <button class="btn btn-gold" onclick="saveVendor('${v.id}')">Save</button>
     </div>`);
-  loadVendorGates(id);
+  loadVendorGates(id); loadVendorRelationship(id);
+}
+async function loadVendorRelationship(id){
+  const box=$('venRel'); if(!box) return;
+  const { data, error }=await sb.rpc('vendor_relationship',{p_id:id});
+  if(error||!data||!data.ok){ box.innerHTML=`<div class="text-xs text-gray-400">${esc((error&&error.message)||'Unavailable.')}</div>`; return; }
+  const money=n=>'$'+Number(n||0).toLocaleString('en-US',{maximumFractionDigits:0});
+  const kpis=[['Monthly commitment',money(data.monthly_commitment)+'/mo'],['In-kind received',money(data.in_kind_total)],['Contracts',(data.contracts||[]).length],['Signatures',(data.signatures||[]).filter(s=>s.status==='signed').length+'/'+(data.signatures||[]).length]]
+    .map(([l,n])=>`<div class="kpi"><div class="n" style="font-size:1.1rem">${n}</div><div class="l">${l}</div></div>`).join('');
+  const contracts=(data.contracts||[]).length?data.contracts.map(c=>`<tr><td><b style="color:var(--navy)">${esc(c.title)}</b><div class="text-xs text-gray-400">${esc(c.kind||'')} · ${c.effective_on?fmtD(c.effective_on):'—'} → ${c.expires_on?fmtD(c.expires_on):'open'}${c.scope?'<br>'+esc(c.scope):''}</div></td><td style="white-space:nowrap;text-align:right">${c.monthly_usd?money(c.monthly_usd)+'/mo':''}${c.value_usd?'<div class="text-xs text-gray-400">'+money(c.value_usd)+' total</div>':''}</td><td>${badge(c.status)}</td></tr>`).join(''):'<tr><td class="text-xs text-gray-400" colspan="3">No contracts linked.</td></tr>';
+  const gifts=(data.donations||[]).length?data.donations.map(d=>`<tr><td><b style="color:var(--navy)">${d.in_kind?'In-kind gift':'Gift'}</b><div class="text-xs text-gray-400">${esc(d.description||'')}${d.received_on?' · received '+fmtD(d.received_on):''}</div></td><td style="text-align:right;white-space:nowrap">${money(d.amount_usd)}</td><td>${d.in_kind?'<span class="text-xs" style="color:var(--gold);font-weight:700">donor-stated value</span>':''}</td></tr>`).join(''):'';
+  const sigs=(data.signatures||[]).length?data.signatures.map(s=>`<tr><td><b style="color:var(--navy)">${esc(s.title)}</b><div class="text-xs text-gray-400">${esc(s.signer_name)} · ${esc(s.signer_role||'')}</div></td><td style="text-align:right;white-space:nowrap">${s.status==='signed'?'<span class="text-xs text-gray-400">'+fmtD(s.signed_at)+'</span>':`<a href="#" class="text-xs" onclick="navigator.clipboard.writeText(location.origin+'/sign?t=${s.token}').then(()=>toast('Signing link copied'));return false">copy signing link</a>`}</td><td>${badge(s.status)}</td></tr>`).join(''):'';
+  box.innerHTML=`<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">${kpis}</div>
+    <div class="table-wrap"><table class="grid"><tbody>${contracts}${gifts}${sigs}</tbody></table></div>
+    <div class="text-right mt-2"><button class="btn btn-ghost" style="padding:4px 10px" onclick="closeModal();show('legal')">Open Legal →</button></div>`;
 }
 /* ---- Vendor approval gates ---- */
 async function loadVendorGates(id){
