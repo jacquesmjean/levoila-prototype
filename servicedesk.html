@@ -949,6 +949,7 @@ async function loadScoreboard(){
 }
 
 function applyTenantSettings(ts){
+  if (ts && Number(ts.fund_goal) > 0) FUND_GOAL = Number(ts.fund_goal);
   renderSampleBanner(ts);
   applyWordmark(ts.wordmark || ts.short_name || ts.org_name, ts.wordmark_sub || null, ts.logo_url || null);
   applyBrand({ navy:ts.brand_navy, deep:ts.brand_deep, deeper:ts.brand_deeper, gold:ts.brand_gold,
@@ -1017,7 +1018,8 @@ function show(k){
 
 // ---------- overview ----------
 let OV_DEMO = false;
-const FUND_GOAL = (CFG && Number(CFG.fundGoal)) || 1000000;
+// Settings (tenant_settings.fund_goal) wins over the config file once loaded.
+let FUND_GOAL = (CFG && Number(CFG.fundGoal)) || 1000000;
 
 // Clearly-labeled illustrative data — shown ONLY in Preview mode, never presented as live.
 const DEMO = {
