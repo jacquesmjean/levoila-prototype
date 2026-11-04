@@ -43,6 +43,10 @@
     {
       "source": "/blog",
       "destination": "/dispatches.html"
+    },
+    {
+      "source": "/webhooks/donation",
+      "destination": "/api/donation-webhook"
     }
   ],
   "headers": [
