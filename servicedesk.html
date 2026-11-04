@@ -451,7 +451,7 @@
       <div id="view-grants" class="view">
         <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Global Grant Engine</h1>
-          <button class="btn btn-gold" onclick="openNewGrant()">+ Opportunity</button>
+          <div class="flex gap-2"><button class="btn btn-ghost" onclick="openProgramBlocks()">Programme blocks</button><button class="btn btn-gold" onclick="openNewGrant()">+ Opportunity</button></div>
         </div>
         <p class="text-sm text-gray-500 mb-5">A machine that never stops: it scans funders Mondays and Thursdays, scores every opportunity honestly, and drafts the application. The calendar below is your year at a glance — plan each quarter's submissions and keep the pipeline full. Nothing is ever submitted without your sign-off.</p>
         <div class="cc-section-label">Planning calendar · deadlines by quarter</div>
@@ -645,6 +645,20 @@
 
     </div>
 
+      <div id="view-library" class="view">
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Resource Library</h1>
+          <button class="btn btn-gold" onclick="openUploadDoc('library')">+ Add to the library</button>
+        </div>
+        <p class="text-sm text-gray-500 mb-6">Training, presentations, the organization deck, brand files, handbooks and programme materials. Everyone with access can download what they need, whenever they need it.</p>
+        <div class="flex gap-2 flex-wrap mb-4">
+          <input id="libSearch" placeholder="Search the library…" style="flex:1;min-width:220px" oninput="loadLibrary()">
+          <select id="libLang" style="max-width:180px" onchange="loadLibrary()"><option value="">All languages</option></select>
+        </div>
+        <div id="libShelves" class="flex gap-2 flex-wrap mb-6"></div>
+        <div id="libGrid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+      </div>
+
       <div id="view-documents" class="view">
         <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
           <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Documents</h1>
@@ -708,11 +722,11 @@
 
         <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
           <div class="cc-section-label" style="margin-bottom:0">The weekly rhythm · what goes out, and when</div>
-          <button class="btn btn-ghost" onclick="planSocialWeeks()">Plan the next 4 weeks</button>
+          <div class="flex gap-2"><button class="btn btn-ghost" onclick="openCadence()">Edit the rhythm</button><button class="btn btn-ghost" onclick="planSocialWeeks()">Plan the next 4 weeks</button></div>
         </div>
         <div id="socialCadence" class="grid md:grid-cols-3 gap-4 mb-7"></div>
 
-        <div class="cc-section-label">Accounts of record</div>
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3"><div class="cc-section-label" style="margin-bottom:0">Accounts of record</div><button class="btn btn-ghost" onclick="openSocialAccountsManager()">Manage accounts</button></div>
         <div id="socialAccounts" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9"></div>
 
         <div class="cc-section-label">Calendar</div>
@@ -960,7 +974,7 @@ const VIEWS = [
   ['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],
   ['volunteers','Volunteers'],['scholarship','Scholarship'],['ambassadors','Ambassadors'],['partners','Partners & Chapters'],['countries','Countries'],['grants','Grant Engine'],['donors','Donor CRM'],
   ['influencers','Influencers'],['finance','Finance'],['content','Content'],['applications','Careers'],
-  ['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding'],
+  ['library','Resource Library'],['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding'],
   ['blog','Blog'],['social','Social'],
   ['people','People & HR'],['board','Board'],['legal','Legal'],['security','Security & Audit'],['settings','Settings']
 ];
@@ -969,7 +983,7 @@ const NAV_GROUPS = [
   ['Operations', [['overview','Overview'],['tickets','Service Desk'],['beneficiaries','Beneficiaries'],['scholarship','Scholarship'],['volunteers','Volunteers'],['ambassadors','Ambassadors'],['partners','Partners & Chapters'],['countries','Countries']]],
   ['Funding',    [['grants','Grant Engine'],['donors','Donor CRM'],['influencers','Influencers'],['finance','Finance']]],
   ['Presence',   [['content','Content'],['social','Social'],['blog','Blog'],['applications','Careers']]],
-  ['Records',    [['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding']]],
+  ['Records',    [['library','Resource Library'],['documents','Documents'],['vendors','Vendors'],['onboarding','Onboarding']]],
   ['Governance', [['people','People & HR'],['board','Board & Admin'],['legal','Legal'],['security','Security & Audit'],['settings','Settings']]]
 ];
 function canSee(k){
@@ -997,7 +1011,7 @@ function show(k){
   ({copilot:loadCopilot, plan:loadPlan, overview:loadOverview, tickets:loadTickets, beneficiaries:loadBenefs, volunteers:loadVols,
     scholarship:loadScholarship, ambassadors:loadAmbassadors, partners:loadPartners, countries:loadCountries,
     grants:loadGrants, donors:loadDonors, influencers:loadInfluencers, finance:loadFinance, content:loadContent, applications:loadApps,
-    documents:loadDocsView, vendors:loadVendors, onboarding:loadOnboarding, blog:loadBlog, social:loadSocial,
+    library:loadLibrary, documents:loadDocsView, vendors:loadVendors, onboarding:loadOnboarding, blog:loadBlog, social:loadSocial,
     people:loadPeople, board:loadBoard, legal:loadLegal, security:loadSecurity, settings:loadSettings})[k]();
 }
 
@@ -1893,12 +1907,13 @@ async function openGrant(id){
     ${notes.rationale?`<div class="kpi mb-4" style="padding:14px 16px"><div class="text-xs uppercase tracking-wide text-gray-400 mb-1">Why this score</div><div class="text-sm">${esc(notes.rationale)}</div></div>`:''}
     ${g.summary?`<div class="draft-md mb-4">${esc(g.summary)}</div>`:''}
     ${g.draft_md?`<div class="flex items-center justify-between mb-2"><h3 class="serif text-lg font-semibold" style="color:var(--navy)">${esc(g.draft_title||'Draft')} · your sign-off required</h3>
-        <div class="flex gap-2"><button class="btn btn-ghost" style="padding:4px 10px;font-size:12px" onclick="editGrantDraft('${g.id}')">Edit</button><button class="btn btn-ghost" style="padding:4px 10px;font-size:12px" onclick="downloadGrantDraft('${g.id}')">Download .md</button></div></div>
+        <div class="flex gap-2"><button class="btn btn-ghost" style="padding:4px 10px;font-size:12px" onclick="editGrantDraft('${g.id}')">Edit</button><button class="btn btn-gold" style="padding:4px 10px;font-size:12px" onclick="printGrantDraft('${g.id}')">Letterhead / PDF</button><button class="btn btn-ghost" style="padding:4px 10px;font-size:12px" onclick="downloadGrantDraft('${g.id}')">.md</button></div></div>
       <div class="draft-md mb-4" style="max-height:320px;overflow:auto">${mdToHtml(g.draft_md)}</div>`
       :`<div class="kpi mb-4" style="padding:12px 16px"><div class="text-sm" style="color:var(--navy)"><b>Nothing drafted yet.</b> Compose from the programme blocks, then edit in your own words.</div>
         <div class="flex gap-2 mt-2 flex-wrap"><button class="btn btn-navy" style="padding:5px 12px;font-size:12px" onclick="draftGrant('${g.id}','Grant · Letter of Inquiry')">Draft letter of inquiry</button><button class="btn btn-navy" style="padding:5px 12px;font-size:12px" onclick="draftGrant('${g.id}','Grant · Proposal Narrative')">Draft full narrative</button></div></div>`}
     <div class="mb-4"><label>Review notes</label><textarea id="gNotes" rows="2">${esc(g.review_notes||'')}</textarea></div>
     <div class="flex flex-wrap gap-2 justify-end">
+      <button class="btn btn-ghost" style="margin-right:auto;color:#B23A48" onclick="armDelete(this,()=>deleteRow('grant_opportunities','${g.id}',loadGrants))">Delete</button>
       ${g.status!=='skipped'?`<button class="btn btn-ghost" onclick="grantStatus('${g.id}','skipped')">Skip</button>`:''}
       ${['scanned'].includes(g.status)?`<button class="btn btn-navy" onclick="grantStatus('${g.id}','qualified')">Mark qualified</button>`:''}
       ${['qualified','drafting'].includes(g.status)?`<button class="btn btn-navy" onclick="grantStatus('${g.id}','in_review')">Send to review</button>`:''}
@@ -1965,6 +1980,37 @@ async function downloadGrantDraft(id){
   const { data: g } = await sb.from('grant_opportunities').select('draft_md,draft_title').eq('id',id).single();
   const blob = new Blob([g.draft_md||''], { type:'text/markdown' }); const a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = (g.draft_title||'draft').replace(/[^\w]+/g,'-').toLowerCase()+'.md'; a.click();
+}
+async function printGrantDraft(id){
+  const { data: g } = await sb.from('grant_opportunities').select('draft_md,draft_title,funder,title').eq('id',id).single();
+  openLetterhead(g.draft_title||'Draft', mdToHtml(g.draft_md||''), {subtitle:[g.funder, g.title].filter(Boolean).join(' · ')});
+}
+/* Programme blocks — the pillar language every grant draft is composed from. The grants team edits these in their own words. */
+async function openProgramBlocks(){
+  const { data, error }=await sb.from('grant_program_blocks').select('*').order('pillar'); if(error) return toast(error.message,true);
+  const rows=data||[];
+  modal(`<div class="flex items-start justify-between mb-2"><div><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">Programme blocks</h2><div class="text-xs text-gray-400">One block per pillar: the need, what the money does, what changes. Every letter and narrative is composed from these.</div></div><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    <div class="table-wrap mb-3"><table class="grid"><tbody>${rows.map(b=>`<tr style="cursor:pointer" onclick="editProgramBlock('${b.id}')"><td style="width:110px"><span class="badge b-P3">${esc(b.pillar)}</span></td><td><b style="color:var(--navy)">${esc(b.name)}</b><div class="text-xs text-gray-400">${esc((b.need||'').slice(0,140))}…</div></td></tr>`).join('')||'<tr><td class="text-xs text-gray-400">No blocks yet.</td></tr>'}</tbody></table></div>
+    <div class="text-right"><button class="btn btn-gold" onclick="editProgramBlock(null)">+ Add a pillar</button></div>`);
+}
+async function editProgramBlock(id){
+  let b={pillar:'',name:'',need:'',activities:'',outcomes:''};
+  if(id){ const { data }=await sb.from('grant_program_blocks').select('*').eq('id',id).single(); b=data||b; }
+  modal(`<div class="flex items-start justify-between mb-3"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${id?'Edit block':'New block'}</h2><button class="btn btn-ghost" onclick="openProgramBlocks()">Back</button></div>
+    <div class="grid md:grid-cols-3 gap-3 mb-3">
+      <div><label>Pillar key</label><input id="pbPillar" value="${esc(b.pillar)}" placeholder="youth · educators · women · general" ${id?'readonly':''}></div>
+      <div class="md:col-span-2"><label>Programme name</label><input id="pbName" value="${esc(b.name)}"></div>
+      <div class="md:col-span-3"><label>The need</label><textarea id="pbNeed" rows="4">${esc(b.need)}</textarea></div>
+      <div class="md:col-span-3"><label>What the investment makes possible (one line per item, start with "- ")</label><textarea id="pbAct" rows="6">${esc(b.activities)}</textarea></div>
+      <div class="md:col-span-3"><label>Expected outcomes (one line per item, start with "- ")</label><textarea id="pbOut" rows="5">${esc(b.outcomes)}</textarea></div>
+    </div>
+    <div class="flex items-center justify-between">${id?`<button class="btn btn-ghost" style="color:#B23A48" onclick="armDelete(this,()=>deleteRow('grant_program_blocks','${id}',openProgramBlocks))">Delete</button>`:'<span></span>'}<button class="btn btn-gold" onclick="saveProgramBlock(${id?`'${id}'`:'null'})">Save</button></div>`);
+}
+async function saveProgramBlock(id){
+  const row={pillar:$('pbPillar').value.trim().toLowerCase(), name:$('pbName').value.trim(), need:$('pbNeed').value.trim(), activities:$('pbAct').value.trim(), outcomes:$('pbOut').value.trim()};
+  if(!row.pillar||!row.name) return toast('Pillar key and programme name are required',true);
+  const q=id?sb.from('grant_program_blocks').update(row).eq('id',id):sb.from('grant_program_blocks').insert(row);
+  const { error }=await q; if(error) return toast(error.message,true); toast('Saved'); openProgramBlocks();
 }
 async function grantStatus(id, status){
   const { error } = await sb.from('grant_opportunities').update({status, review_notes: $('gNotes') ? $('gNotes').value : null}).eq('id', id);
@@ -3503,7 +3549,40 @@ function tableHtml(heads, rows, onRow, empty){
     <tbody>${rows.map((r,i)=>`<tr ${onRow?`onclick="${onRow(i)}"`:''}>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 }
 /* ===================== RECORDS: Documents · Vendors · Onboarding ===================== */
-const DOC_CATS = ['contract','legal','finance','hr','vendor','permit','governance','policy','general'];
+const LIB_CATS = [['training','Training'],['presentation','Presentations'],['brand','Brand & Templates'],['handbook','Policies & Handbooks'],['program','Programme Materials'],['board_papers','Board Papers'],['report','Reports & Impact']];
+const DOC_CATS = ['contract','legal','finance','hr','vendor','permit','governance','policy','general'].concat(LIB_CATS.map(c=>c[0]));
+let LIB_SHELF = '';
+function libIcon(d){
+  const m=(d.mime_type||'')+' '+(d.file_name||'')+' '+(d.external_url||'');
+  if(d.external_url && !d.storage_path) return '🔗';
+  if(/pdf/i.test(m)) return '📄'; if(/presentation|powerpoint|\.pptx?|\.key\b/i.test(m)) return '📊';
+  if(/image\/|\.(png|jpe?g|gif|webp|svg)/i.test(m)) return '🖼'; if(/video|\.(mp4|mov)/i.test(m)) return '🎬';
+  if(/sheet|excel|\.xlsx?|\.csv/i.test(m)) return '📈'; if(/word|\.docx?/i.test(m)) return '📝'; return '📁';
+}
+function fmtBytes(n){ if(!n) return ''; const u=['B','KB','MB','GB']; let i=0; while(n>=1024&&i<3){n/=1024;i++;} return n.toFixed(i?1:0)+' '+u[i]; }
+async function loadLibrary(){
+  const cats=LIB_CATS.map(c=>c[0]);
+  let q=sb.from('documents').select('*').in('category',cats).neq('status','archived').order('updated_at',{ascending:false}).limit(500);
+  if(LIB_SHELF) q=q.eq('category',LIB_SHELF);
+  const { data, error }=await q; if(error) return toast(error.message,true);
+  let rows=data||[]; const term=($('libSearch').value||'').trim().toLowerCase(); const lang=$('libLang').value;
+  const { data: all }=LIB_SHELF?await sb.from('documents').select('category,language').in('category',cats).neq('status','archived'):{data:rows};
+  const counts={}; (all||[]).forEach(d=>counts[d.category]=(counts[d.category]||0)+1);
+  const langs=[...new Set((all||[]).map(d=>d.language).filter(Boolean))].sort();
+  const sel=$('libLang'); if(sel.options.length!==langs.length+1){ sel.innerHTML='<option value="">All languages</option>'+langs.map(l=>`<option value="${l}" ${l===lang?'selected':''}>${l.toUpperCase()}</option>`).join(''); }
+  if(term) rows=rows.filter(d=>((d.title||'')+' '+(d.description||'')+' '+(d.owner||'')+' '+((d.tags||[]).join(' '))).toLowerCase().includes(term));
+  if(lang) rows=rows.filter(d=>d.language===lang);
+  const total=Object.values(counts).reduce((a,b)=>a+b,0);
+  $('libShelves').innerHTML=[['','All',total]].concat(LIB_CATS.map(([k,l])=>[k,l,counts[k]||0])).map(([k,l,n])=>`<button class="pill-tab ${LIB_SHELF===k?'active':''}" onclick="LIB_SHELF='${k}';loadLibrary()">${l} <span style="opacity:.6">${n}</span></button>`).join('');
+  $('libGrid').innerHTML=rows.length?rows.map(d=>`<div class="fin-card" style="padding:16px 18px;display:flex;flex-direction:column;gap:8px">
+      <div class="flex items-start justify-between gap-3"><div style="font-size:26px;line-height:1">${libIcon(d)}</div><span class="badge b-P3">${esc((LIB_CATS.find(c=>c[0]===d.category)||[d.category,d.category])[1])}</span></div>
+      <div class="serif font-semibold" style="color:var(--navy);font-size:17px;line-height:1.25;cursor:pointer" onclick="openDoc('${d.id}')">${esc(d.title)}</div>
+      ${d.description?`<div class="text-xs text-gray-500" style="line-height:1.5">${esc(d.description.slice(0,160))}</div>`:''}
+      <div class="text-xs text-gray-400" style="margin-top:auto">${esc(d.file_name||(d.external_url?'External link':''))}${d.size_bytes?' · '+fmtBytes(d.size_bytes):''}${d.language?' · '+esc(d.language.toUpperCase()):''}${d.version&&d.version>1?' · v'+d.version:''}</div>
+      <div class="flex items-center justify-between" style="margin-top:4px"><span class="text-xs text-gray-400">${d.owner?esc(d.owner):''}${d.updated_at?' · '+fmtD(d.updated_at):''}</span>
+        ${d.storage_path?`<button class="btn btn-gold" style="padding:5px 12px;font-size:12px" onclick="downloadDoc('${d.storage_path}','${d.id}')">⬇ Download</button>`:(d.external_url?`<a class="btn btn-ghost" style="padding:5px 12px;font-size:12px" href="${esc(d.external_url)}" target="_blank" rel="noopener">Open ↗</a>`:'')}</div>
+    </div>`).join(''):'<div class="empty-elegant md:col-span-2 xl:col-span-3"><div class="e-t">The shelf is empty</div><div class="e-s">Add the organization deck, training decks, brand files and handbooks. Anyone with access can download them.</div></div>';
+}
 let DOC_CAT_INIT = false;
 
 async function loadDocuments(){
@@ -3532,11 +3611,15 @@ async function loadDocuments(){
     rows.map(d=>[`<b style="color:var(--navy)">${esc(d.title)}</b>${d.file_name?`<div class="text-xs text-gray-400">${esc(d.file_name)}</div>`:''}`, esc(d.category), audienceCell(d), esc(d.owner||'—'), badge(d.status), d.expires_on?fmtD(d.expires_on):'—']),
     i=>`openDoc('${rows[i].id}')`, 'No documents yet. Click “Upload document” to add the first.');
 }
-function openUploadDoc(){
-  modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">Upload document</h2>
+function openUploadDoc(mode){
+  const lib=mode==='library';
+  const catOpts=lib?LIB_CATS.map(([k,l])=>`<option value="${k}" ${k===(LIB_SHELF||'training')?'selected':''}>${l}</option>`).join():DOC_CATS.map(c=>`<option>${c}</option>`).join('');
+  modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">${lib?'Add to the library':'Upload document'}</h2>
     <div class="grid md:grid-cols-2 gap-3 mb-3">
       <div class="md:col-span-2"><label>Title</label><input id="udTitle"></div>
-      <div><label>Category</label><select id="udCat">${DOC_CATS.map(c=>`<option>${c}</option>`).join('')}</select></div>
+      <div><label>${lib?'Shelf':'Category'}</label><select id="udCat">${catOpts}</select></div>
+      ${lib?`<div><label>Language</label><select id="udLang">${(ORG.languages||CFG.languages||['en']).map(l=>`<option value="${l}">${l.toUpperCase()}</option>`).join('')}</select></div>
+      <div class="md:col-span-2"><label>Or a link instead of a file (Google Slides, Canva, YouTube…)</label><input id="udUrl" placeholder="https://…"></div>`:''}
       <div><label>Owner</label><input id="udOwner" value="${esc(ME.name||ME.email)}"></div>
       <div><label>Expires on</label><input id="udExp" type="date"></div>
       <div><label>Tags (comma-separated)</label><input id="udTags"></div>
@@ -3563,12 +3646,14 @@ async function createDoc(){
   }
   const tags=($('udTags').value||'').split(',').map(x=>x.trim()).filter(Boolean);
   const groups=[...document.querySelectorAll('.udGrp:checked')].map(b=>b.value);
+  const external_url=$('udUrl')?($('udUrl').value.trim()||null):null; const language=$('udLang')?$('udLang').value:null;
+  if(!f && !external_url && $('udUrl')) return toast('Attach a file or paste a link',true);
   const { error }=await sb.from('documents').insert({title, category:$('udCat').value, owner:$('udOwner').value||null,
     expires_on:$('udExp').value||null, tags, description:$('udDesc').value||null, groups, country:$('udCountry').value||null,
-    storage_path, file_name, mime_type, size_bytes, uploaded_by:ME.id, status:'active'});
+    storage_path, file_name, mime_type, size_bytes, external_url, language, uploaded_by:ME.id, status:'active'});
   if(error) return toast(error.message,true);
   sb.rpc('log_audit',{p_event:'document.upload',p_resource:'documents',p_action:'insert',p_subject:title}).then(undefined,()=>{});
-  toast('Document saved'); closeModal(); loadDocuments();
+  toast($('udUrl')?'Added to the library':'Document saved'); closeModal(); if($('view-library').classList.contains('active')) loadLibrary(); else loadDocuments();
 }
 async function openDoc(id){
   const { data:d }=await sb.from('documents').select('*').eq('id',id).single();
@@ -3585,7 +3670,9 @@ async function openDoc(id){
         <div class="chkgrid">${DOC_GROUPS.map(g=>`<label class="chk"><input type="checkbox" class="dGrp" value="${g}" ${(d.groups||[]).includes(g)?'checked':''}> ${g}</label>`).join('')}</div></div>
     </div>
     <div class="flex items-center justify-between">
-      <div>${d.storage_path?`<button class="btn btn-ghost" onclick="downloadDoc('${d.storage_path}')">⬇ Download (v${d.version||1})</button>`:'<span class="text-xs text-gray-400">No file attached</span>'}</div>
+      <div class="flex gap-2 items-center flex-wrap">${d.storage_path?`<button class="btn btn-ghost" onclick="downloadDoc('${d.storage_path}','${d.id}')">⬇ Download (v${d.version||1})</button>`:(d.external_url?`<a class="btn btn-ghost" href="${esc(d.external_url)}" target="_blank" rel="noopener">Open link ↗</a>`:'<span class="text-xs text-gray-400">No file attached</span>')}
+        <label class="btn btn-ghost" style="cursor:pointer">Replace file<input type="file" style="display:none" onchange="replaceDocFile('${d.id}',this.files[0])"></label>
+        ${ME&&ME.role==='admin'?`<button class="btn btn-ghost" style="color:#B23A48" onclick="armDelete(this,()=>deleteRow('documents','${d.id}',()=>{ if($('view-library').classList.contains('active')) loadLibrary(); else loadDocuments(); }))">Delete</button>`:''}</div>
       <button class="btn btn-gold" onclick="saveDoc('${d.id}')">Save</button>
     </div>`);
 }
@@ -3595,11 +3682,21 @@ async function saveDoc(id){
   const { error }=await sb.from('documents').update({category:$('dCat').value,status:$('dStatus').value,owner:$('dOwner').value||null,expires_on:$('dExp').value||null,tags,description:$('dDesc').value||null,groups,country:$('dCountry').value||null}).eq('id',id);
   if(error) return toast(error.message,true);
   sb.rpc('log_audit',{p_event:'DOC_VISIBILITY_SET',p_resource:'documents',p_action:'update',p_subject:id,p_details:groups.length?('groups: '+groups.join(', ')):'all staff'}).then(undefined,()=>{});
-  toast('Saved'); closeModal(); loadDocuments();
+  toast('Saved'); closeModal(); if($('view-library').classList.contains('active')) loadLibrary(); else loadDocuments();
 }
-async function downloadDoc(path){
-  const { data, error }=await sb.storage.from('vault').createSignedUrl(path,300);
-  if(error) return toast(error.message,true); window.open(data.signedUrl,'_blank');
+async function downloadDoc(path, docId){
+  const { data, error }=await sb.storage.from('vault').createSignedUrl(path,300,{download:true});
+  if(error) return toast(error.message,true);
+  if(docId) sb.rpc('log_audit',{p_event:'document.download',p_resource:'documents',p_action:'download',p_subject:docId}).then(undefined,()=>{});
+  window.open(data.signedUrl,'_blank');
+}
+async function replaceDocFile(id, f){
+  if(!f) return; const { data:d }=await sb.from('documents').select('category,version').eq('id',id).single();
+  const safe=f.name.replace(/[^a-zA-Z0-9._-]/g,'_'); const storage_path=`${d.category}/${Date.now()}_${safe}`;
+  toast('Uploading new version…');
+  const { error:upErr }=await sb.storage.from('vault').upload(storage_path,f,{upsert:false}); if(upErr) return toast(upErr.message,true);
+  const { error }=await sb.from('documents').update({storage_path,file_name:f.name,mime_type:f.type,size_bytes:f.size,version:(d.version||1)+1}).eq('id',id);
+  if(error) return toast(error.message,true); toast('New version saved'); closeModal(); if($('view-library').classList.contains('active')) loadLibrary(); else loadDocuments();
 }
 
 /* ---- Vendors ---- */
@@ -3878,11 +3975,51 @@ function copyIntakeLink(kind){
 function renderTemplate(md, vals){ return (md||'').replace(/{{\s*(\w+)\s*}}/g,(m,k)=> (vals[k]!=null&&vals[k]!=='')?vals[k]:('['+k.replace(/_/g,' ')+']')); }
 function mdToHtml(md){
   const e=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  return (md||'').split(/\n{2,}/).map(b=>{b=b.trim(); if(!b) return '';
-    if(b.startsWith('## ')) return '<h3 style="font-family:Georgia,serif;color:#0B2545;margin:16px 0 4px">'+e(b.slice(3))+'</h3>';
-    if(b.startsWith('# ')) return '<h2 style="font-family:Georgia,serif;color:#0B2545;margin:0 0 10px">'+e(b.slice(2))+'</h2>';
-    return '<p style="margin:0 0 10px;line-height:1.65">'+e(b).replace(/\n/g,'<br>')+'</p>';}).join('');
+  const inl=t=>e(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>');
+  const H='font-family:var(--font-display,Georgia,serif);color:var(--navy,#0B2545)';
+  const out=[]; let para=[], list=[];
+  const flushP=()=>{ if(para.length){ out.push('<p style="margin:0 0 10px;line-height:1.65">'+para.map(inl).join('<br>')+'</p>'); para=[]; } };
+  const flushL=()=>{ if(list.length){ out.push('<ul style="margin:0 0 12px 22px;padding:0;line-height:1.6">'+list.map(x=>'<li style="margin:0 0 4px">'+inl(x)+'</li>').join('')+'</ul>'); list=[]; } };
+  (md||'').split('\n').forEach(raw=>{ const l=raw.replace(/\s+$/,'');
+    if(!l.trim()){ flushP(); flushL(); return; }
+    if(l.startsWith('# ')){ flushP(); flushL(); out.push('<h2 style="'+H+';margin:0 0 10px;font-size:1.5rem">'+inl(l.slice(2))+'</h2>'); return; }
+    if(l.startsWith('## ')){ flushP(); flushL(); out.push('<h3 style="'+H+';margin:18px 0 6px;font-size:1.15rem">'+inl(l.slice(3))+'</h3>'); return; }
+    if(l.startsWith('### ')){ flushP(); flushL(); out.push('<h4 style="'+H+';margin:14px 0 4px;font-size:1rem">'+inl(l.slice(4))+'</h4>'); return; }
+    if(/^[-*] /.test(l)){ flushP(); list.push(l.slice(2)); return; }
+    flushL(); para.push(l); });
+  flushP(); flushL(); return out.join('');
 }
+/* Branded letterhead: opens a print-ready page in the organisation's own look (emblem, wordmark, colours, type) for anything that leaves the building. */
+function openLetterhead(title, bodyHtml, opts){
+  opts=opts||{}; const cs=getComputedStyle(document.documentElement);
+  const v=k=>(cs.getPropertyValue(k)||'').trim();
+  const navy=v('--navy')||'#1E3A8A', gold=v('--gold')||'#D9A514', ink=v('--ink')||'#1F2937', fd=v('--font-display')||'Georgia, serif', fb=v('--font-body')||'system-ui, sans-serif';
+  const br=(CFG&&CFG.brand)||{}; const fontLink=(br.displayFont||br.bodyFont)?`<link href="https://fonts.googleapis.com/css2?family=${encodeURIComponent(br.displayFont||'')}:wght@500;600;700&family=${encodeURIComponent(br.bodyFont||'')}:wght@400;600&display=swap" rel="stylesheet">`:'';
+  const mark=ORG.wordmark||ORG.name||''; const sub=ORG.wordmarkSub||'';
+  const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const contact=[ORG_LEGAL, ORG.domain, ORG.contactEmail].filter(Boolean).join(' · ');
+  const html=`<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title>${fontLink}
+  <style>@page{margin:22mm 20mm 24mm}body{font-family:${fb};color:${ink};margin:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sheet{max-width:760px;margin:0 auto;padding:36px 28px 60px}.hdr{display:flex;align-items:center;gap:16px;padding-bottom:16px;border-bottom:3px solid ${gold};margin-bottom:28px}
+  .hdr img{height:56px;width:auto}.wm{font-family:${fd};font-weight:700;font-size:26px;color:${navy};letter-spacing:.01em;line-height:1}.ws{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:${gold};margin-top:5px}
+  .meta{margin-left:auto;text-align:right;font-size:12px;color:#6b7280}.ttl{font-family:${fd};font-size:30px;color:${navy};margin:0 0 6px;line-height:1.15}.sub{font-size:13px;color:#6b7280;margin-bottom:26px}
+  .body{font-size:15px;line-height:1.65}.body h2,.body h3,.body h4{font-family:${fd};color:${navy}}.body h2{font-size:22px;margin:0 0 10px}.body h3{font-size:17px;margin:20px 0 6px}
+  .body strong{color:${navy}}.body ul{margin:0 0 12px 22px}.body li{margin:0 0 4px}
+  .ftr{position:fixed;bottom:0;left:0;right:0;padding:10px 28px;border-top:1px solid #e5e7eb;font-size:10.5px;color:#6b7280;background:#fff;text-align:center}
+  .bar{position:fixed;top:0;left:0;right:0;background:${navy};color:#fff;padding:10px 16px;font-size:13px;display:flex;justify-content:space-between;align-items:center}
+  .bar button{background:${gold};border:0;color:#111;font-weight:700;padding:7px 14px;border-radius:3px;cursor:pointer}@media print{.bar{display:none}.sheet{padding-top:0}}</style></head>
+  <body><div class="bar"><span>${esc(mark)} · letterhead preview</span><span><button onclick="window.print()">Print / Save as PDF</button></span></div>
+  <div class="sheet" style="padding-top:64px"><div class="hdr">${ORG.logoUrl?`<img src="${esc(ORG.logoUrl)}" alt="">`:''}<div><div class="wm">${esc(mark)}</div>${sub?`<div class="ws">${esc(sub)}</div>`:''}</div><div class="meta">${esc(opts.date||today)}${opts.ref?'<br>'+esc(opts.ref):''}</div></div>
+  <h1 class="ttl">${esc(title)}</h1>${opts.subtitle?`<div class="sub">${esc(opts.subtitle)}</div>`:''}<div class="body">${bodyHtml}</div></div>
+  <div class="ftr">${esc(contact)}${ORG.footerLine?' · '+esc(ORG.footerLine):''}</div></body></html>`;
+  // If the body opens with a heading that repeats the title, drop it so the title appears once.
+  bodyHtml=String(bodyHtml||'').replace(new RegExp('^<h2[^>]*>'+title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'</h2>'),'');
+  const w=window.open('','_blank'); if(!w) return toast('Allow pop-ups to open the letterhead',true);
+  w.document.open(); w.document.write(html); w.document.close();
+}
+/* Generic two-step delete for any table row. */
+function armDelete(btn, fn){ btn.textContent='Confirm delete'; btn.style.background='#B23A48'; btn.style.borderColor='#B23A48'; btn.style.color='#fff'; btn.onclick=fn; toast('Click again to permanently delete'); }
+async function deleteRow(table, id, after){ const { error }=await sb.from(table).delete().eq('id',id); if(error) return toast(error.message||'Could not delete',true); toast('Deleted'); closeModal(); if(after) after(); }
 let GEN_TPL=[];
 async function openGenerateDoc(){
   const { data }=await sb.from('doc_templates').select('*').eq('active',true).order('name'); GEN_TPL=data||[];
@@ -3985,7 +4122,7 @@ async function openPost(id){
     </div>
     <div class="flex items-center justify-between">
       <div>${p.status==='published'?`<button class="btn btn-ghost" onclick="unpublishPost('${p.id}')">Unpublish</button> <a class="text-xs" style="color:var(--gold)" href="${BLOG_URL}/${esc(p.slug||'')}" target="_blank" rel="noopener">View on the site ↗</a>`:`<button class="btn btn-ghost" onclick="publishPost('${p.id}')">Publish to site</button>`}</div>
-      <button class="btn btn-gold" onclick="savePost('${p.id}')">Save</button>
+      <span><button class="btn btn-ghost" style="color:#B23A48" onclick="armDelete(this,()=>deleteRow('content_calendar','${p.id}',loadBlog))">Delete</button> <button class="btn btn-ghost" onclick="openLetterhead($('bpTitle').value, mdToHtml($('bpBody').value), {subtitle:($('bpExcerpt').value||'')})">Letterhead / PDF</button> <button class="btn btn-gold" onclick="savePost('${p.id}')">Save</button></span>
     </div>`);
 }
 async function savePost(id){
@@ -4037,7 +4174,7 @@ async function loadSocialCadence(){
       <div class="text-xs text-gray-400" style="margin-top:8px">Every post carries the giving link and the QR.</div>
     </div>`).join('');
 }
-async function loadSocialAccounts(){
+async function loadSocialAccountRecords(){
   const el = $('socialAccounts'); if (!el) return;
   const { data, error } = await sb.from('social_accounts').select('*').order('platform');
   if (error) { el.innerHTML = ''; return; }
@@ -4047,6 +4184,63 @@ async function loadSocialAccounts(){
       <div class="serif" style="color:var(--navy);font-size:15px">${esc(a.handle||a.url.replace(/^https?:\/\/(www\.)?/,'').slice(0,28))}</div>
       <div class="text-xs text-gray-400" style="margin-top:6px">${a.blotato_account_id?'<span style="color:var(--green)">● connected to the publisher</span>':'○ not yet connected to the publisher'}${a.owner?' · '+esc(a.owner):''}</div>
     </a>`).join('') : '<div class="empty-elegant col-span-4"><div class="e-t">No accounts recorded</div></div>';
+}
+/* Accounts of record — the team adds, edits and removes the organisation's own channels. */
+async function openSocialAccountsManager(){
+  const { data, error }=await sb.from('social_accounts').select('*').order('platform'); if(error) return toast(error.message,true);
+  const rows=data||[];
+  modal(`<div class="flex items-start justify-between mb-2"><div><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">Accounts of record</h2><div class="text-xs text-gray-400">The channels this organisation owns. Connecting one to the publisher happens in Settings once the publisher key is in place.</div></div><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    <div class="table-wrap mb-3"><table class="grid"><tbody>${rows.map(a=>`<tr style="cursor:pointer;${a.active?'':'opacity:.5'}" onclick="editSocialAccount('${a.id}')"><td style="width:110px"><span class="badge b-P3">${esc(a.platform)}</span></td><td><b style="color:var(--navy)">${esc(a.handle||'')}</b><div class="text-xs text-gray-400">${esc(a.url||'')}${a.owner?' · '+esc(a.owner):''}</div></td><td class="text-xs">${a.blotato_account_id?'<span style="color:var(--green)">● publisher</span>':''}</td></tr>`).join('')||'<tr><td class="text-xs text-gray-400">None yet.</td></tr>'}</tbody></table></div>
+    <div class="text-right"><button class="btn btn-gold" onclick="editSocialAccount(null)">+ Add an account</button></div>`);
+}
+async function editSocialAccount(id){
+  let a={platform:'linkedin',handle:'',url:'',owner:'',active:true,notes:''};
+  if(id){ const { data }=await sb.from('social_accounts').select('*').eq('id',id).single(); a=data||a; }
+  modal(`<div class="flex items-start justify-between mb-3"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${id?'Edit account':'New account'}</h2><button class="btn btn-ghost" onclick="openSocialAccountsManager()">Back</button></div>
+    <div class="grid md:grid-cols-2 gap-3 mb-3">
+      <div><label>Platform</label><select id="saPlatform">${SM_PLATFORMS2.map(p=>`<option ${a.platform===p?'selected':''}>${p}</option>`).join('')}</select></div>
+      <div><label>Handle</label><input id="saHandle" value="${esc(a.handle||'')}" placeholder="@ennoblerise"></div>
+      <div class="md:col-span-2"><label>Profile URL</label><input id="saUrl" value="${esc(a.url||'')}"></div>
+      <div><label>Owner (who holds the login)</label><input id="saOwner" value="${esc(a.owner||'')}"></div>
+      <div><label>Active</label><select id="saActive"><option value="true" ${a.active?'selected':''}>Yes</option><option value="false" ${a.active?'':'selected'}>No</option></select></div>
+      <div class="md:col-span-2"><label>Notes</label><textarea id="saNotes" rows="2">${esc(a.notes||'')}</textarea></div>
+    </div>
+    <div class="flex items-center justify-between">${id?`<button class="btn btn-ghost" style="color:#B23A48" onclick="armDelete(this,()=>deleteRow('social_accounts','${id}',()=>{openSocialAccountsManager();loadSocialAccountRecords();}))">Delete</button>`:'<span></span>'}<button class="btn btn-gold" onclick="saveSocialAccount(${id?`'${id}'`:'null'})">Save</button></div>`);
+}
+async function saveSocialAccount(id){
+  const row={platform:$('saPlatform').value, handle:$('saHandle').value.trim()||null, url:$('saUrl').value.trim(), owner:$('saOwner').value.trim()||null, active:$('saActive').value==='true', notes:$('saNotes').value.trim()||null};
+  if(!row.url) return toast('Profile URL is required',true);
+  const { error }=await (id?sb.from('social_accounts').update(row).eq('id',id):sb.from('social_accounts').insert(row));
+  if(error) return toast(error.message,true); toast('Saved'); openSocialAccountsManager(); loadSocialAccountRecords();
+}
+/* The weekly rhythm — which day belongs to which pillar, and the opener each post starts from. */
+async function openCadence(){
+  const { data, error }=await sb.from('social_cadence').select('*').order('sort'); if(error) return toast(error.message,true);
+  const rows=data||[];
+  modal(`<div class="flex items-start justify-between mb-2"><div><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">The weekly rhythm</h2><div class="text-xs text-gray-400">"Plan the next 4 weeks" fills the calendar from these slots. Change a slot here and future plans follow; posts already drafted keep their text.</div></div><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    <div class="table-wrap mb-3"><table class="grid"><tbody>${rows.map(c=>`<tr style="cursor:pointer;${c.active?'':'opacity:.5'}" onclick="editCadence('${c.id}')"><td style="width:150px"><b style="color:var(--navy)">${DOW[c.dow]}</b><div class="text-xs text-gray-400">${String(c.local_time).slice(0,5)}</div></td><td><b>${esc(c.campaign)}</b> <span class="badge b-P3">${esc(c.pillar||'')}</span><div class="text-xs text-gray-400">${esc((c.opener||'').slice(0,120))}</div></td></tr>`).join('')||'<tr><td class="text-xs text-gray-400">No slots yet.</td></tr>'}</tbody></table></div>
+    <div class="text-right"><button class="btn btn-gold" onclick="editCadence(null)">+ Add a slot</button></div>`);
+}
+async function editCadence(id){
+  let c={dow:1,local_time:'09:00',campaign:'',pillar:'general',opener:'',active:true,sort:10};
+  if(id){ const { data }=await sb.from('social_cadence').select('*').eq('id',id).single(); c=data||c; }
+  modal(`<div class="flex items-start justify-between mb-3"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${id?'Edit slot':'New slot'}</h2><button class="btn btn-ghost" onclick="openCadence()">Back</button></div>
+    <div class="grid md:grid-cols-3 gap-3 mb-3">
+      <div><label>Day</label><select id="cdDow">${DOW.map((d,i)=>`<option value="${i}" ${Number(c.dow)===i?'selected':''}>${d}</option>`).join('')}</select></div>
+      <div><label>Local time</label><input id="cdTime" type="time" value="${String(c.local_time).slice(0,5)}"></div>
+      <div><label>Pillar</label><select id="cdPillar">${['youth','educators','women','general'].map(p=>`<option ${c.pillar===p?'selected':''}>${p}</option>`).join('')}</select></div>
+      <div class="md:col-span-2"><label>Campaign name</label><input id="cdCampaign" value="${esc(c.campaign||'')}"></div>
+      <div><label>Active</label><select id="cdActive"><option value="true" ${c.active?'selected':''}>Yes</option><option value="false" ${c.active?'':'selected'}>No</option></select></div>
+      <div class="md:col-span-3"><label>Opener (the first line each post starts from)</label><textarea id="cdOpener" rows="3">${esc(c.opener||'')}</textarea></div>
+      <div><label>Order</label><input id="cdSort" type="number" value="${c.sort||10}"></div>
+    </div>
+    <div class="flex items-center justify-between">${id?`<button class="btn btn-ghost" style="color:#B23A48" onclick="armDelete(this,()=>deleteRow('social_cadence','${id}',()=>{openCadence();loadSocialCadence();}))">Delete</button>`:'<span></span>'}<button class="btn btn-gold" onclick="saveCadence(${id?`'${id}'`:'null'})">Save</button></div>`);
+}
+async function saveCadence(id){
+  const row={dow:Number($('cdDow').value), local_time:$('cdTime').value||'09:00', pillar:$('cdPillar').value, campaign:$('cdCampaign').value.trim(), opener:$('cdOpener').value.trim()||null, active:$('cdActive').value==='true', sort:Number($('cdSort').value)||10};
+  if(!row.campaign) return toast('Campaign name is required',true);
+  const { error }=await (id?sb.from('social_cadence').update(row).eq('id',id):sb.from('social_cadence').insert(row));
+  if(error) return toast(error.message,true); toast('Saved'); openCadence(); loadSocialCadence();
 }
 async function planSocialWeeks(){
   const { data, error } = await sb.rpc('social_plan_weeks', { p_weeks: 4 });
@@ -4059,7 +4253,7 @@ async function planSocialWeeks(){
 async function loadSocial(){
   loadSocialStatus();
   loadSocialCadence();
-  loadSocialAccounts();
+  loadSocialAccountRecords();
   const { data, error }=await sb.from('content_calendar').select('*').neq('platform','dispatch').order('scheduled_at',{ascending:false,nullsFirst:false}).limit(300);
   if(error) return toast(error.message,true);
   const rows=data||[]; const c=x=>rows.filter(r=>r.status===x).length;
