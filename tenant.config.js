@@ -67,7 +67,7 @@ window.TENANT_CONFIG = {
   },
 
   /* ---- Finance ---- */
-  fundGoal: 150000,                  // their published two-year target
+  fundGoal: 75000,                   // FY2027: year one of the two-year $150,000 target (The Plan)
   currency: "USD",
 
   /* ---- Program taxonomy (drives the ledger "Project" picklist) ---- */
