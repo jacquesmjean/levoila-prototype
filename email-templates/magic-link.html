@@ -1,0 +1,20 @@
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#F1F4F9;padding:32px 0;font-family:Karla,Helvetica,Arial,sans-serif;color:#1F2937">
+  <tr><td align="center">
+    <table role="presentation" width="560" cellspacing="0" cellpadding="0" style="background:#ffffff;border-top:4px solid #D9A514;border-radius:2px">
+      <tr><td style="padding:28px 36px 8px">
+        <img src="{{EMBLEM}}" alt="" width="44" height="44" style="display:block;margin-bottom:12px">
+        <div style="font-family:Fraunces,Georgia,serif;font-size:22px;font-weight:700;color:#1E3A8A;line-height:1">{{ORG}}</div>
+        <div style="font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#D9A514;margin-top:6px">Mission Control</div>
+      </td></tr>
+      <tr><td style="padding:20px 36px 8px;font-size:16px;line-height:1.6">
+        <p style="margin:0 0 14px">Here is your sign-in link. It works once and expires in one hour.</p>
+        <p style="margin:0 0 22px"><a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#D9A514;color:#0B1640;font-weight:700;text-decoration:none;padding:12px 22px;border-radius:3px;font-size:14px;letter-spacing:.04em">Sign in to Mission Control</a></p>
+        <p style="margin:0 0 10px;font-size:13px;color:#6B7280">If you did not ask for this link, you can ignore this message. Nobody can sign in without it.</p>
+      </td></tr>
+      <tr><td style="padding:18px 36px 26px;border-top:1px solid #E5E7EB;font-size:12px;color:#6B7280;line-height:1.6">
+        {{ORG}} · <a href="https://{{DOMAIN}}" style="color:#1E3A8A">{{DOMAIN}}</a><br>
+        Sent by the back office at <a href="{{ .SiteURL }}" style="color:#1E3A8A">{{ .SiteURL }}</a>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
