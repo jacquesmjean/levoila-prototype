@@ -4003,9 +4003,9 @@ function openLetterhead(title, bodyHtml, opts){
   const br=(CFG&&CFG.brand)||{}; const fontLink=(br.displayFont||br.bodyFont)?`<link href="https://fonts.googleapis.com/css2?family=${encodeURIComponent(br.displayFont||'')}:wght@500;600;700&family=${encodeURIComponent(br.bodyFont||'')}:wght@400;600&display=swap" rel="stylesheet">`:'';
   const mark=ORG.wordmark||ORG.name||''; const sub=ORG.wordmarkSub||'';
   const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  const contact=[ORG_LEGAL, ORG.domain, ORG.contactEmail].filter(Boolean).join(' · ');
+  const contact=[ORG_LEGAL, ORG.address, ORG.ein?('EIN '+ORG.ein):null, ORG.domain, ORG.contactEmail].filter(Boolean).join(' · ');
   const html=`<!doctype html><html><head><meta charset="utf-8"><title>${esc(title)}</title>${fontLink}
-  <style>@page{margin:22mm 20mm 24mm}body{font-family:${fb};color:${ink};margin:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  <style>:root{--font-display:${fd};--font-body:${fb};--navy:${navy};--gold:${gold}}@page{margin:22mm 20mm 24mm}body{font-family:${fb};color:${ink};margin:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .sheet{max-width:760px;margin:0 auto;padding:36px 28px 60px}.hdr{display:flex;align-items:center;gap:16px;padding-bottom:16px;border-bottom:3px solid ${gold};margin-bottom:28px}
   .hdr img{height:56px;width:auto}.wm{font-family:${fd};font-weight:700;font-size:26px;color:${navy};letter-spacing:.01em;line-height:1}.ws{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:${gold};margin-top:5px}
   .meta{margin-left:auto;text-align:right;font-size:12px;color:#6b7280}.ttl{font-family:${fd};font-size:30px;color:${navy};margin:0 0 6px;line-height:1.15}.sub{font-size:13px;color:#6b7280;margin-bottom:26px}
@@ -4044,11 +4044,12 @@ function genPick(){
       <div><label>Signer email</label><input id="genSEmail"></div>
       <div><label>Title / role</label><input id="genSRole"></div>
     </div>
-    <div class="flex items-center justify-between mt-4"><button class="btn btn-ghost" onclick="genPreview(${i})">Preview</button>
+    <div class="flex items-center justify-between mt-4"><span><button class="btn btn-ghost" onclick="genPreview(${i})">Preview</button> <button class="btn btn-ghost" onclick="genLetterhead(${i})">Letterhead / PDF</button></span>
       <div><button class="btn btn-ghost mr-2" onclick="genSaveVault(${i})">Save to vault</button><button class="btn btn-gold" onclick="genCreateSign(${i})">Create signing link</button></div></div>
     <div id="genPrev" class="mt-3"></div>`;
 }
 function genRender(i){ const t=GEN_TPL[i]; const vals={}; (t.fields||[]).forEach(f=>vals[f]=(($('gf_'+f)||{}).value)||''); return {t, html:mdToHtml(renderTemplate(t.body_md, vals))}; }
+function genLetterhead(i){ const {t,html}=genRender(i); openLetterhead(t.name, html, {subtitle: [($('genSName')||{}).value, ($('genSRole')||{}).value].filter(Boolean).join(', ')}); }
 function genPreview(i){ const {html}=genRender(i); $('genPrev').innerHTML=`<div style="border:1px solid #E5E0D5;border-radius:10px;padding:18px;background:#fff;max-height:300px;overflow:auto">${html}</div>`; }
 async function genSaveVault(i){
   const {t}=genRender(i);
@@ -4058,7 +4059,7 @@ async function genSaveVault(i){
 }
 async function genCreateSign(i){
   const {t,html}=genRender(i); const name=$('genSName').value.trim();
-  const { data, error }=await sb.from('signature_requests').insert({title:t.name, body_html:html, signer_name:name||null, signer_email:$('genSEmail').value||null, signer_role:$('genSRole').value||null, status:'sent', created_by:ME.id}).select('token').single();
+  const { data, error }=await sb.from('signature_requests').insert({title:t.name, body_html:html, signer_name:name||null, signer_email:$('genSEmail').value||null, signer_role:$('genSRole').value||null, status:'sent', created_by:ME.id, gate_key:t.gate_key||null}).select('token').single();
   if(error) return toast(error.message,true);
   const url=location.origin+'/sign?t='+data.token;
   modal(`<h2 class="serif text-2xl font-semibold mb-2" style="color:var(--navy)">Signing link ready</h2><p class="text-sm text-gray-500 mb-3">Send this private link to ${esc(name||'the signer')}. It opens the document and records their signature into your audit chain.</p>
@@ -4077,7 +4078,16 @@ async function openSignature(id){
   modal(`<div class="flex items-start justify-between mb-3"><div><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(s.title)}</h2><div class="text-xs text-gray-400">${esc(s.signer_name||'')} · ${badge(s.status)}</div></div><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
     ${s.status==='signed'?`<div class="kpi mb-3"><div class="text-sm" style="color:#1a7f37">Signed ${fmtDt(s.signed_at)}</div><div class="text-xs text-gray-400" style="word-break:break-all">Integrity hash: ${esc(s.signature_hash||'')}</div>${(s.signature_type==='drawn'&&s.signature_value)?`<img src="${s.signature_value}" style="max-height:70px;margin-top:8px">`:`<div class="serif italic text-lg" style="color:var(--navy);margin-top:6px">${esc(s.signature_value||s.signer_name||'')}</div>`}</div>`:`<div class="mb-3"><label>Private signing link</label><input value="${url}" readonly onclick="this.select()"><div class="text-right mt-2"><button class="btn btn-ghost" onclick="navigator.clipboard.writeText('${url}').then(()=>toast('Copied'))">Copy link</button></div></div>`}
     <div style="border:1px solid #E5E0D5;border-radius:10px;padding:16px;background:#fff;max-height:320px;overflow:auto">${s.body_html}</div>
-    ${(s.status!=='signed'&&s.status!=='voided')?`<div class="text-right mt-3"><button class="btn btn-ghost" onclick="voidSignature('${s.id}')">Void request</button></div>`:''}`);
+    <div class="flex justify-end gap-2 mt-3"><button class="btn btn-ghost" onclick="sigLetterhead('${s.id}')">Letterhead / PDF</button>${(s.status!=='signed'&&s.status!=='voided')?`<button class="btn btn-ghost" onclick="voidSignature('${s.id}')">Void request</button>`:''}</div>`);
+}
+async function sigLetterhead(id){
+  const { data:s }=await sb.from('signature_requests').select('*').eq('id',id).single(); if(!s) return;
+  let sig='';
+  if(s.status==='signed'){
+    const mark = (s.signature_type==='drawn' && s.signature_value) ? `<img src="${s.signature_value}" alt="Signature" style="max-height:70px;display:block;margin:6px 0">` : `<div style="font-family:var(--font-display,Georgia,serif);font-size:22px;margin:6px 0">${esc(s.signer_name||'')}</div>`;
+    sig = `<div style="margin-top:26px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:13px"><strong>Signed electronically</strong><br>${esc(s.signer_name||'')}${s.signer_role?', '+esc(s.signer_role):''}${mark}<div>${fmtDt(s.signed_at)}</div><div style="font-size:10.5px;color:#6b7280;word-break:break-all;margin-top:4px">Record ${esc(s.signature_hash||'')}</div></div>`;
+  }
+  openLetterhead(s.title, (s.body_html||'')+sig, {subtitle: s.signer_name?('Prepared for '+s.signer_name+(s.signer_role?', '+s.signer_role:'')):''});
 }
 async function voidSignature(id){ const { error }=await sb.from('signature_requests').update({status:'voided'}).eq('id',id); if(error) return toast(error.message,true); toast('Voided'); closeModal(); loadDocsView(); }
 function loadDocsView(){ loadDocuments(); loadSignatures(); }

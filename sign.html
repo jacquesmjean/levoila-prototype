@@ -5,72 +5,110 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="tenant.config.js"></script>
 <style>
-:root{--navy:#0B2545;--gold:#B6862C;--cream:#FAF7F0}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--cream);color:var(--navy)}
-.wrap{max-width:760px;margin:0 auto;padding:40px 20px}
-.card{background:#fff;border:1px solid #E5E0D5;border-radius:16px;padding:30px;box-shadow:0 20px 50px rgba(11,37,69,.08)}
-.brand{font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--gold);margin-bottom:18px}
-.doc{border:1px solid #E5E0D5;border-radius:10px;padding:22px;background:#fff;max-height:46vh;overflow:auto;margin-bottom:22px}
-label{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#6b6355;margin:12px 0 6px}
-input{width:100%;padding:11px 13px;border:1px solid #D5CDB8;border-radius:9px;font-size:15px}
-canvas{border:1px dashed #B6862C;border-radius:9px;width:100%;height:150px;touch-action:none;background:#fffdf8}
-.row{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:8px}
-button{background:var(--gold);color:#fff;border:0;padding:13px 22px;border-radius:999px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;font-size:13px;cursor:pointer}
+:root{--navy:#0B2545;--deep:#13255E;--gold:#B6862C;--soft-gold:#FBBF24;--cream:#FAF7F0;--ink:#1F2937;--line:#E5E0D5;
+  --font-display:Georgia,serif;--font-body:Inter,system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font-body);background:var(--cream);color:var(--ink)}
+.wrap{max-width:780px;margin:0 auto;padding:36px 18px 48px}
+.card{background:#fff;border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:4px;padding:30px 30px 26px;box-shadow:0 20px 50px rgba(11,37,69,.08)}
+.lh{display:flex;align-items:center;gap:14px;padding-bottom:16px;margin-bottom:22px;border-bottom:1px solid var(--line)}
+.lh img{height:52px;width:auto}
+.wm{font-family:var(--font-display);font-weight:700;font-size:24px;color:var(--navy);line-height:1}
+.ws{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-top:6px;font-weight:600}
+.doc{border:1px solid var(--line);border-radius:4px;padding:24px;background:#fff;max-height:52vh;overflow:auto;margin-bottom:22px;font-size:15px;line-height:1.65;color:var(--ink)}
+.doc h2,.doc h3,.doc h4{font-family:var(--font-display);color:var(--navy)}
+.doc h2{font-size:22px;margin:0 0 10px}.doc h3{font-size:17px;margin:18px 0 6px}
+.doc strong{color:var(--navy)}.doc ul{margin:0 0 12px 22px;padding:0}.doc li{margin:0 0 4px}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#6b6355;margin:12px 0 6px}
+input{width:100%;padding:11px 13px;border:1px solid #D5CDB8;border-radius:4px;font-size:15px;font-family:inherit}
+canvas{border:1px dashed var(--gold);border-radius:4px;width:100%;height:150px;touch-action:none;background:#fffdf8}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap}
+button{background:var(--gold);color:var(--navy);border:0;padding:13px 22px;border-radius:3px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:13px;cursor:pointer;font-family:inherit}
 button.ghost{background:transparent;color:var(--navy);border:1px solid #D5CDB8}
-.note{font-size:12px;color:#9a9384;margin-top:14px}
-.center{text-align:center;padding:20px 0}.center h1{font-family:Georgia,serif}
-h1.title{font-family:Georgia,serif;font-size:24px;margin:0 0 4px}
+.note{font-size:12px;color:#8a8475;margin-top:14px;line-height:1.5}
+.center{text-align:center;padding:18px 0}.center h1{font-family:var(--font-display);color:var(--navy)}
+h1.title{font-family:var(--font-display);font-size:26px;margin:0 0 4px;color:var(--navy)}
 .sub{color:#6b6355;font-size:13px;margin:0 0 20px}
+.foot{text-align:center;font-size:11.5px;color:#8a8475;margin-top:18px;line-height:1.6}
+.sigblock{display:none;margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--ink)}
+.sigblock img{max-height:70px;display:block;margin:6px 0}
+@page{margin:18mm 16mm 20mm}
+@media print{
+  body{background:#fff}.wrap{padding:0;max-width:none}.card{border:0;box-shadow:none;padding:0}
+  .no-print{display:none!important}.doc{max-height:none;overflow:visible;border:0;padding:0}
+  .sigblock{display:block}
+}
 </style></head><body>
 <div class="wrap"><div class="card" id="card">
-  <div class="brand" id="brand">Mission Control</div>
-<script>
-(function(){ var C = window.TENANT_CONFIG || {}, O = C.org || {};
-  var name = O.name || 'Mission Control', prod = O.product || 'Mission Control';
-  var b = document.getElementById('brand'); if (b) b.textContent = name + ' · ' + prod;
-  document.title = document.title + ' — ' + name;
-  var r = document.documentElement.style, br = C.brand || {};
-  if (br.navy) r.setProperty('--navy', br.navy); if (br.gold) r.setProperty('--gold', br.gold);
-})();
-</script>
+  <div class="lh">
+    <img id="lhLogo" alt="" style="display:none">
+    <div><div class="wm" id="lhMark">Mission Control</div><div class="ws" id="lhSub"></div></div>
+  </div>
   <div id="loading" class="center"><p class="sub">Loading document…</p></div>
   <div id="signArea" style="display:none">
     <h1 class="title" id="docTitle"></h1>
     <p class="sub" id="docFor"></p>
     <div class="doc" id="docBody"></div>
-    <label>Type your full legal name <span style="color:var(--gold)">*</span></label>
-    <input id="typedName">
-    <label>Draw your signature</label>
-    <canvas id="pad"></canvas>
-    <div class="row"><button class="ghost" type="button" onclick="clearPad()">Clear</button>
-      <button type="button" onclick="submitSig()">Adopt &amp; sign</button></div>
-    <div class="note" id="msg"></div>
-    <div class="note">By signing, you agree your electronic signature is the legal equivalent of your handwritten signature. Your name, the time, and a tamper-proof hash are recorded.</div>
+    <div class="sigblock" id="sigBlock"></div>
+    <div class="no-print" id="signForm">
+      <label>Type your full legal name <span style="color:var(--gold)">*</span></label>
+      <input id="typedName">
+      <label>Draw your signature</label>
+      <canvas id="pad"></canvas>
+      <div class="row"><button class="ghost" type="button" onclick="clearPad()">Clear</button>
+        <button type="button" onclick="submitSig()">Adopt &amp; sign</button></div>
+      <div class="note" id="msg"></div>
+      <div class="note">By signing, you agree that your electronic signature is the legal equivalent of your handwritten signature. Your name, the time and a tamper-evident record of the document are saved.</div>
+    </div>
   </div>
-  <div id="done" class="center" style="display:none"><h1>Signed. Thank you.</h1><p class="sub" id="doneMsg"></p></div>
+  <div id="done" class="center no-print" style="display:none"><h1>Signed. Thank you.</h1><p class="sub" id="doneMsg"></p>
+    <button type="button" onclick="window.print()">Download your copy (PDF)</button></div>
   <div id="bad" class="center" style="display:none"><h1>Link unavailable</h1><p class="sub" id="badMsg">This signing link is invalid, already completed, or has been voided.</p></div>
+  <div class="foot" id="foot"></div>
 </div></div>
 <script>
-const CFG=window.TENANT_CONFIG; const sb=supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey);
-if(CFG.org&&CFG.org.name){document.getElementById('brand').textContent=CFG.org.name+' · '+(CFG.org.product||'');}
+const CFG=window.TENANT_CONFIG||{}; const O=CFG.org||{}; const BR=CFG.brand||{};
+(function brand(){
+  const r=document.documentElement.style;
+  [['--navy',BR.navy],['--deep',BR.deep],['--gold',BR.gold],['--soft-gold',BR.softGold],['--cream',BR.cream],['--ink',BR.ink]].forEach(([k,v])=>{ if(v) r.setProperty(k,v); });
+  if(BR.displayFont||BR.bodyFont){
+    const l=document.createElement('link'); l.rel='stylesheet';
+    l.href='https://fonts.googleapis.com/css2?'+[BR.displayFont&&('family='+encodeURIComponent(BR.displayFont)+':wght@500;600;700'),BR.bodyFont&&('family='+encodeURIComponent(BR.bodyFont)+':wght@400;600;700')].filter(Boolean).join('&')+'&display=swap';
+    document.head.appendChild(l);
+    if(BR.displayFont) r.setProperty('--font-display',"'"+BR.displayFont+"',Georgia,serif");
+    if(BR.bodyFont) r.setProperty('--font-body',"'"+BR.bodyFont+"',system-ui,sans-serif");
+  }
+  const mark=O.wordmark||O.name||'Mission Control';
+  document.getElementById('lhMark').textContent=mark;
+  document.getElementById('lhSub').textContent=O.wordmarkSub||'';
+  if(O.logoUrl){ const i=document.getElementById('lhLogo'); i.src=O.logoUrl; i.style.display='block'; }
+  document.getElementById('foot').textContent=[O.legalName||O.name, O.address, O.ein?('EIN '+O.ein):null, O.domain, O.contactEmail].filter(Boolean).join(' · ')+(O.footerLine?'\n':'');
+  if(O.footerLine){ const d=document.createElement('div'); d.textContent=O.footerLine; d.style.marginTop='2px'; document.getElementById('foot').appendChild(d); }
+  document.title='Sign document · '+(O.legalName||O.name||'');
+})();
+const sb=supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey);
 const token=new URLSearchParams(location.search).get('t');
 const $=id=>document.getElementById(id);
-let ctx, drawing=false, hasInk=false;
+let ctx, drawing=false, hasInk=false, DOC=null;
 function showBad(m){ $('loading').style.display='none'; $('signArea').style.display='none'; $('bad').style.display='block'; if(m)$('badMsg').textContent=m; }
 async function boot(){
   if(!token){ return showBad('No document token provided.'); }
   const { data, error }=await sb.rpc('sign_get',{p_token:token});
   if(error||!data||!data.ok){ return showBad(); }
   if(['signed','declined','voided'].includes(data.status)){ return showBad(data.status==='signed'?'This document has already been signed.':'This link is no longer active.'); }
+  DOC=data;
   $('loading').style.display='none'; $('signArea').style.display='block';
   $('docTitle').textContent=data.title||'Document';
   $('docFor').textContent=data.signer_name?('Prepared for '+data.signer_name+(data.signer_role?', '+data.signer_role:'')):'';
   $('docBody').innerHTML=data.body_html||'';
+  const first=$('docBody').firstElementChild;
+  if(first && /^H[1-3]$/.test(first.tagName) && first.textContent.trim().toLowerCase()===(data.title||'').trim().toLowerCase()) first.remove();
   if(data.signer_name) $('typedName').value=data.signer_name;
   initPad();
 }
 function initPad(){
-  const c=$('pad'); const r=c.getBoundingClientRect(); c.width=r.width; c.height=150; ctx=c.getContext('2d'); ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.strokeStyle='#0B2545';
+  const c=$('pad'); const r=c.getBoundingClientRect(); c.width=r.width; c.height=150; ctx=c.getContext('2d'); ctx.lineWidth=2.2; ctx.lineCap='round';
+  ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--navy').trim()||'#0B2545';
   const pos=e=>{ const b=c.getBoundingClientRect(); const t=e.touches?e.touches[0]:e; return [t.clientX-b.left, t.clientY-b.top]; };
   const down=e=>{ drawing=true; hasInk=true; const [x,y]=pos(e); ctx.beginPath(); ctx.moveTo(x,y); e.preventDefault(); };
   const move=e=>{ if(!drawing)return; const [x,y]=pos(e); ctx.lineTo(x,y); ctx.stroke(); e.preventDefault(); };
@@ -79,14 +117,20 @@ function initPad(){
   c.addEventListener('touchstart',down,{passive:false}); c.addEventListener('touchmove',move,{passive:false}); c.addEventListener('touchend',up);
 }
 function clearPad(){ const c=$('pad'); ctx.clearRect(0,0,c.width,c.height); hasInk=false; }
+function esc(s){ return String(s||'').replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])); }
 async function submitSig(){
   const name=$('typedName').value.trim(); if(!name){ $('msg').textContent='Please type your full legal name.'; return; }
   const sig = hasInk ? $('pad').toDataURL('image/png') : name;
   const type = hasInk ? 'drawn' : 'typed';
   const { data, error }=await sb.rpc('sign_submit',{p_token:token,p_name:name,p_signature:sig,p_type:type});
   if(error||!data||!data.ok){ $('msg').textContent=(data&&data.error)||(error&&error.message)||'Could not submit. Please try again.'; return; }
-  $('signArea').style.display='none'; $('done').style.display='block';
-  $('doneMsg').textContent='A record has been saved. You may close this page.';
+  const when=new Date(data.signed_at||Date.now()).toLocaleString('en-US',{dateStyle:'long',timeStyle:'short'});
+  $('sigBlock').innerHTML='<b style="color:var(--navy)">Signed electronically</b><br>'+esc(name)+(DOC&&DOC.signer_role?', '+esc(DOC.signer_role):'')
+    +(type==='drawn'?'<img src="'+sig+'" alt="Signature">':'<div style="font-family:var(--font-display);font-size:22px;color:var(--navy);margin:6px 0">'+esc(name)+'</div>')
+    +'<div>'+esc(when)+'</div>'+(data.hash?'<div style="font-size:10.5px;color:#8a8475;word-break:break-all;margin-top:4px">Record '+esc(data.hash)+'</div>':'');
+  $('signForm').style.display='none'; $('done').style.display='block';
+  $('doneMsg').textContent='Your signature is recorded. Download a copy for your records.';
+  $('done').scrollIntoView({behavior:'smooth'});
 }
 boot();
 </script></body></html>
