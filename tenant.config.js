@@ -37,7 +37,9 @@ window.TENANT_CONFIG = {
     // Accounts are provisioned by an administrator; nobody self-registers.
     allowSelfSignup: false,
     /* ---- Public pages (transparency ledger, donor portal, signing) ---- */
-    footerLine: "Ennobling youth, educators and women across eight countries",
+    footerLine: "Ennobling youth, educators and women worldwide",
+    address: "5720 Frisco Square Blvd, Suite 4020, Frisco, TX 75034",
+    ein: "41-6941522",
     description: "a 501(c)(3) public charity",
     contactEmail: "engage@ennoblerise.org",
     scholarshipUrl: "https://ennoblerise.org/en/scholarship",
