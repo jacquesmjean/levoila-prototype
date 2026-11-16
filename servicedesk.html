@@ -2091,7 +2091,7 @@ function openGift(prefill){
       <div><label>Date received</label><input id="gfDate" type="date" value="${today}"></div>
       <div><label>Gift type</label><select id="gfType">${GIFT_TYPES.map(([k,l])=>`<option value="${k}" ${f.type===k?'selected':''}>${l}</option>`).join('')}</select></div>
       <div><label>How it was given</label><select id="gfMethod">${GIFT_METHODS.map(m=>`<option>${m}</option>`).join('')}</select></div>
-      <div class="md:col-span-2"><label>Purpose or restriction (optional)</label><input id="gfPurpose" placeholder="Unrestricted, Michael G. Henry Legacy Scholarship, Endowment principal, Cameroon STEM..."></div>
+      <div class="md:col-span-2"><label>Purpose or restriction (optional)</label><input id="gfPurpose" placeholder="Unrestricted, a named scholarship, endowment principal, a country program..."></div>
       <div class="md:col-span-2"><label>Description (in-kind: what was given)</label><input id="gfDesc"></div>
     </div>
     <div class="text-right"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="saveGift('${esc(f.contact_id||'')}')">Save gift</button></div>`);
@@ -2121,7 +2121,7 @@ function openContact(id){
       <div><label>Kind</label><select id="ctKind">${opt([['individual','Individual'],['foundation','Foundation'],['corporate','Company'],['government','Government'],['faith','Faith community'],['family_office','Family office']], c.kind)}</select></div>
       <div><label>Interest</label><select id="ctInterest">${opt([['annual','Annual gift'],['recurring','Monthly giving'],['major_gift','Major gift'],['endowment','Endowment'],['in_kind','In-kind'],['event','Event or drive']], c.interest)}</select></div>
       <div><label>Stage</label><select id="ctStage">${opt(PIPE_STAGES, c.stage||'prospect')}</select></div>
-      <div><label>Source</label><input id="ctSource" value="${esc(c.source||'')}" placeholder="Referral, GoFundMe, event, LOI campaign..."></div>
+      <div><label>Source</label><input id="ctSource" value="${esc(c.source||'')}" placeholder="Referral, GoFundMe, event, letter campaign..."></div>
       <div><label>Ask (USD)</label><input id="ctAsk" type="number" value="${c.ask_usd||''}"></div>
       <div><label>Pledged (USD)</label><input id="ctPledge" type="number" value="${c.pledged_usd||''}"></div>
       <div><label>Next step</label><input id="ctNext" value="${esc(c.next_step||'')}" placeholder="Send the endowment letter"></div>
@@ -2237,7 +2237,7 @@ async function mediaUpload(el, inputId){
   const path = `social/${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${Date.now()}_${safe}`;
   $(inputId+'_msg').textContent = 'Uploading…';
   const { error } = await sb.storage.from('media').upload(path, f, { upsert:false, contentType:f.type });
-  if (error) { $(inputId+'_msg').textContent=''; return toast(/bucket/i.test(error.message)?'Image uploads need one database update. Ask TechFides to run it.':error.message, true); }
+  if (error) { $(inputId+'_msg').textContent=''; return toast(/bucket/i.test(error.message)?'Image uploads need one database update. Ask your administrator to run it.':error.message, true); }
   const { data } = sb.storage.from('media').getPublicUrl(path);
   $(inputId).value = data.publicUrl; $(inputId+'_msg').textContent = 'Uploaded'; mediaPreview(inputId);
 }
@@ -3363,7 +3363,7 @@ async function openBoardMember(pid){
       <button class="btn btn-gold" onclick="bmMeeting()">+ Schedule a meeting</button>
       <button class="btn btn-ghost" onclick="openCompliance('${pid}')">Requirements and documents</button>
     </div>
-    ${noTable?'<div class="text-sm mb-3" style="color:#8A5A00">Notes and hours need one database update. Ask TechFides to run it.</div>':''}
+    ${noTable?'<div class="text-sm mb-3" style="color:#8A5A00">Notes and hours need one database update. Ask your administrator to run it.</div>':''}
     <div class="flex gap-2 mb-2 flex-wrap">
       <select id="bmKind" style="width:120px" onchange="$('bmHours').style.display=this.value==='hours'?'':'none'"><option value="note">Note</option><option value="hours">Hours</option><option value="call">Call</option><option value="intro">Introduction</option></select>
       <input id="bmHours" type="number" step="0.25" min="0" placeholder="Hours" style="width:90px;display:none">
@@ -3854,7 +3854,7 @@ const GRANT_KIT = [
   ['board_list','Advisory Board list with affiliations','governance'],
   ['coi_policy','Conflict of interest policy','policy'],
   ['nondiscrimination','Nondiscrimination and safeguarding policy','policy'],
-  ['strategy','Strategic plan 2026 to 2027','governance'],
+  ['strategy','Current strategic plan','governance'],
   ['support_letters','Letters of support from partners','grant']];
 async function loadGrantKit(){
   if(!$('grantKit')) return;
