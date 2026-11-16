@@ -5,10 +5,13 @@
 // via Blotato and marks the row 'posted'. Otherwise it QUEUES the row (status
 // 'approved', scheduled now) so the daily Social Agent posts it on its next run —
 // nothing is lost, nothing fabricated.
-const ANON = process.env.SUPABASE_ANON_KEY;
+// The apikey header only identifies the project; the user's own token decides
+// who is calling. Fall back to the service key so a missing anon key on the
+// deployment does not lock staff out (that was the "Staff sign-in required" bug).
+const ANON = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 async function requireStaff(req, SB, KEY) {
-  if (!ANON) { console.error('SUPABASE_ANON_KEY is not set for this deployment'); return null; }
+  if (!ANON) { console.error('Neither SUPABASE_ANON_KEY nor SUPABASE_SERVICE_ROLE_KEY is set'); return null; }
   const auth = req.headers['authorization'] || '';
   const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
   if (!token) return null;

@@ -4,14 +4,17 @@
 // Optional env: ANTHROPIC_API_KEY (enables free-form answers). If absent, the
 // API returns { fallback:true, snapshot } and the client renders a briefing
 // from the same data — nothing breaks, no numbers are invented.
-const ANON = process.env.SUPABASE_ANON_KEY;
+// The apikey header only identifies the project; the user's own token decides
+// who is calling. Fall back to the service key so a missing anon key on the
+// deployment does not lock staff out (that was the "Staff sign-in required" bug).
+const ANON = process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 const ORG_NAME = process.env.TENANT_ORG_NAME || 'this organization';
 // One line describing the organization, so the Copilot does not introduce
 // itself as somebody else's charity. Set TENANT_ORG_DESC per deployment.
 const ORG_DESC = process.env.TENANT_ORG_DESC || 'a non-profit organization';
 
 async function requireStaff(req, SB, KEY) {
-  if (!ANON) { console.error('SUPABASE_ANON_KEY is not set for this deployment'); return null; }
+  if (!ANON) { console.error('Neither SUPABASE_ANON_KEY nor SUPABASE_SERVICE_ROLE_KEY is set'); return null; }
   const auth = req.headers['authorization'] || '';
   const token = auth.startsWith('Bearer ') ? auth.slice(7) : null;
   if (!token) return null;

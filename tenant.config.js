@@ -61,7 +61,7 @@ window.TENANT_CONFIG = {
   labels: {
     overview: "Command Center",
     tickets: "Front Desk",
-    beneficiaries: "Participants",
+    beneficiaries: "Stakeholder Intake",
     donors: "Donors & Stewards",
     content: "Content Calendar",
     blog: "Insights",
@@ -69,10 +69,20 @@ window.TENANT_CONFIG = {
     people: "People & Resources"
   },
 
+  /* ---- Stakeholder intake: everyone who comes to the Trust, in one place ---- */
+  intake: {
+    title: "Stakeholder Intake",
+    newTitle: "New stakeholder intake",
+    typeLabel: "Stakeholder type",
+    types: ["Participant (youth, educator or woman)", "Grant organization", "Donor", "Vendor", "Volunteer", "Ambassador", "Program partner", "School or institution", "Media"],
+    programHint: "Youth Ennoblement / Educator Leadership / Women's Enterprise",
+    description: "Everyone who comes to the Trust starts here: participants, grant organizations, donors, vendors, volunteers, ambassadors and partners. Each intake moves from review to approval, with its documents and decisions kept in one confidential record."
+  },
+
   /* ---- Finance ---- */
   fundGoal: 150000,                  // Strategy 2026–2027: $120K grants + $10K micro-donations + $20K signature drives
   fundGoalLabel: "2026–2027 Funding Target",
-  partnerKinds: { technology: "Technology partner", program: "Program partner", legacy: "Legacy partner", service: "Service partner", education: "Education partner", municipal: "Municipal partner" },
+  partnerKinds: { technology: "Technology partner", program: "Program partner", legacy: "Legacy partner", service: "Service partner", education: "Education partner", municipal: "Municipal partner", media: "Media and documentary partner" },
   currency: "USD",
 
   /* ---- Program taxonomy (drives the ledger "Project" picklist) ---- */

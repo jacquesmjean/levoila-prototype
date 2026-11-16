@@ -386,10 +386,10 @@
 
       <div id="view-beneficiaries" class="view">
         <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
-          <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Beneficiary Onboarding</h1>
+          <h1 id="benefHead" class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Beneficiary Onboarding</h1>
           <button class="btn btn-gold" onclick="openNewBeneficiary()">+ New intake</button>
         </div>
-        <p class="text-sm text-gray-500 mb-6">The people and partner organizations <span class="tenant-org">this organization</span> serves — communities near our sites, program applicants, and local agencies requesting services, partnership, funding, or employment. Each intake moves through validation and review to approval, with documents and decisions kept in one confidential record.</p>
+        <p id="benefDesc" class="text-sm text-gray-500 mb-6">The people and partner organizations <span class="tenant-org">this organization</span> serves — communities near our sites, program applicants, and local agencies requesting services, partnership, funding, or employment. Each intake moves through validation and review to approval, with documents and decisions kept in one confidential record.</p>
         <div id="benefTable"></div>
       </div>
 
@@ -462,10 +462,19 @@
       </div>
 
       <div id="view-donors" class="view">
-        <h1 class="page-head serif text-3xl font-semibold mb-1" style="color:var(--navy);">Donor CRM</h1>
+        <div class="flex items-center justify-between mb-1 flex-wrap gap-3">
+          <h1 class="page-head serif text-3xl font-semibold" style="color:var(--navy);">Donor CRM</h1>
+          <div class="flex gap-2 flex-wrap">
+            <button class="btn btn-ghost" onclick="openImportGifts()">Import a list</button>
+            <button class="btn btn-ghost" onclick="openContact()">+ Prospect</button>
+            <button class="btn btn-gold" onclick="openGift()">+ Record a gift</button>
+          </div>
+        </div>
         <p class="text-sm text-gray-500 mb-6">The full life of every giving relationship — from first contact to Heritage Patron. Prospects become first-time donors, first gifts become recurring Stewardship, majors get the personal call, and lapsed donors get won back. Every gift, call, and note in one record per person.</p>
         <div class="cc-section-label">Lifecycle</div>
         <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mb-8" id="donorLifecycle" style="display:grid;"></div>
+        <div class="cc-section-label">Pipeline · prospects to donors</div>
+        <div id="donorPipeline" class="mb-8"></div>
         <div class="cc-section-label">Donors</div>
         <div id="donorTable"></div>
       </div>
@@ -560,6 +569,8 @@
         </div>
         <p class="text-sm text-gray-500 mb-6">Governance of the trust — the board, its committees, meetings, and resolutions of record.</p>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="boardKpis"></div>
+        <div class="cc-section-label">Members · click a member for notes, hours, meetings and documents</div>
+        <div id="boardMembers" class="grid md:grid-cols-3 gap-4 mb-9"></div>
         <div class="cc-section-label">Committees</div>
         <div id="committeesGrid" class="grid md:grid-cols-3 gap-4 mb-9"></div>
         <div class="cc-section-label">Attendance · this year (3 unjustified absences = seat under review)</div>
@@ -665,7 +676,8 @@
           <div class="flex gap-2"><button class="btn btn-ghost" onclick="openGenerateDoc()">+ Generate &amp; sign</button><button class="btn btn-gold" onclick="openUploadDoc()">+ Upload document</button></div>
         </div>
         <p class="text-sm text-gray-500 mb-6">The organization's document vault — contracts, filings, policies, and records, tracked with owners, versions, and expiry dates.</p>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-9" id="docKpis"></div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6" id="docKpis"></div>
+        <div id="grantKit" class="mb-8"></div>
         <div class="flex gap-2 flex-wrap mb-4">
           <input id="docSearch" placeholder="Search title, owner, tags…" style="flex:1;min-width:220px" oninput="loadDocuments()">
           <select id="docCat" onchange="loadDocuments()"><option value="">All categories</option></select>
@@ -994,6 +1006,9 @@ function canSee(k){
 }
 function buildNav(){
   const L = (CFG && CFG.labels) || {};
+  const IN = (CFG && CFG.intake) || {};
+  if (IN.title && $('benefHead')) $('benefHead').textContent = IN.title;
+  if (IN.description && $('benefDesc')) $('benefDesc').textContent = IN.description;
   const lab = (k, l) => L[k] || l;
   $('navLinks').innerHTML = NAV_GROUPS.map(([g, items]) => {
     const vis = items.filter(([k]) => canSee(k));
@@ -1447,12 +1462,14 @@ async function saveBenef(id){
   toast('Saved'); closeModal(); loadBenefs();
 }
 function openNewBeneficiary(){
-  modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">New beneficiary intake</h2>
+  const IN = (CFG && CFG.intake) || {};
+  const types = IN.types || ['services','partnership','funding','employment'];
+  modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">${esc(IN.newTitle||'New beneficiary intake')}</h2>
     <div class="grid md:grid-cols-2 gap-3 mb-3">
       <div><label>Name</label><input id="nbName"></div><div><label>Organization</label><input id="nbOrg"></div>
       <div><label>Email</label><input id="nbEmail"></div><div><label>Country</label><input id="nbCountry"></div>
-      <div><label>Program</label><input id="nbProgram" placeholder="Milot education / Site employment / Partner agency"></div>
-      <div><label>Request type</label><select id="nbType"><option>services</option><option>partnership</option><option>funding</option><option>employment</option></select></div>
+      <div><label>${esc(IN.typeLabel||'Request type')}</label><select id="nbType">${types.map(t=>`<option>${esc(t)}</option>`).join('')}</select></div>
+      <div><label>Program</label><input id="nbProgram" placeholder="${esc(IN.programHint||'Milot education / Site employment / Partner agency')}"></div>
       <div class="md:col-span-2"><label>Summary</label><textarea id="nbSummary" rows="3"></textarea></div>
     </div>
     <div class="text-right"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="createBenef()">Create</button></div>`);
@@ -2025,46 +2042,205 @@ async function grantStatus(id, status){
 }
 
 // ---------- donors ----------
+const GIFT_TYPES = [['one_time','One-time'],['recurring','Recurring'],['in_kind','In-kind'],['endowment','Endowment'],['seed','Seed funding'],['pledge_payment','Pledge payment']];
+const GIFT_METHODS = ['Bank transfer','Zeffy','GoFundMe','Check','Cash','Card','Stock','Goods or services'];
+const PIPE_STAGES = [['prospect','Prospect'],['contacted','Contacted'],['pledged','Pledged'],['donated','Donated'],['declined','Declined']];
+const giftTypeLabel = k => (GIFT_TYPES.find(t=>t[0]===k)||[k,k||'Gift'])[1];
 async function loadDonors(){
-  const { data: lc } = await sb.rpc('donor_lifecycle');
+  const { data: lc, error } = await sb.rpc('donor_lifecycle');
+  if (error) toast(error.message, true);
   const st = (lc && lc.stages) || {};
   $('donorLifecycle').innerHTML = [
-    ['Prospects', st.prospects||0, 'identified, no gift yet'],
+    ['Prospects', st.prospects||0, 'in the pipeline'],
     ['New', st.new||0, 'first gift, first year'],
     ['Repeat', st.repeat||0, '2+ gifts'],
     ['Recurring', st.recurring||0, 'monthly Stewards'],
-    ['Major', st.major||0, '$1,000+ gifts'],
+    ['Major', st.major||0, '$1,000+ lifetime'],
     ['Lapsed', st.lapsed||0, 'no gift in 12 months']
   ].map(([l,n,d])=>`<div class="kpi" style="padding:14px 16px"><div class="n" style="font-size:26px">${n}</div><div class="l">${l}</div><div class="text-[10px] text-gray-400 mt-1">${d}</div></div>`).join('');
+  // Pipeline
+  const { data: cts } = await sb.from('donor_contacts').select('*').order('updated_at',{ascending:false}).limit(500);
+  window.__contacts = cts || [];
+  $('donorPipeline').innerHTML = (cts && cts.length) ? `<div class="flex gap-2 flex-wrap mb-3">${PIPE_STAGES.map(([k,l])=>`<span class="pill-tab">${l} · <b>${(cts||[]).filter(c=>c.stage===k).length}</b></span>`).join('')}</div>` + tableHtml(
+    ['Name','Kind','Interest','Stage','Ask / pledge','Next step'],
+    cts.map(c=>[`<b style="color:var(--navy)">${esc(c.name)}</b><div class="text-xs text-gray-400">${esc(c.organization||c.email||'')}</div>`,
+      esc((c.kind||'').replace('_',' ')), esc((c.interest||'').replace('_',' ')), badge(c.stage),
+      c.pledged_usd?`<b>${fmt$(c.pledged_usd)}</b> pledged`:(c.ask_usd?fmt$(c.ask_usd)+' ask':'—'),
+      esc(c.next_step||'')+(c.next_step_on?`<div class="text-xs text-gray-400">${fmtD(c.next_step_on)}</div>`:'')]),
+    i=>`openContact('${cts[i].id}')`, '') : '<p class="text-sm text-gray-400">No prospects yet. Add endowment funders, foundations and major donors with <b>+ Prospect</b>, and move them from prospect to contacted, pledged and donated.</p>';
   const donors = (lc && lc.donors) || [];
+  window.__donors = donors;
   $('donorTable').innerHTML = tableHtml(
-    ['Donor','Stage','Lifetime','Gifts','Last gift','Recurring'],
-    donors.map(d => [ `<b style="color:var(--navy)">${esc(d.name||d.email)}</b><div class="text-xs text-gray-400">${esc(d.email)}</div>`,
+    ['Donor','Stage','Gift types','Lifetime','Gifts','Last gift'],
+    donors.map(d => [ `<b style="color:var(--navy)">${esc(d.name||d.email)}</b><div class="text-xs text-gray-400">${esc(d.email||'no email on file')}</div>`,
       badge(d.stage==='lapsed'?'skipped':d.stage==='patron'||d.stage==='major'?'approved':d.stage==='repeat'?'qualified':'new'),
-      `<b>${fmt$(d.lifetime_usd)}</b>`, d.gifts, fmtD(d.last_gift), d.recurring?'✓':'—']),
-    i => `openDonor('${esc(donors[i].email)}')`,
-    'No donors yet. When Zeffy goes live, every gift lands here and moves through the lifecycle automatically.');
+      esc((d.types||'').split(', ').map(giftTypeLabel).join(', ')),
+      `<b>${fmt$(d.lifetime_usd)}</b>`, d.gifts, fmtD(d.last_gift)]),
+    i => `openDonor(${i})`,
+    'No gifts yet. Record one with + Record a gift, import a GoFundMe list, or connect Zeffy so every online gift lands here.');
 }
-async function openDonor(email){
-  const { data: gifts } = await sb.from('donations').select('*').ilike('donor_email', email).order('created_at',{ascending:false});
-  const { data: notes } = await sb.from('donor_notes').select('*').eq('donor_email', email).order('created_at',{ascending:false});
+function openGift(prefill){
+  const f = prefill || {};
+  const today = new Date().toISOString().slice(0,10);
+  modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">Record a gift</h2>
+    <p class="text-sm text-gray-500 mb-4">For gifts that did not come through Zeffy: bank transfers, checks, in-kind gifts, seed funding, endowment gifts.</p>
+    <div class="grid md:grid-cols-2 gap-3 mb-3">
+      <div><label>Donor name</label><input id="gfName" value="${esc(f.name||'')}"></div>
+      <div><label>Email (optional)</label><input id="gfEmail" value="${esc(f.email||'')}"></div>
+      <div><label>Amount (USD)</label><input id="gfAmt" type="number" min="0" step="0.01" placeholder="For in-kind, the fair value"></div>
+      <div><label>Date received</label><input id="gfDate" type="date" value="${today}"></div>
+      <div><label>Gift type</label><select id="gfType">${GIFT_TYPES.map(([k,l])=>`<option value="${k}" ${f.type===k?'selected':''}>${l}</option>`).join('')}</select></div>
+      <div><label>How it was given</label><select id="gfMethod">${GIFT_METHODS.map(m=>`<option>${m}</option>`).join('')}</select></div>
+      <div class="md:col-span-2"><label>Purpose or restriction (optional)</label><input id="gfPurpose" placeholder="Unrestricted, Michael G. Henry Legacy Scholarship, Endowment principal, Cameroon STEM..."></div>
+      <div class="md:col-span-2"><label>Description (in-kind: what was given)</label><input id="gfDesc"></div>
+    </div>
+    <div class="text-right"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="saveGift('${esc(f.contact_id||'')}')">Save gift</button></div>`);
+}
+async function saveGift(contactId){
+  const type = $('gfType').value;
+  const row = { source:'manual', donor_name:$('gfName').value.trim()||null, donor_email:$('gfEmail').value.trim()||null,
+    amount_usd:Number($('gfAmt').value), received_on:$('gfDate').value||null, gift_type:type, method:$('gfMethod').value,
+    purpose:$('gfPurpose').value.trim()||null, description:$('gfDesc').value.trim()||null,
+    recurring: type==='recurring', in_kind: type==='in_kind', contact_id: contactId||null };
+  if (!row.donor_name) return toast('Donor name required', true);
+  if (!(row.amount_usd>0)) return toast('Enter an amount above zero', true);
+  const { error } = await sb.from('donations').insert(row);
+  if (error) return toast(error.message, true);
+  if (contactId) await sb.from('donor_contacts').update({ stage:'donated', updated_at:new Date().toISOString() }).eq('id', contactId);
+  toast('Gift recorded'); closeModal(); loadDonors();
+}
+function openContact(id){
+  const c = (window.__contacts||[]).find(x=>x.id===id) || {};
+  const opt = (arr, v) => arr.map(([k,l])=>`<option value="${k}" ${v===k?'selected':''}>${l}</option>`).join('');
+  modal(`<div class="flex items-start justify-between mb-3"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${id?esc(c.name):'New prospect'}</h2><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    <div class="grid md:grid-cols-2 gap-3 mb-3">
+      <div><label>Name</label><input id="ctName" value="${esc(c.name||'')}"></div>
+      <div><label>Organization</label><input id="ctOrg" value="${esc(c.organization||'')}"></div>
+      <div><label>Email</label><input id="ctEmail" value="${esc(c.email||'')}"></div>
+      <div><label>Country</label><input id="ctCountry" value="${esc(c.country||'')}"></div>
+      <div><label>Kind</label><select id="ctKind">${opt([['individual','Individual'],['foundation','Foundation'],['corporate','Company'],['government','Government'],['faith','Faith community'],['family_office','Family office']], c.kind)}</select></div>
+      <div><label>Interest</label><select id="ctInterest">${opt([['annual','Annual gift'],['recurring','Monthly giving'],['major_gift','Major gift'],['endowment','Endowment'],['in_kind','In-kind'],['event','Event or drive']], c.interest)}</select></div>
+      <div><label>Stage</label><select id="ctStage">${opt(PIPE_STAGES, c.stage||'prospect')}</select></div>
+      <div><label>Source</label><input id="ctSource" value="${esc(c.source||'')}" placeholder="Referral, GoFundMe, event, LOI campaign..."></div>
+      <div><label>Ask (USD)</label><input id="ctAsk" type="number" value="${c.ask_usd||''}"></div>
+      <div><label>Pledged (USD)</label><input id="ctPledge" type="number" value="${c.pledged_usd||''}"></div>
+      <div><label>Next step</label><input id="ctNext" value="${esc(c.next_step||'')}" placeholder="Send the endowment letter"></div>
+      <div><label>By</label><input id="ctNextOn" type="date" value="${c.next_step_on||''}"></div>
+      <div class="md:col-span-2"><label>Notes</label><textarea id="ctNotes" rows="3">${esc(c.notes||'')}</textarea></div>
+    </div>
+    <div class="flex justify-between gap-2">${id?`<button class="btn btn-ghost" onclick="giftFromContact('${id}')">Record their gift</button>`:'<span></span>'}
+    <span><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="saveContact('${id||''}')">Save</button></span></div>`);
+}
+function giftFromContact(id){ const c=(window.__contacts||[]).find(x=>x.id===id)||{};
+  openGift({ name:c.name, email:c.email, contact_id:id, type: c.interest==='endowment'?'endowment':c.interest==='in_kind'?'in_kind':c.interest==='recurring'?'recurring':'one_time' }); }
+function giftFromDonor(i){ const d=(window.__donors||[])[i]||{}; openGift({ name:d.name, email:d.email }); }
+async function saveContact(id){
+  const num = v => v===''?null:Number(v);
+  const row = { name:$('ctName').value.trim(), organization:$('ctOrg').value.trim()||null, email:$('ctEmail').value.trim()||null,
+    country:$('ctCountry').value.trim()||null, kind:$('ctKind').value, interest:$('ctInterest').value, stage:$('ctStage').value,
+    source:$('ctSource').value.trim()||null, ask_usd:num($('ctAsk').value), pledged_usd:num($('ctPledge').value),
+    next_step:$('ctNext').value.trim()||null, next_step_on:$('ctNextOn').value||null, notes:$('ctNotes').value.trim()||null,
+    owner: ME.email, updated_at:new Date().toISOString() };
+  if (!row.name) return toast('Name required', true);
+  const q = id ? sb.from('donor_contacts').update(row).eq('id', id) : sb.from('donor_contacts').insert(row);
+  const { error } = await q; if (error) return toast(error.message, true);
+  toast('Saved'); closeModal(); loadDonors();
+}
+function openImportGifts(){
+  modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">Import a list of gifts</h2>
+    <p class="text-sm text-gray-500 mb-3">Export from GoFundMe (or any spreadsheet) as CSV, then choose the file or paste it here. Columns are matched by name: <b>name</b>, <b>email</b>, <b>amount</b>, <b>date</b>. Other columns are ignored.</p>
+    <div class="grid md:grid-cols-2 gap-3 mb-3">
+      <div><label>Where these gifts came from</label><select id="imMethod">${GIFT_METHODS.map(m=>`<option ${m==='GoFundMe'?'selected':''}>${m}</option>`).join('')}</select></div>
+      <div><label>Gift type</label><select id="imType">${GIFT_TYPES.map(([k,l])=>`<option value="${k}">${l}</option>`).join('')}</select></div>
+      <div class="md:col-span-2"><label>Purpose (optional)</label><input id="imPurpose" placeholder="Campaign name"></div>
+    </div>
+    <input type="file" id="imFile" accept=".csv,text/csv" class="mb-2" onchange="const f=this.files[0];if(f)f.text().then(t=>{$('imText').value=t;previewImport()})">
+    <textarea id="imText" rows="7" placeholder="name,email,amount,date" oninput="previewImport()"></textarea>
+    <div id="imPreview" class="text-sm text-gray-500 my-2"></div>
+    <div class="text-right"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="runImport()">Import</button></div>`);
+}
+function parseCsv(t){
+  const rows=[]; let row=[], cur='', q=false;
+  for (let i=0;i<t.length;i++){ const ch=t[i];
+    if (q){ if (ch=='"' && t[i+1]=='"'){cur+='"';i++;} else if (ch=='"') q=false; else cur+=ch; }
+    else if (ch=='"') q=true; else if (ch==','){row.push(cur);cur='';}
+    else if (ch=='\n'||ch=='\r'){ if(ch=='\r'&&t[i+1]=='\n')i++; row.push(cur);cur=''; if(row.some(c=>c.trim()))rows.push(row); row=[]; }
+    else cur+=ch; }
+  row.push(cur); if (row.some(c=>c.trim())) rows.push(row); return rows;
+}
+function importRows(){
+  const rows = parseCsv($('imText').value||''); if (rows.length<2) return [];
+  const h = rows[0].map(x=>x.trim().toLowerCase());
+  const col = (...names)=> h.findIndex(x=>names.some(n=>x===n||x.includes(n)));
+  const iN=col('name','donor'), iF=col('first'), iL=col('last'), iE=col('email'), iA=col('amount','donation','gross'), iD=col('date','created');
+  return rows.slice(1).map(r=>{
+    const nm = iN>=0 ? r[iN] : [r[iF]||'', r[iL]||''].join(' ');
+    const amt = Number(String(iA>=0?r[iA]:'').replace(/[^0-9.\-]/g,''));
+    const d = iD>=0 ? new Date(r[iD]) : null;
+    return { donor_name:(nm||'').trim()||'Anonymous', donor_email:iE>=0?(r[iE]||'').trim()||null:null, amount_usd:amt,
+      received_on: d && !isNaN(d) ? d.toISOString().slice(0,10) : null };
+  }).filter(r=>r.amount_usd>0);
+}
+function previewImport(){ const r=importRows(); $('imPreview').innerHTML = r.length ? `<b>${r.length}</b> gifts found, totaling <b>${fmt$(r.reduce((a,x)=>a+x.amount_usd,0))}</b>.` : 'No gifts found yet. The first row must be the column names.'; }
+async function runImport(){
+  const r = importRows(); if (!r.length) return toast('Nothing to import', true);
+  const type = $('imType').value, method = $('imMethod').value, purpose = $('imPurpose').value.trim()||null;
+  const batch = r.map(x=>Object.assign(x,{ source: method==='GoFundMe'?'gofundme':'import', method, gift_type:type, purpose,
+    recurring:type==='recurring', in_kind:type==='in_kind' }));
+  const { error } = await sb.from('donations').insert(batch);
+  if (error) return toast(error.message, true);
+  toast(batch.length+' gifts imported'); closeModal(); loadDonors();
+}
+async function openDonor(i){
+  const d = (window.__donors||[])[i]; if (!d) return;
+  let q = sb.from('donations').select('*').order('created_at',{ascending:false});
+  q = d.email ? q.ilike('donor_email', d.email) : q.ilike('donor_name', d.name);
+  const { data: gifts } = await q;
+  const key = d.email || ('name:'+(d.name||'').toLowerCase());
+  const { data: notes } = await sb.from('donor_notes').select('*').eq('donor_email', key).order('created_at',{ascending:false});
   modal(`
-    <div class="flex items-start justify-between mb-3"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(email)}</h2>
+    <div class="flex items-start justify-between mb-1"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(d.name||d.email)}</h2>
     <button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
+    <div class="text-sm text-gray-500 mb-3">${esc(d.email||'No email on file')} · ${fmt$(d.lifetime_usd)} lifetime</div>
     <h3 class="serif text-lg font-semibold mb-2" style="color:var(--navy)">Gifts</h3>
-    <div class="space-y-1 mb-4 max-h-40 overflow-y-auto">${(gifts||[]).map(g=>`<div class="text-sm flex justify-between"><span>${fmtD(g.created_at)} · ${esc(g.tier||'donation')} ${g.recurring?'(recurring)':''}</span><b>${fmt$(g.amount_usd)}</b></div>`).join('')||'<span class="text-sm text-gray-400">none</span>'}</div>
+    <div class="space-y-1 mb-4 max-h-48 overflow-y-auto">${(gifts||[]).map(g=>`<div class="text-sm flex justify-between gap-3"><span>${fmtD(g.received_on||g.created_at)} · ${esc(giftTypeLabel(g.gift_type))}${g.method?' · '+esc(g.method):''}${g.purpose?' · '+esc(g.purpose):''}${g.description?'<div class="text-xs text-gray-400">'+esc(g.description)+'</div>':''}</span><b>${fmt$(g.amount_usd)}</b></div>`).join('')||'<span class="text-sm text-gray-400">none</span>'}</div>
+    <div class="text-right mb-4"><button class="btn btn-ghost" onclick="giftFromDonor(${i})">+ Another gift</button></div>
     <h3 class="serif text-lg font-semibold mb-2" style="color:var(--navy)">Notes & touches</h3>
     <div class="space-y-2 mb-3 max-h-40 overflow-y-auto">${(notes||[]).map(n=>`<div class="text-sm border-l-2 pl-3" style="border-color:var(--gold)"><b>${esc(n.author||'')}</b> <span class="text-xs text-gray-400">${fmtDt(n.created_at)} · ${esc(n.kind)}</span><div>${esc(n.body)}</div></div>`).join('')||'<span class="text-sm text-gray-400">No notes yet.</span>'}</div>
-    <div class="flex gap-2"><select id="dnKind" style="width:130px"><option>note</option><option>call</option><option>email</option><option>pledge</option><option>task</option></select>
-    <input id="dnBody" placeholder="Log a call, note, or pledge…"><button class="btn btn-navy" onclick="donorNote('${esc(email)}')">Log</button></div>`);
+    <div class="flex gap-2"><select id="dnKind" style="width:130px"><option>note</option><option>call</option><option>email</option><option>pledge</option><option>thank you</option><option>task</option></select>
+    <input id="dnBody" placeholder="Log a call, note, or pledge"><button class="btn btn-navy" onclick="donorNote(${i})">Log</button></div>`);
 }
-async function donorNote(email){
-  const body = $('dnBody').value.trim(); if (!body) return;
-  const { error } = await sb.from('donor_notes').insert({donor_email: email, kind: $('dnKind').value, body, author: ME.email});
+async function donorNote(i){
+  const d = (window.__donors||[])[i]; const body = $('dnBody').value.trim(); if (!body||!d) return;
+  const key = d.email || ('name:'+(d.name||'').toLowerCase());
+  const { error } = await sb.from('donor_notes').insert({donor_email: key, kind: $('dnKind').value, body, author: ME.email});
   if (error) return toast(error.message, true);
-  openDonor(email);
+  openDonor(i);
 }
 
+// Upload an image or short video to the public media bucket and drop its link
+// into the field. Blotato and the website both need a public link.
+function mediaPicker(inputId){
+  setTimeout(()=>mediaPreview(inputId), 0);
+  return `<div class="flex items-center gap-3 mt-2"><label class="btn btn-ghost" style="cursor:pointer;margin:0">Upload image
+    <input type="file" accept="image/*,video/mp4" style="display:none" onchange="mediaUpload(this,'${inputId}')"></label>
+    <span id="${inputId}_msg" class="text-xs text-gray-400"></span><img id="${inputId}_img" alt="" style="max-height:56px;border-radius:6px;display:none"></div>`;
+}
+function mediaPreview(inputId){
+  const v = ($(inputId)||{}).value||'', im = $(inputId+'_img'); if (!im) return;
+  if (v && /\.(png|jpe?g|webp|gif)(\?|$)/i.test(v)) { im.src = v; im.style.display=''; } else im.style.display='none';
+}
+async function mediaUpload(el, inputId){
+  const f = el.files && el.files[0]; if (!f) return;
+  if (f.size > 25*1024*1024) return toast('Please keep files under 25 MB', true);
+  const d = new Date(), safe = f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  const path = `social/${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${Date.now()}_${safe}`;
+  $(inputId+'_msg').textContent = 'Uploading…';
+  const { error } = await sb.storage.from('media').upload(path, f, { upsert:false, contentType:f.type });
+  if (error) { $(inputId+'_msg').textContent=''; return toast(/bucket/i.test(error.message)?'Image uploads need one database update. Ask TechFides to run it.':error.message, true); }
+  const { data } = sb.storage.from('media').getPublicUrl(path);
+  $(inputId).value = data.publicUrl; $(inputId+'_msg').textContent = 'Uploaded'; mediaPreview(inputId);
+}
 // ---------- influencers ----------
 let inflFilter = 'pipeline';
 function inflFilterBar(){
@@ -2567,7 +2743,7 @@ function openDispatchModal(c){
       <div><label>Language</label><select id="dLang">${['en','fr','ht','es','pt'].map(l=>`<option ${(c.language||'en')===l?'selected':''}>${l}</option>`).join('')}</select></div>
       <div class="md:col-span-2"><label>Excerpt (card preview)</label><textarea id="dExcerpt" rows="2">${esc(c.excerpt||'')}</textarea></div>
       <div class="md:col-span-2"><label>Body</label><textarea id="dBody" rows="10">${esc(c.body||'')}</textarea></div>
-      <div class="md:col-span-2"><label>Cover image URL (optional)</label><input id="dMedia" value="${esc(c.media_url||'')}"></div>
+      <div class="md:col-span-2"><label>Cover image (optional)</label><input id="dMedia" value="${esc(c.media_url||'')}" placeholder="Upload below, or paste a link">${mediaPicker('dMedia')}</div>
     </div>
     <div class="flex justify-between items-center gap-2">
       <button class="btn btn-ghost" onclick="saveDispatch('${c.id}',false)">Save draft</button>
@@ -2611,7 +2787,7 @@ function openSocialModal(c){
       <div><label>Campaign</label><input id="cCampaign" value="${esc(c.campaign||'')}"></div>
       <div><label>Platform</label><select id="cPlatform">${SOCIAL_PLATFORMS.map(p=>`<option ${c.platform===p?'selected':''}>${p}</option>`).join('')}</select></div>
       <div class="md:col-span-2"><label>Post body</label><textarea id="cBody" rows="6">${esc(c.body||'')}</textarea></div>
-      <div class="md:col-span-2"><label>Media URL</label><input id="cMedia" value="${esc(c.media_url||'')}"></div>
+      <div class="md:col-span-2"><label>Image or video</label><input id="cMedia" value="${esc(c.media_url||'')}" placeholder="Upload below, or paste a link">${mediaPicker('cMedia')}</div>
     </div>
     ${c.performance && Object.keys(c.performance).length?`<div class="text-xs text-gray-400 mb-3">Performance: ${esc(JSON.stringify(c.performance))}</div>`:''}
     <div class="flex justify-between gap-2">
@@ -2958,19 +3134,44 @@ async function openCompliance(pid){
     <div class="text-right mt-4"><button class="btn btn-gold" onclick="closeModal();loadBoard()">Done</button></div>`);
 }
 
-async function issueGateDoc(pid, gateKey){
+function issueGateDocFilled(){
+  const g = window.__gate; if (!g) return;
+  const add = {}; document.querySelectorAll('[id^="gx_"]').forEach(el=>{ add[el.id.slice(3)] = el.value.trim(); });
+  const blank = Object.keys(add).filter(k=>!add[k]);
+  if (blank.length) return toast('Please fill in: '+blank.map(k=>k.replace(/_/g,' ')).join(', '), true);
+  closeModal(); issueGateDoc(g.pid, g.gateKey, Object.assign({}, g.vals, add));
+}
+async function issueGateDoc(pid, gateKey, extra){
   const [{ data:p }, { data:tpls }] = await Promise.all([
     sb.from('people').select('*').eq('id',pid).single(),
-    sb.from('doc_templates').select('*').eq('gate_key',gateKey).limit(1)
+    sb.from('doc_templates').select('*').eq('gate_key',gateKey).eq('active',true).limit(1)
   ]);
   if (!p) return toast('Person not found', true);
   if (!tpls || !tpls.length) return toast('No document has been drafted for this requirement yet', true);
   const t = tpls[0];
   const today = new Date().toISOString().slice(0,10);
-  const vals = { name:p.name, full_name:p.name, volunteer_name:p.name,
-                 role:p.role_title||p.type, country:p.country||'',
-                 organization:ORG_LEGAL||ORG.name||'', issue_date:today, effective_date:today,
-                 period:String(new Date().getFullYear()) };
+  const org = ORG_LEGAL||ORG.name||'';
+  // Everything we already know about the person and the Trust, under every
+  // name the templates use. Anything still unknown is asked for below.
+  const vals = Object.assign({ name:p.name, full_name:p.name, volunteer_name:p.name, member_name:p.name,
+                 person_name:p.name, signer_name:p.name, counterparty_name:p.name, recipient_name:p.name,
+                 intern_name:p.name, participant_name:p.name, email:p.email||'',
+                 role:p.role_title||p.type, title:p.role_title||'', role_title:p.role_title||'',
+                 seat:p.country||'', country:p.country||'',
+                 organization:org, org_name:org, org_legal_name:org,
+                 issue_date:today, effective_date:today, start_date:today,
+                 period:String(new Date().getFullYear()) }, extra||{});
+  const used = Array.from(new Set([...(t.fields||[]), ...((t.body_md||'').match(/{{\s*(\w+)\s*}}/g)||[]).map(m=>m.replace(/[{}\s]/g,''))]));
+  const missing = used.filter(f=> vals[f]==null || String(vals[f]).trim()==='');
+  if (missing.length && !extra){
+    window.__gate = { pid, gateKey, vals };
+    return modal(`<h2 class="serif text-2xl font-semibold mb-1" style="color:var(--navy)">${esc(t.name)}</h2>
+      <p class="text-sm text-gray-500 mb-3">A few details are needed before this goes to ${esc(p.name)}.</p>
+      ${missing.map(f=>`<label class="block text-sm font-semibold mt-2">${esc(f.replace(/_/g,' ').replace(/^./,c=>c.toUpperCase()))}</label>
+        <input id="gx_${f}" placeholder="${esc(f.replace(/_/g,' '))}">`).join('')}
+      <div class="text-right mt-4"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-gold" onclick="issueGateDocFilled()">Create signing link</button></div>`);
+  }
   const html = mdToHtml(renderTemplate(t.body_md, vals));
   const { data, error } = await sb.from('signature_requests').insert({
     title: t.name+' — '+p.name, body_html: html, signer_name: p.name, signer_email: p.email,
@@ -3014,6 +3215,11 @@ async function loadBoard(){
     ['Board members', g.board_members], ['Committees', g.committees],
     ['Next meeting', g.next_meeting || '—'], ['Resolutions passed', g.resolutions_passed]
   ].map(([l,n])=>`<div class="kpi"><div class="n" style="font-size:${String(n).length>8?'18px':'32px'}">${n}</div><div class="l">${l}</div></div>`).join('');
+  const { data: mem } = await sb.from('people').select('id,name,country,role_title,email,photo_url,status').eq('type','board').order('sort',{nullsFirst:false}).order('name');
+  $('boardMembers').innerHTML = (mem||[]).map(m=>`<div class="fin-card" style="cursor:pointer" onclick="openBoardMember('${m.id}')">
+      <div class="flex items-center gap-3">${m.photo_url?`<img src="${esc(m.photo_url)}" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover">`:`<div style="width:44px;height:44px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700">${esc((m.name||'?').split(' ').map(x=>x[0]).slice(0,2).join(''))}</div>`}
+      <div><div class="serif text-lg font-semibold" style="color:var(--navy)">${esc(m.name)}</div><div class="text-xs text-gray-400">${esc(m.country||'')}${m.role_title?' · '+esc(m.role_title):''}</div></div></div></div>`).join('')
+    || '<div class="empty-elegant md:col-span-3"><div class="e-t">No members yet</div><div class="text-sm text-gray-400">Add them under People with type "board".</div></div>';
   const { data: coms } = await sb.from('committees').select('*, people:chair_id(name)');
   $('committeesGrid').innerHTML = (coms||[]).map(c=>`
     <div class="fin-card"><div class="serif text-lg font-semibold" style="color:var(--navy)">${esc(c.name)}</div>
@@ -3132,6 +3338,71 @@ async function addResolution(mid){
   const title = prompt('Resolution title'); if(!title) return;
   const { error } = await sb.from('resolutions').insert({meeting_id:mid, title});
   if (error) return toast(error.message, true); toast('Resolution added'); openMeeting(mid);
+}
+async function openBoardMember(pid){
+  const [{ data:p }, act, { data:att }] = await Promise.all([
+    sb.from('people').select('*').eq('id',pid).single(),
+    sb.from('person_activity').select('*').eq('person_id',pid).order('occurred_on',{ascending:false}).limit(200),
+    sb.from('meeting_attendance').select('status, meetings(title,meets_at,kind)').eq('person_id',pid)
+  ]);
+  if (!p) return toast('Member not found', true);
+  const acts = act.data || [];
+  const noTable = act.error && /person_activity/.test(act.error.message||'');
+  const yr = new Date().getFullYear();
+  const hrs = acts.filter(a=>a.kind==='hours' && String(a.occurred_on||'').startsWith(String(yr))).reduce((a,x)=>a+Number(x.hours||0),0);
+  const { data: docs } = p.email ? await sb.from('signature_requests').select('title,status,signed_at,token').ilike('signer_email', p.email).order('created_at',{ascending:false}) : { data: [] };
+  window.__bm = p;
+  modal(`<div class="flex items-start justify-between mb-1"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(p.name)}</h2><button class="btn btn-ghost" onclick="closeModal();loadBoard()">Close</button></div>
+    <div class="text-sm text-gray-500 mb-4">${esc(p.country||'')}${p.role_title?' · '+esc(p.role_title):''}${p.email?' · '+esc(p.email):''}</div>
+    <div class="grid grid-cols-3 gap-3 mb-4">
+      <div class="kpi" style="padding:12px 14px"><div class="n" style="font-size:22px">${hrs}</div><div class="l">Hours in ${yr}</div></div>
+      <div class="kpi" style="padding:12px 14px"><div class="n" style="font-size:22px">${(att||[]).filter(a=>a.status==='present').length}</div><div class="l">Meetings attended</div></div>
+      <div class="kpi" style="padding:12px 14px"><div class="n" style="font-size:22px">${(docs||[]).filter(d=>d.status==='signed').length} / ${(docs||[]).length}</div><div class="l">Documents signed</div></div>
+    </div>
+    <div class="flex gap-2 flex-wrap mb-4">
+      <button class="btn btn-gold" onclick="bmMeeting()">+ Schedule a meeting</button>
+      <button class="btn btn-ghost" onclick="openCompliance('${pid}')">Requirements and documents</button>
+    </div>
+    ${noTable?'<div class="text-sm mb-3" style="color:#8A5A00">Notes and hours need one database update. Ask TechFides to run it.</div>':''}
+    <div class="flex gap-2 mb-2 flex-wrap">
+      <select id="bmKind" style="width:120px" onchange="$('bmHours').style.display=this.value==='hours'?'':'none'"><option value="note">Note</option><option value="hours">Hours</option><option value="call">Call</option><option value="intro">Introduction</option></select>
+      <input id="bmHours" type="number" step="0.25" min="0" placeholder="Hours" style="width:90px;display:none">
+      <input id="bmDate" type="date" value="${new Date().toISOString().slice(0,10)}" style="width:150px">
+      <input id="bmBody" placeholder="What happened" style="flex:1;min-width:180px">
+      <button class="btn btn-navy" onclick="bmLog('${pid}')">Log</button>
+    </div>
+    <div class="space-y-2 mb-4 max-h-56 overflow-y-auto">${acts.map(a=>`<div class="text-sm border-l-2 pl-3" style="border-color:var(--gold)"><b>${esc(a.kind==='hours'?a.hours+' h':a.kind)}</b> <span class="text-xs text-gray-400">${fmtD(a.occurred_on)} · ${esc(a.author||'')}</span><div>${esc(a.body||'')}</div></div>`).join('')||'<span class="text-sm text-gray-400">Nothing logged yet.</span>'}</div>
+    <h3 class="serif text-lg font-semibold mb-2" style="color:var(--navy)">Meetings</h3>
+    <div class="space-y-1 mb-4">${(att||[]).filter(a=>a.meetings).map(a=>`<div class="text-sm flex justify-between"><span>${esc(a.meetings.title)}</span><span class="text-gray-400">${a.meetings.meets_at?fmtD(a.meetings.meets_at):''} · ${esc(a.status)}</span></div>`).join('')||'<span class="text-sm text-gray-400">No attendance recorded yet. Attendance is marked inside each held meeting.</span>'}</div>
+    <h3 class="serif text-lg font-semibold mb-2" style="color:var(--navy)">Documents</h3>
+    <div class="space-y-1">${(docs||[]).map(d=>`<div class="text-sm flex justify-between gap-2"><span>${esc(d.title)}</span><span>${badge(d.status)}</span></div>`).join('')||'<span class="text-sm text-gray-400">None issued yet.</span>'}</div>`);
+}
+async function bmLog(pid){
+  const kind=$('bmKind').value, body=$('bmBody').value.trim(), hours=kind==='hours'?Number($('bmHours').value):null;
+  if (kind==='hours' && !(hours>0)) return toast('Enter the hours', true);
+  if (kind!=='hours' && !body) return toast('Write a short note', true);
+  const { error } = await sb.from('person_activity').insert({ person_id:pid, kind, hours, body:body||null, occurred_on:$('bmDate').value||null, author:ME.email });
+  if (error) return toast(error.message, true);
+  toast('Logged'); openBoardMember(pid);
+}
+function bmMeeting(){
+  const p = window.__bm || {};
+  modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">Meeting with ${esc(p.name)}</h2>
+    <div class="grid md:grid-cols-2 gap-3 mb-3">
+      <div class="md:col-span-2"><label>Title</label><input id="nmTitle" value="Check-in with ${esc(p.name)}"></div>
+      <div><label>Kind</label><select id="nmKind"><option value="one_on_one">One-on-one</option><option value="committee">Committee</option><option value="board">Advisory Board</option></select></div>
+      <div><label>When</label><input id="nmWhen" type="datetime-local"></div>
+      <div class="md:col-span-2"><label>Agenda</label><textarea id="nmAgenda" rows="3">With: ${esc(p.name)}${p.country?' ('+esc(p.country)+')':''}</textarea></div>
+    </div>
+    <div class="text-right"><button class="btn btn-ghost mr-2" onclick="openBoardMember('${p.id}')">Back</button><button class="btn btn-gold" onclick="bmCreateMeeting('${p.id}')">Schedule</button></div>`);
+}
+async function bmCreateMeeting(pid){
+  const title=$('nmTitle').value.trim(); if(!title) return toast('Title required', true);
+  const when=$('nmWhen').value?new Date($('nmWhen').value).toISOString():null;
+  const { data, error } = await sb.from('meetings').insert({title, kind:$('nmKind').value, meets_at:when, status:'scheduled', agenda:$('nmAgenda').value||null}).select('id').single();
+  if (error) return toast(error.message, true);
+  await sb.from('meeting_attendance').upsert({meeting_id:data.id, person_id:pid, status:'invited'}, {onConflict:'meeting_id,person_id'}).then(()=>{},()=>{});
+  toast('Meeting scheduled'); openBoardMember(pid);
 }
 function openNewMeeting(){
   modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">New meeting</h2>
@@ -3556,7 +3827,48 @@ function tableHtml(heads, rows, onRow, empty){
 }
 /* ===================== RECORDS: Documents · Vendors · Onboarding ===================== */
 const LIB_CATS = [['training','Training'],['presentation','Presentations'],['brand','Brand & Templates'],['handbook','Policies & Handbooks'],['program','Programme Materials'],['board_papers','Board Papers'],['report','Reports & Impact']];
-const DOC_CATS = ['contract','legal','finance','hr','vendor','permit','governance','policy','general'].concat(LIB_CATS.map(c=>c[0]));
+// Document classes, in plain words. The key is what is stored; the label is what people see.
+const DOC_CLASSES = [
+  ['legal','Legal · trust deed, IRS 501(c)(3) letter, EIN, registrations'],
+  ['finance','Financial · budgets, bank letters, statements, Form 990'],
+  ['grant','Grants · proposals, awards, reports, letters of support'],
+  ['contract','Contracts and agreements'],
+  ['vendor','Vendor files · W-9, insurance, quotes'],
+  ['governance','Governance · Advisory Board, minutes, resolutions'],
+  ['policy','Policies · conduct, safeguarding, privacy'],
+  ['hr','People · staff, volunteers, interns'],
+  ['permit','Permits and licenses'],
+  ['general','General']].concat(LIB_CATS.map(([k,l])=>[k,'Library · '+l]));
+const DOC_CATS = DOC_CLASSES.map(c=>c[0]);
+const docCatLabel = k => { const l=(DOC_CLASSES.find(c=>c[0]===k)||[k,k||'General'])[1]; return l.startsWith('Library')?l:l.split(' · ')[0]; };
+const docCatOpts = sel => DOC_CLASSES.map(([k,l])=>`<option value="${k}" ${sel===k?'selected':''}>${l}</option>`).join('');
+// What a funder asks for before they read a proposal. Each item is matched by a tag on the document.
+const GRANT_KIT = [
+  ['irs_letter','IRS 501(c)(3) determination letter','legal'],
+  ['ein','EIN confirmation (IRS CP 575 or 147C)','legal'],
+  ['trust_deed','Trust instrument (formation document)','legal'],
+  ['w9','Form W-9 for the Trust','finance'],
+  ['budget','Current organizational budget','finance'],
+  ['financials','Most recent financial statements','finance'],
+  ['form_990','Most recent Form 990 or 990-N','finance'],
+  ['board_list','Advisory Board list with affiliations','governance'],
+  ['coi_policy','Conflict of interest policy','policy'],
+  ['nondiscrimination','Nondiscrimination and safeguarding policy','policy'],
+  ['strategy','Strategic plan 2026 to 2027','governance'],
+  ['support_letters','Letters of support from partners','grant']];
+async function loadGrantKit(){
+  if(!$('grantKit')) return;
+  const { data } = await sb.from('documents').select('id,title,tags,expires_on,status').eq('status','active').limit(500);
+  const have = k => (data||[]).find(d=>(d.tags||[]).includes('grant_kit:'+k));
+  const done = GRANT_KIT.filter(([k])=>have(k)).length;
+  $('grantKit').innerHTML = `<div class="kpi" style="padding:16px 18px">
+    <div class="flex items-center justify-between flex-wrap gap-2 mb-2"><b style="color:var(--navy)">Grant-ready file · ${done} of ${GRANT_KIT.length}</b>
+    <span class="text-xs text-gray-400">Keep these current and every grant application starts from a full folder.</span></div>
+    <div class="grid md:grid-cols-2 gap-x-6 gap-y-1">${GRANT_KIT.map(([k,l,c])=>{ const d=have(k);
+      return `<div class="text-sm flex justify-between gap-2 py-1" style="border-bottom:1px solid rgba(0,0,0,.05)">
+        <span>${d?'<span style="color:var(--green)">&#10003;</span>':'<span style="color:#c9a227">&#9675;</span>'} ${esc(l)}</span>
+        ${d?`<a class="text-xs" style="color:var(--navy);cursor:pointer" onclick="openDoc('${d.id}')">open</a>`:`<a class="text-xs" style="color:var(--navy);cursor:pointer;font-weight:700" onclick="openUploadDoc(null,{key:'${k}'})">upload</a>`}</div>`; }).join('')}</div></div>`;
+}
 let LIB_SHELF = '';
 function libIcon(d){
   const m=(d.mime_type||'')+' '+(d.file_name||'')+' '+(d.external_url||'');
@@ -3592,7 +3904,7 @@ async function loadLibrary(){
 let DOC_CAT_INIT = false;
 
 async function loadDocuments(){
-  if(!DOC_CAT_INIT){ $('docCat').innerHTML = '<option value="">All categories</option>'+DOC_CATS.map(c=>`<option>${c}</option>`).join(''); DOC_CAT_INIT=true; }
+  if(!DOC_CAT_INIT){ $('docCat').innerHTML = '<option value="">All categories</option>'+docCatOpts(''); DOC_CAT_INIT=true; loadGrantKit(); }
   let q = sb.from('documents').select('*').order('updated_at',{ascending:false}).limit(300);
   const cat=$('docCat').value, st=$('docStatus').value, term=($('docSearch').value||'').trim();
   if(cat) q=q.eq('category',cat);
@@ -3614,21 +3926,22 @@ async function loadDocuments(){
     return parts.join(' ');
   };
   $('docsTable').innerHTML=tableHtml(['Title','Category','Who can see','Owner','Status','Expires'],
-    rows.map(d=>[`<b style="color:var(--navy)">${esc(d.title)}</b>${d.file_name?`<div class="text-xs text-gray-400">${esc(d.file_name)}</div>`:''}`, esc(d.category), audienceCell(d), esc(d.owner||'—'), badge(d.status), d.expires_on?fmtD(d.expires_on):'—']),
+    rows.map(d=>[`<b style="color:var(--navy)">${esc(d.title)}</b>${d.file_name?`<div class="text-xs text-gray-400">${esc(d.file_name)}</div>`:''}`, esc(docCatLabel(d.category)), audienceCell(d), esc(d.owner||'—'), badge(d.status), d.expires_on?fmtD(d.expires_on):'—']),
     i=>`openDoc('${rows[i].id}')`, 'No documents yet. Click “Upload document” to add the first.');
 }
-function openUploadDoc(mode){
+function openUploadDoc(mode, preset){
   const lib=mode==='library';
-  const catOpts=lib?LIB_CATS.map(([k,l])=>`<option value="${k}" ${k===(LIB_SHELF||'training')?'selected':''}>${l}</option>`).join():DOC_CATS.map(c=>`<option>${c}</option>`).join('');
+  const kit = preset && preset.key ? GRANT_KIT.find(g=>g[0]===preset.key) : null;
+  const catOpts=lib?LIB_CATS.map(([k,l])=>`<option value="${k}" ${k===(LIB_SHELF||'training')?'selected':''}>${l}</option>`).join(''):docCatOpts(kit?kit[2]:'legal');
   modal(`<h2 class="serif text-2xl font-semibold mb-4" style="color:var(--navy)">${lib?'Add to the library':'Upload document'}</h2>
     <div class="grid md:grid-cols-2 gap-3 mb-3">
-      <div class="md:col-span-2"><label>Title</label><input id="udTitle"></div>
+      <div class="md:col-span-2"><label>Title</label><input id="udTitle" value="${kit?esc(kit[1]):''}"></div>
       <div><label>${lib?'Shelf':'Category'}</label><select id="udCat">${catOpts}</select></div>
       ${lib?`<div><label>Language</label><select id="udLang">${(ORG.languages||CFG.languages||['en']).map(l=>`<option value="${l}">${l.toUpperCase()}</option>`).join('')}</select></div>
       <div class="md:col-span-2"><label>Or a link instead of a file (Google Slides, Canva, YouTube…)</label><input id="udUrl" placeholder="https://…"></div>`:''}
       <div><label>Owner</label><input id="udOwner" value="${esc(ME.name||ME.email)}"></div>
       <div><label>Expires on</label><input id="udExp" type="date"></div>
-      <div><label>Tags (comma-separated)</label><input id="udTags"></div>
+      <div><label>Tags (comma-separated)</label><input id="udTags" value="${kit?'grant_kit:'+kit[0]:''}"></div>
       <div><label>Country (blank = all)</label><select id="udCountry"><option value="">All countries</option>${ACCESS_COUNTRIES.map(c=>`<option>${c}</option>`).join('')}</select></div>
       <div class="md:col-span-2"><label>Description</label><textarea id="udDesc" rows="2"></textarea></div>
       <div class="md:col-span-2"><label>Who can see it — leave all unticked = every staff member</label>
@@ -3659,13 +3972,13 @@ async function createDoc(){
     storage_path, file_name, mime_type, size_bytes, external_url, language, uploaded_by:ME.id, status:'active'});
   if(error) return toast(error.message,true);
   sb.rpc('log_audit',{p_event:'document.upload',p_resource:'documents',p_action:'insert',p_subject:title}).then(undefined,()=>{});
-  toast($('udUrl')?'Added to the library':'Document saved'); closeModal(); if($('view-library').classList.contains('active')) loadLibrary(); else loadDocuments();
+  toast($('udUrl')?'Added to the library':'Document saved'); closeModal(); if($('view-library').classList.contains('active')) loadLibrary(); else { loadDocuments(); loadGrantKit(); }
 }
 async function openDoc(id){
   const { data:d }=await sb.from('documents').select('*').eq('id',id).single();
   modal(`<div class="flex items-start justify-between mb-3"><h2 class="serif text-2xl font-semibold" style="color:var(--navy)">${esc(d.title)}</h2><button class="btn btn-ghost" onclick="closeModal()">Close</button></div>
     <div class="grid md:grid-cols-2 gap-3 mb-4">
-      <div><label>Category</label><select id="dCat">${DOC_CATS.map(c=>`<option ${d.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
+      <div><label>Category</label><select id="dCat">${docCatOpts(d.category)}</select></div>
       <div><label>Status</label><select id="dStatus">${['active','archived','expired'].map(x=>`<option ${d.status===x?'selected':''}>${x}</option>`).join('')}</select></div>
       <div><label>Owner</label><input id="dOwner" value="${esc(d.owner||'')}"></div>
       <div><label>Expires on</label><input id="dExp" type="date" value="${d.expires_on||''}"></div>
@@ -4014,7 +4327,7 @@ function openLetterhead(title, bodyHtml, opts){
   .ftr{position:fixed;bottom:0;left:0;right:0;padding:10px 28px;border-top:1px solid #e5e7eb;font-size:10.5px;color:#6b7280;background:#fff;text-align:center}
   .bar{position:fixed;top:0;left:0;right:0;background:${navy};color:#fff;padding:10px 16px;font-size:13px;display:flex;justify-content:space-between;align-items:center}
   .bar button{background:${gold};border:0;color:#111;font-weight:700;padding:7px 14px;border-radius:3px;cursor:pointer}@media print{.bar{display:none}.sheet{padding-top:0}}</style></head>
-  <body><div class="bar"><span>${esc(mark)} · letterhead preview</span><span><button onclick="window.print()">Print / Save as PDF</button></span></div>
+  <body><div class="bar"><span>${esc(mark)} · letterhead preview</span><span><button onclick="try{window.opener&&window.opener.focus()}catch(e){};window.close()" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5);margin-right:8px">&larr; Back to Mission Control</button><button onclick="window.print()">Print / Save as PDF</button></span></div>
   <div class="sheet" style="padding-top:64px"><div class="hdr">${ORG.logoUrl?`<img src="${esc(ORG.logoUrl)}" alt="">`:''}<div><div class="wm">${esc(mark)}</div>${sub?`<div class="ws">${esc(sub)}</div>`:''}</div><div class="meta">${esc(opts.date||today)}${opts.ref?'<br>'+esc(opts.ref):''}</div></div>
   <h1 class="ttl">${esc(title)}</h1>${opts.subtitle?`<div class="sub">${esc(opts.subtitle)}</div>`:''}<div class="body">${bodyHtml}</div></div>
   <div class="ftr">${esc(contact)}${ORG.footerLine?' · '+esc(ORG.footerLine):''}</div></body></html>`;
@@ -4131,7 +4444,7 @@ async function openPost(id){
       <div><label>Excerpt</label><textarea id="bpExcerpt" rows="2">${esc(p.excerpt||'')}</textarea></div>
       <div><label>Body</label><textarea id="bpBody" rows="10">${esc(p.body||'')}</textarea></div>
       <div class="grid md:grid-cols-3 gap-3">
-        <div class="md:col-span-2"><label>Hero image URL</label><input id="bpHero" value="${esc(p.media_url||'')}" placeholder="/images/blog/… or https://…"></div>
+        <div class="md:col-span-2"><label>Hero image</label><input id="bpHero" value="${esc(p.media_url||'')}" placeholder="/images/blog/… or https://…">${mediaPicker('bpHero')}</div>
         <div><label>Language</label><select id="bpLang">${BLOG_LANGS.map(l=>`<option value="${l}" ${(p.language||'en')===l?'selected':''}>${l.toUpperCase()}</option>`).join('')}</select></div>
       </div>
       <div><label>Read minutes</label><input id="bpRead" type="number" style="max-width:120px" value="${p.read_minutes||''}"></div>
@@ -4290,7 +4603,7 @@ function openNewSocial(){
     <div class="grid gap-3 mb-3">
       <div class="grid md:grid-cols-3 gap-3"><div><label>Platform</label><select id="spPlatform">${SM_PLATFORMS2.map(p=>`<option>${p}</option>`).join('')}</select></div><div><label>Campaign</label><input id="spCampaign"></div><div><label>Language</label><input id="spLang" value="en"></div></div>
       <div><label>Post text</label><textarea id="spBody" rows="5"></textarea></div>
-      <div><label>Media URL (optional)</label><input id="spMedia"></div>
+      <div><label>Image or video (optional)</label><input id="spMedia" placeholder="Upload below, or paste a link">${mediaPicker('spMedia')}</div>
       <div><label>Schedule for (optional)</label><input id="spWhen" type="datetime-local"></div>
     </div><div class="text-right"><button class="btn btn-ghost mr-2" onclick="closeModal()">Cancel</button><button class="btn btn-gold" onclick="createSocial()">Save</button></div>`);
 }
@@ -4307,7 +4620,7 @@ async function openSocialPost(id){
     <div class="grid gap-3 mb-3">
       <div class="grid md:grid-cols-3 gap-3"><div><label>Platform</label><select id="spPlatform">${SM_PLATFORMS2.map(x=>`<option ${p.platform===x?'selected':''}>${x}</option>`).join('')}</select></div><div><label>Campaign</label><input id="spCampaign" value="${esc(p.campaign||'')}"></div><div><label>Status</label><select id="spStatus">${['draft','scheduled','approved','published','posted'].map(x=>`<option ${p.status===x?'selected':''}>${x}</option>`).join('')}</select></div></div>
       <div><label>Post text</label><textarea id="spBody" rows="5">${esc(p.body||'')}</textarea></div>
-      <div class="grid md:grid-cols-2 gap-3"><div><label>Media URL</label><input id="spMedia" value="${esc(p.media_url||'')}"></div><div><label>Scheduled</label><input id="spWhen" type="datetime-local" value="${p.scheduled_at?new Date(p.scheduled_at).toISOString().slice(0,16):''}"></div></div>
+      <div class="grid md:grid-cols-2 gap-3"><div><label>Image or video</label><input id="spMedia" value="${esc(p.media_url||'')}" placeholder="Upload below, or paste a link">${mediaPicker('spMedia')}</div><div><label>Scheduled</label><input id="spWhen" type="datetime-local" value="${p.scheduled_at?new Date(p.scheduled_at).toISOString().slice(0,16):''}"></div></div>
       ${Object.keys(perf).length?`<div class="text-xs text-gray-400">Performance: ${esc(JSON.stringify(perf))}</div>`:''}
     </div>
     <div class="flex items-center justify-between gap-3">
